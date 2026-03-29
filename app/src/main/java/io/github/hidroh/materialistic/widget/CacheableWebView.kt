@@ -45,8 +45,7 @@ open class CacheableWebView : WebView() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         init()
     }
 
@@ -87,7 +86,7 @@ open class CacheableWebView : WebView() {
     }
 
     private fun enableCache() {
-        WebSettings webSettings = getSettings()
+        val webSettings = getSettings()
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK)
         webSettings.setAllowFileAccess(true)
         setCacheModeInternal()
@@ -100,7 +99,7 @@ open class CacheableWebView : WebView() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setLoadSettings() {
-        WebSettings webSettings = getSettings()
+        val webSettings = getSettings()
         webSettings.setLoadWithOverviewMode(true)
         webSettings.setUseWideViewPort(true)
         webSettings.setJavaScriptEnabled(true)
@@ -115,7 +114,7 @@ open class CacheableWebView : WebView() {
         if (getSettings().getCacheMode() != WebSettings.LOAD_CACHE_ONLY) {
             return url
         }
-        File cacheFile = File(mArchiveClient.cacheFileName)
+        val cacheFile = File(mArchiveClient.cacheFileName)
         return cacheFile.exists() ? Uri.fromFile(cacheFile).toString() : url
     }
 

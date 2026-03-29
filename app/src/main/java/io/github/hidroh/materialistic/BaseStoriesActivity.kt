@@ -92,7 +92,7 @@ public abstract class BaseStoriesActivity extends BaseListActivity
     protected abstract String getFetchMode()
 
     protected Fragment instantiateListFragment() {
-        Bundle args = Bundle()
+        val args = Bundle()
         args.putString(ListFragment.EXTRA_ITEM_MANAGER, HackerNewsClient::class.java.getName())
         args.putString(ListFragment.EXTRA_FILTER, getFetchMode())
         return Fragment.instantiate(this, ListFragment::class.java.getName(), args)

@@ -40,7 +40,7 @@ open class SearchActivity : BaseListActivity() {
         super.onCreate(savedInstanceState)
         if (!TextUtils.isEmpty(mQuery)) {
             getSupportActionBar().setSubtitle(mQuery)
-            SearchRecentSuggestions suggestions = SearchRecentSuggestions(this,
+            val suggestions = SearchRecentSuggestions(this,
                     SearchRecentSuggestionsProvider.PROVIDER_AUTHORITY,
                     SearchRecentSuggestionsProvider.MODE) {
                 public void saveRecentQuery(String queryString, String line2) {
@@ -77,7 +77,7 @@ open class SearchActivity : BaseListActivity() {
     }
 
     protected override fun instantiateListFragment(): Fragment {
-        Bundle args = Bundle()
+        val args = Bundle()
         args.putString(ListFragment.EXTRA_FILTER, mQuery)
         if (TextUtils.isEmpty(mQuery)) {
             args.putString(ListFragment.EXTRA_ITEM_MANAGER, HackerNewsClient::class.java.getName())
@@ -93,7 +93,7 @@ open class SearchActivity : BaseListActivity() {
         }
         AlgoliaClient.sSortByTime = byTime
         Preferences.setSortByRecent(this, byTime)
-        ListFragment listFragment = (ListFragment) getSupportFragmentManager()
+        val listFragment = (ListFragment) getSupportFragmentManager()
                 .findFragmentByTag(LIST_FRAGMENT_TAG)
         if (listFragment != null) {
             listFragment.filter(mQuery)

@@ -98,7 +98,7 @@ abstract class BaseListFragment : BaseFragment(), Scrollable {
     }
 
     private fun showPreferences() {
-        Bundle args = Bundle()
+        val args = Bundle()
         args.putInt(PopupSettingsFragment.EXTRA_TITLE, R.string.list_display_options)
         args.putInt(PopupSettingsFragment.EXTRA_SUMMARY, R.string.pull_up_hint)
         args.putIntArray(PopupSettingsFragment.EXTRA_XML_PREFERENCES, new int[]{

@@ -36,8 +36,7 @@ interface UserServices {
             this.message = message
         }
 
-        constructor(message: String) {
-            super(message)
+        constructor(message: String) : super(message) {
             this.message = 0
         }
     }

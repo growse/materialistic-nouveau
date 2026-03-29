@@ -71,11 +71,11 @@ open class WidgetHelper {
     }
 
     fun update(appWidgetId: Int) {
-        WidgetConfig config = WidgetConfig.createWidgetConfig(mContext,
+        val config = WidgetConfig.createWidgetConfig(mContext,
                 getConfig(appWidgetId, R.string.pref_widget_theme),
                 getConfig(appWidgetId, R.string.pref_widget_section),
                 getConfig(appWidgetId, R.string.pref_widget_query))
-        RemoteViews remoteViews = RemoteViews(mContext.getPackageName(), config.widgetLayout)
+        val remoteViews = RemoteViews(mContext.getPackageName(), config.widgetLayout)
         updateTitle(remoteViews, config)
         updateCollection(appWidgetId, remoteViews, config)
         mAppWidgetManager.updateAppWidget(appWidgetId, remoteViews)
@@ -93,7 +93,7 @@ open class WidgetHelper {
     }
 
     private fun scheduleUpdate(appWidgetId: Int) {
-        String frequency = getConfig(appWidgetId, R.string.pref_widget_frequency)
+        val frequency = getConfig(appWidgetId, R.string.pref_widget_frequency)
         long frequencyHourMillis = DateUtils.HOUR_IN_MILLIS * (TextUtils.isEmpty(frequency) ?
                 DEFAULT_FREQUENCY_HOUR : Integer.valueOf(frequency))
         getJobScheduler().schedule(JobInfo.Builder(appWidgetId,
@@ -143,7 +143,7 @@ open class WidgetHelper {
                         DateUtils.FORMAT_ABBREV_ALL | DateUtils.FORMAT_SHOW_TIME))
         remoteViews.setOnClickPendingIntent(R.id.button_refresh,
                 createRefreshPendingIntent(appWidgetId))
-        Intent intent = Intent(mContext, WidgetService::class.java)
+        val intent = Intent(mContext, WidgetService::class.java)
                 .putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
                 .putExtra(WidgetService.EXTRA_CUSTOM_QUERY, config.customQuery)
                 .putExtra(WidgetService.EXTRA_SECTION, config.section)

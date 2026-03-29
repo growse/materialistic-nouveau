@@ -47,14 +47,13 @@ abstract class SpinnerPreference : Preference() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         setWidgetLayoutResource(R.layout.preference_spinner)
         init(context, attrs)
     }
 
     private fun init(context: Context, attrs: AttributeSet) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.SpinnerPreference)
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.SpinnerPreference)
         int entriesResId = ta.getResourceId(R.styleable.SpinnerPreference_entries, 0)
         if (entriesResId != 0) {
             mEntries = context.getResources().getStringArray(entriesResId)
@@ -72,7 +71,7 @@ abstract class SpinnerPreference : Preference() {
 
     protected override fun onSetInitialValue(restorePersistedValue: Boolean, defaultValue: Any) {
         super.onSetInitialValue(restorePersistedValue, defaultValue)
-        String value = restorePersistedValue ? getPersistedString(null) : (String) defaultValue
+        val value = restorePersistedValue ? getPersistedString(null) : (String) defaultValue
         for (int i = 0; i < mEntryValues.length; i++) {
             if (TextUtils.equals(mEntryValues[i], value)) {
                 mSelection = i
@@ -83,7 +82,7 @@ abstract class SpinnerPreference : Preference() {
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        final Spinner spinner = (Spinner) holder.findViewById(R.id.spinner)
+        val spinner = (Spinner) holder.findViewById(R.id.spinner)
         holder.itemView.setOnClickListener(v -> spinner.performClick())
         spinner.setAdapter(SpinnerAdapter() {
             public View getDropDownView(int position, View convertView, ViewGroup parent) {

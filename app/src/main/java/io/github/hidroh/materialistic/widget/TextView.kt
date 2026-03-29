@@ -27,8 +27,7 @@ open class TextView : AppCompatTextView() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         if (!isInEditMode()) {
             setTypeface(Application.TYPE_FACE)
         }

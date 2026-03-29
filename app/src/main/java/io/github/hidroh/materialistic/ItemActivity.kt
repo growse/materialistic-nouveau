@@ -69,9 +69,9 @@ import io.github.hidroh.materialistic.widget.ViewPager
 
 open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener {
 
-    const val EXTRA_ITEM: String = ItemActivity.class.getName() + ".EXTRA_ITEM"
-    const val EXTRA_CACHE_MODE: String = ItemActivity.class.getName() + ".EXTRA_CACHE_MODE"
-    const val EXTRA_OPEN_COMMENTS: String = ItemActivity.class.getName() + ".EXTRA_OPEN_COMMENTS"
+    val EXTRA_ITEM: String = ItemActivity::class.java.name + ".EXTRA_ITEM"
+    val EXTRA_CACHE_MODE: String = ItemActivity::class.java.name + ".EXTRA_CACHE_MODE"
+    val EXTRA_OPEN_COMMENTS: String = ItemActivity::class.java.name + ".EXTRA_OPEN_COMMENTS"
     private const val PARAM_ID: String = "id"
     private const val STATE_ITEM: String = "state:item"
     private const val STATE_ITEM_ID: String = "state:itemId"
@@ -154,7 +154,7 @@ open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener
         mViewPager = findViewById(R.id.view_pager)
         AppUtils.toggleFab(mNavButton, false)
         AppUtils.toggleFab(mReplyButton, false)
-        final Intent intent = getIntent()
+        val intent = getIntent()
         MaterialisticDatabase.getInstance(this).getLiveData().observe(this, mObserver)
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,
                 IntentFilter(WebFragment.ACTION_FULLSCREEN))
@@ -207,14 +207,14 @@ open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener
             return true
         }
         if (item.getItemId() == R.id.menu_external) {
-            View anchor = findViewById(R.id.menu_external)
+            val anchor = findViewById(R.id.menu_external)
             AppUtils.openExternal(this, mPopupMenu, anchor == null ?
                     findViewById(R.id.toolbar) : anchor, mItem,
                     mCustomTabsDelegate.getSession())
             return true
         }
         if (item.getItemId() == R.id.menu_share) {
-            View anchor = findViewById(R.id.menu_share)
+            val anchor = findViewById(R.id.menu_share)
             AppUtils.share(this, mPopupMenu, anchor == null ?
                     findViewById(R.id.toolbar) : anchor, mItem)
             return true
@@ -342,12 +342,12 @@ open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener
         mSessionManager.view(story.getId())
         mVoteButton.setVisibility(View.VISIBLE)
         mVoteButton.setOnClickListener(v -> vote(story))
-        final TextView titleTextView = findViewById(android.R.id.text2)
+        val titleTextView = findViewById(android.R.id.text2)
         if (story.isStoryType()) {
             titleTextView.setText(story.getDisplayedTitle())
             setTaskTitle(story.getDisplayedTitle())
             if (!TextUtils.isEmpty(story.getSource())) {
-                TextView sourceTextView = findViewById(R.id.source)
+                val sourceTextView = findViewById(R.id.source)
                 sourceTextView.setText(story.getSource())
                 sourceTextView.setVisibility(View.VISIBLE)
             }
@@ -355,12 +355,12 @@ open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener
             AppUtils.setTextAppearance(titleTextView, R.style.TextAppearance_App_Small)
             titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(AppUtils.getThemedResId(this, R.attr.contentTextSize)))
-            CharSequence title = AppUtils.fromHtml(story.getDisplayedTitle(), true)
+            val title = AppUtils.fromHtml(story.getDisplayedTitle(), true)
             titleTextView.setText(title)
             setTaskTitle(title)
         }
 
-        final TextView postedTextView = findViewById(R.id.posted)
+        val postedTextView = findViewById(R.id.posted)
         postedTextView.setText(story.getDisplayedTime(this))
         postedTextView.append(story.getDisplayedAuthor(this, true, 0))
         postedTextView.setMovementMethod(LinkMovementMethod.getInstance())
@@ -389,7 +389,7 @@ open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener
             }
         })
         if (story.isStoryType() && mExternalBrowser && !hasText) {
-            TextView buttonArticle = (TextView) findViewById(R.id.button_article)
+            val buttonArticle = (TextView) findViewById(R.id.button_article)
             buttonArticle.setVisibility(View.VISIBLE)
             buttonArticle.setOnClickListener(v ->
                     AppUtils.openWebUrlExternal(ItemActivity.this,
@@ -409,7 +409,7 @@ open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener
         if (mAdapter == null) {
             return null
         }
-        Fragment currentItem = mAdapter.getItem(mViewPager.getCurrentItem())
+        val currentItem = mAdapter.getItem(mViewPager.getCurrentItem())
         if (clazz.isInstance(currentItem)) {
             //noinspection unchecked
             return (T) currentItem
@@ -427,7 +427,7 @@ open class ItemActivity : InjectableActivity(), ItemFragment.ItemChangedListener
         if (successful == null) {
             Toast.makeText(this, R.string.vote_failed, Toast.LENGTH_SHORT).show()
         } else if (successful) {
-            Drawable drawable = DrawableCompat.wrap(mVoteButton.getDrawable())
+            val drawable = DrawableCompat.wrap(mVoteButton.getDrawable())
             DrawableCompat.setTint(drawable, ContextCompat.getColor(this, R.color.greenA700))
             Toast.makeText(this, R.string.voted, Toast.LENGTH_SHORT).show()
         } else {

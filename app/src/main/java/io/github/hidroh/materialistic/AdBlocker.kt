@@ -47,7 +47,7 @@ open class AdBlocker {
     }
 
     fun isAd(url: String): Boolean {
-        HttpUrl httpUrl = HttpUrl.parse(url)
+        val httpUrl = HttpUrl.parse(url)
         return isAdHost(httpUrl != null ? httpUrl.host() : "")
     }
 
@@ -58,8 +58,8 @@ open class AdBlocker {
 
     @WorkerThread
     private fun loadFromAssets(context: Context): Void {
-        InputStream stream = context.getAssets().open(AD_HOSTS_FILE)
-        BufferedSource buffer = Okio.buffer(Okio.source(stream))
+        val stream = context.getAssets().open(AD_HOSTS_FILE)
+        val buffer = Okio.buffer(Okio.source(stream))
         String line
         while ((line = buffer.readUtf8Line()) != null) {
             AD_HOSTS.add(line)

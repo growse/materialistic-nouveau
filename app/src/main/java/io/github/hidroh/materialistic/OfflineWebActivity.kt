@@ -31,27 +31,27 @@ import io.github.hidroh.materialistic.widget.AdBlockWebViewClient
 import io.github.hidroh.materialistic.widget.CacheableWebView
 
 open class OfflineWebActivity : InjectableActivity() {
-    const val EXTRA_URL: String = OfflineWebActivity.class.getName() + ".EXTRA_URL"
+    val EXTRA_URL: String = OfflineWebActivity::class.java.name + ".EXTRA_URL"
 
     @SuppressWarnings("ConstantConditions")
     protected override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
-        String url = getIntent().getStringExtra(EXTRA_URL)
+        val url = getIntent().getStringExtra(EXTRA_URL)
         if (TextUtils.isEmpty(url)) {
             finish()
             return
         }
         setTitle(url)
         setContentView(R.layout.activity_offline_web)
-        final NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.nested_scroll_view)
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar)
+        val scrollView = (NestedScrollView) findViewById(R.id.nested_scroll_view)
+        val toolbar = (Toolbar) findViewById(R.id.toolbar)
         toolbar.setOnClickListener(v -> scrollView.smoothScrollTo(0, 0))
         setSupportActionBar(toolbar)
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE)
         getSupportActionBar().setSubtitle(R.string.offline)
-        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress)
-        final WebView webView = (WebView) findViewById(R.id.web_view)
+        val progressBar = (ProgressBar) findViewById(R.id.progress)
+        val webView = (WebView) findViewById(R.id.web_view)
         webView.setBackgroundColor(Color.TRANSPARENT)
         webView.setWebViewClient(AdBlockWebViewClient(Preferences.adBlockEnabled(this)) {
             public void onPageFinished(WebView view, String url) {

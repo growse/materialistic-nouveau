@@ -33,8 +33,7 @@ open class ItemSyncAdapter : AbstractThreadedSyncAdapter() {
     private var mFactory: RestServiceFactory? = null
     private var mReadabilityClient: ReadabilityClient? = null
 
-    constructor(context: Context, factory: RestServiceFactory, readabilityClient: ReadabilityClient) {
-        super(context, true)
+    constructor(context: Context, factory: RestServiceFactory, readabilityClient: ReadabilityClient) : super(context, true) {
         mFactory = factory
         mReadabilityClient = readabilityClient
     }

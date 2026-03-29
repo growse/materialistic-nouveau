@@ -38,8 +38,8 @@ import io.github.hidroh.materialistic.accounts.UserServices
 import io.github.hidroh.materialistic.annotation.Synthetic
 
 open class ComposeActivity : InjectableActivity() {
-    const val EXTRA_PARENT_ID: String = ComposeActivity.class.getName() + ".EXTRA_PARENT_ID"
-    const val EXTRA_PARENT_TEXT: String = ComposeActivity.class.getName() + ".EXTRA_PARENT_TEXT"
+    val EXTRA_PARENT_ID: String = ComposeActivity::class.java.name + ".EXTRA_PARENT_ID"
+    val EXTRA_PARENT_TEXT: String = ComposeActivity::class.java.name + ".EXTRA_PARENT_TEXT"
     private const val HN_FORMAT_DOC_URL: String = "https://news.ycombinator.com/formatdoc"
     private const val FORMAT_QUOTE: String = "> %s\n\n"
     private const val PARAGRAPH_QUOTE: String = "\n\n> "
@@ -77,8 +77,8 @@ open class ComposeActivity : InjectableActivity() {
         mParentText = getIntent().getStringExtra(EXTRA_PARENT_TEXT)
         if (!TextUtils.isEmpty(mParentText)) {
             findViewById(R.id.quote).setVisibility(View.VISIBLE)
-            final TextView toggle = (TextView) findViewById(R.id.toggle)
-            final TextView textView = (TextView) findViewById(R.id.text)
+            val toggle = (TextView) findViewById(R.id.toggle)
+            val textView = (TextView) findViewById(R.id.text)
             AppUtils.setTextWithLinks(textView, AppUtils.fromHtml(mParentText))
             toggle.setOnClickListener(v -> {
                 if (textView.getVisibility() == View.VISIBLE) {
@@ -134,7 +134,7 @@ open class ComposeActivity : InjectableActivity() {
             return true
         }
         if (item.getItemId() == R.id.menu_guidelines) {
-            WebView webView = WebView(ComposeActivity.this)
+            val webView = WebView(ComposeActivity.this)
             webView.loadUrl(HN_FORMAT_DOC_URL)
             mAlertDialogBuilder
                     .init(ComposeActivity.this)
@@ -165,7 +165,7 @@ open class ComposeActivity : InjectableActivity() {
     }
 
     private fun send() {
-        String content = mEditText.getText().toString()
+        val content = mEditText.getText().toString()
         Preferences.saveDraft(this, mParentId, content)
         toggleControls(true)
         Toast.makeText(this, R.string.sending, Toast.LENGTH_SHORT).show()

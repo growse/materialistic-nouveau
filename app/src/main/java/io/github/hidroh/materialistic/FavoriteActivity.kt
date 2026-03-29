@@ -31,14 +31,14 @@ import io.github.hidroh.materialistic.data.WebItem
 
 open class FavoriteActivity : BaseListActivity() {
 
-    const val EMPTY_QUERY: String = MaterialisticDatabase.class.getName()
+    val EMPTY_QUERY: String = MaterialisticDatabase::class.java.name
     private const val STATE_FILTER: String = "state:filter"
     private final Observer<Uri> mObserver = uri -> {
         if (uri == null) {
             return
         }
         if (FavoriteManager.Companion.isRemoved(uri)) {
-            WebItem selected = getSelectedItem()
+            val selected = getSelectedItem()
             if (selected != null &&
                     TextUtils.equals(selected.getId(), uri.getLastPathSegment())) {
                 onItemSelected(null)
@@ -69,7 +69,7 @@ open class FavoriteActivity : BaseListActivity() {
             mFilter = null
         }
         getSupportActionBar().setSubtitle(mFilter)
-        FavoriteFragment fragment = (FavoriteFragment) getSupportFragmentManager()
+        val fragment = (FavoriteFragment) getSupportFragmentManager()
                 .findFragmentByTag(LIST_FRAGMENT_TAG)
         if (fragment != null) {
             fragment.filter(mFilter)
@@ -86,7 +86,7 @@ open class FavoriteActivity : BaseListActivity() {
     }
 
     protected override fun instantiateListFragment(): Fragment {
-        Bundle args = Bundle()
+        val args = Bundle()
         args.putString(FavoriteFragment.EXTRA_FILTER, mFilter)
         return Fragment.instantiate(this, FavoriteFragment::class.java.getName(), args)
     }

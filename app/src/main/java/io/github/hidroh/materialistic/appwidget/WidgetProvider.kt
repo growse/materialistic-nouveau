@@ -39,7 +39,7 @@ open class WidgetProvider : AppWidgetProvider() {
         } else if (TextUtils.equals(intent.getAction(), AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
             int[] appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)
             if (appWidgetIds != null) {
-                WidgetHelper widgetHelper = WidgetHelper(context)
+                val widgetHelper = WidgetHelper(context)
                 for (appWidgetId in appWidgetIds) {
                     widgetHelper.configure(appWidgetId)
                 }
@@ -50,14 +50,14 @@ open class WidgetProvider : AppWidgetProvider() {
     }
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        WidgetHelper widgetHelper = WidgetHelper(context)
+        val widgetHelper = WidgetHelper(context)
         for (appWidgetId in appWidgetIds) {
             widgetHelper.update(appWidgetId)
         }
     }
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray) {
-        WidgetHelper widgetHelper = WidgetHelper(context)
+        val widgetHelper = WidgetHelper(context)
         for (appWidgetId in appWidgetIds) {
             widgetHelper.remove(appWidgetId)
         }

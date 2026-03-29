@@ -48,8 +48,7 @@ open class ItemPagerAdapter : FragmentStatePagerAdapter() {
     private val mRetainInstance: Boolean = false
     private var mTabListener: TabLayout.OnTabSelectedListener? = null
 
-    constructor(context: Context, fm: FragmentManager, builder: Builder) {
-        super(fm)
+    constructor(context: Context, fm: FragmentManager, builder: Builder) : super(fm) {
         mContext = context
         mItem = builder.item
         mShowArticle = builder.showArticle
@@ -64,7 +63,7 @@ open class ItemPagerAdapter : FragmentStatePagerAdapter() {
             return mFragments[position]
         }
         String fragmentName
-        Bundle args = Bundle()
+        val args = Bundle()
         args.putBoolean(LazyLoadFragment.EXTRA_EAGER_LOAD, mDefaultItem == position)
         if (position == 0) {
             args.putParcelable(ItemFragment.EXTRA_ITEM, mItem)
@@ -110,14 +109,14 @@ open class ItemPagerAdapter : FragmentStatePagerAdapter() {
             public void onTabSelected(TabLayout.Tab tab) {
                 super.onTabSelected(tab)
                 toggleFabs(viewPager.getCurrentItem() == 0, navigationFab, genericFab)
-                Fragment fragment = getItem(viewPager.getCurrentItem())
+                val fragment = getItem(viewPager.getCurrentItem())
                 if (fragment != null) {
                     ((LazyLoadFragment) fragment).loadNow()
                 }
             }
 
             public void onTabReselected(TabLayout.Tab tab) {
-                Fragment fragment = getItem(viewPager.getCurrentItem())
+                val fragment = getItem(viewPager.getCurrentItem())
                 if (fragment != null) {
                     ((Scrollable) fragment).scrollToTop()
                 }

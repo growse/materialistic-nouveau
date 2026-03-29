@@ -113,14 +113,14 @@ open class WidgetService : RemoteViewsService() {
         }
 
         override fun getViewAt(position: Int): RemoteViews {
-            RemoteViews remoteViews = RemoteViews(mContext.getPackageName(),
+            val remoteViews = RemoteViews(mContext.getPackageName(),
                     mLightTheme ? R.layout.item_widget_light : R.layout.item_widget)
-            Item item = getItem(position)
+            val item = getItem(position)
             if (item == null) {
                 return remoteViews
             }
             if (!isItemAvailable(item)) {
-                Item remoteItem = mItemManager.getItem(item.getId(), ItemManager.MODE_NETWORK)
+                val remoteItem = mItemManager.getItem(item.getId(), ItemManager.MODE_NETWORK)
                 if (remoteItem != null) {
                     item.populate(remoteItem)
                 } else {
@@ -146,7 +146,7 @@ open class WidgetService : RemoteViewsService() {
         }
 
         override fun getItemId(position: Int): Long {
-            Item item = getItem(position)
+            val item = getItem(position)
             return item != null ? item.getLongId() : 0L
         }
 
@@ -163,8 +163,8 @@ open class WidgetService : RemoteViewsService() {
         }
 
         private fun getSpan(value: Int, format: String, hotThreshold: Int): SpannableString {
-            String text = String.format(Locale.US, format, value)
-            SpannableString spannable = SpannableString(text)
+            val text = String.format(Locale.US, format, value)
+            val spannable = SpannableString(text)
             if (value >= hotThreshold) {
                 spannable.setSpan(ForegroundColorSpan(
                                 ContextCompat.getColor(mContext, R.color.orange500)),

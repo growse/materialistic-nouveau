@@ -123,7 +123,7 @@ public class StoryRecyclerViewAdapter extends
         if (position == NO_POSITION) {
             return
         }
-        Item item = mItems.get(position)
+        val item = mItems.get(position)
         if (FavoriteManager.Companion.isAdded(uri)) {
             item.setFavorite(true)
             item.setLocalRevision(mFavoriteRevision)
@@ -146,7 +146,7 @@ public class StoryRecyclerViewAdapter extends
         mCallback = ItemTouchHelperCallback(context,
                 Preferences.getListSwipePreferences(context)) {
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                Item item = getItem(viewHolder.getAdapterPosition())
+                val item = getItem(viewHolder.getAdapterPosition())
                 if (item == null) {
                     return 0
                 }
@@ -158,7 +158,7 @@ public class StoryRecyclerViewAdapter extends
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 Preferences.SwipeAction action = direction == ItemTouchHelper.LEFT ?
                         getLeftSwipeAction() : getRightSwipeAction()
-                Item item = getItem(viewHolder.getAdapterPosition())
+                val item = getItem(viewHolder.getAdapterPosition())
                 if (item == null) {
                     return
                 }
@@ -243,7 +243,7 @@ public class StoryRecyclerViewAdapter extends
     }
 
     public Bundle saveState() {
-        Bundle savedState = super.saveState()
+        val savedState = super.saveState()
         savedState.putBoolean(STATE_SHOW_ALL, mShowAll)
         savedState.putString(STATE_USERNAME, mUsername)
         return savedState
@@ -305,7 +305,7 @@ public class StoryRecyclerViewAdapter extends
     }
 
     protected void loadItem(final int adapterPosition) {
-        Item item = getItem(adapterPosition)
+        val item = getItem(adapterPosition)
         if (item.getLocalRevision() == 0) {
             return
         }
@@ -314,7 +314,7 @@ public class StoryRecyclerViewAdapter extends
     }
 
     protected void bindItem(final ItemViewHolder holder, int position) {
-        final Item story = getItem(position)
+        val story = getItem(position)
         if (mHighlightUpdated) {
             holder.setUpdated(story,
                     mAdded.contains(story),
@@ -504,7 +504,7 @@ public class StoryRecyclerViewAdapter extends
         if (position < 0) {
             return
         }
-        Item item = mItems != null && position < mItems.size() ?
+        val item = mItems != null && position < mItems.size() ?
                 mItems.get(position) : null
         if (item == null || !isItemAvailable(item) || item.isViewed()) {
             return
@@ -578,8 +578,7 @@ public class StoryRecyclerViewAdapter extends
         private var mTexts: Array<String> = new String[2]
         private var mColors: IntArray = new int[2]
 
-        constructor(context: Context, swipePreferences: Array<Preferences.SwipeAction>) {
-            super(context)
+        constructor(context: Context, swipePreferences: Array<Preferences.SwipeAction>) : super(context) {
             mSaveText = context.getString(R.string.save)
             mUnsaveText = context.getString(R.string.unsave)
             setSwipePreferences(context, swipePreferences)

@@ -127,7 +127,7 @@ abstract class MaterialisticDatabase : RoomDatabase() {
             if (this == o) return true
             if (o == null || getClass() != o.getClass()) return false
 
-            ReadStory readStory = (ReadStory) o
+            val readStory = (ReadStory) o
 
             if (id != readStory.id) return false
             return itemId != null ? itemId.equals(readStory.itemId) : readStory.itemId == null
@@ -182,7 +182,7 @@ abstract class MaterialisticDatabase : RoomDatabase() {
             if (this == o) return true
             if (o == null || getClass() != o.getClass()) return false
 
-            Readable readable = (Readable) o
+            val readable = (Readable) o
 
             if (id != readable.id) return false
             if (itemId != null ? !itemId.equals(readable.itemId) : readable.itemId != null)
@@ -210,7 +210,7 @@ abstract class MaterialisticDatabase : RoomDatabase() {
         private var time: String? = null
 
         fun from(story: WebItem): SavedStory {
-            SavedStory savedStory = SavedStory()
+            val savedStory = SavedStory()
             savedStory.itemId = story.getId()
             savedStory.url = story.getUrl()
             savedStory.title = story.getDisplayedTitle()

@@ -71,16 +71,16 @@ open class Preferences {
     }
 
     fun sync(preferenceManager: PreferenceManager) {
-        Map<String, ?> map = preferenceManager.getSharedPreferences().getAll()
+        val map = preferenceManager.getSharedPreferences().getAll()
         for (key in map.keySet()) {
             sync(preferenceManager, key)
         }
     }
 
     private fun sync(preferenceManager: PreferenceManager, key: String) {
-        Preference pref = preferenceManager.findPreference(key)
+        val pref = preferenceManager.findPreference(key)
         if (pref is ListPreference) {
-            ListPreference listPref = (ListPreference) pref
+            val listPref = (ListPreference) pref
             pref.setSummary(listPref.getEntry())
         }
     }
@@ -95,7 +95,7 @@ open class Preferences {
      * TODO remove once all users migrated
      */
     fun migrate(context: Context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context)
+        val sp = PreferenceManager.getDefaultSharedPreferences(context)
         SharedPreferences.Editor editor = sp.edit()
         for (pref in PREF_MIGRATION) {
             if (pref.isChanged(context, sp)) {
@@ -125,7 +125,7 @@ open class Preferences {
     }
 
     fun getDefaultStoryView(context: Context): StoryViewMode {
-        String pref = get(context, R.string.pref_story_display,
+        val pref = get(context, R.string.pref_story_display,
                         R.string.pref_story_display_value_article)
         if (TextUtils.equals(context.getString(R.string.pref_story_display_value_comments), pref)) {
             return StoryViewMode.Comment
@@ -201,7 +201,7 @@ open class Preferences {
     }
 
     fun getCommentMaxLines(context: Context): Int {
-        String maxLinesString = get(context, R.string.pref_max_lines, null)
+        val maxLinesString = get(context, R.string.pref_max_lines, null)
         int maxLines = maxLinesString == null ? -1 : Integer.parseInt(maxLinesString)
         if (maxLines < 0) {
             maxLines = Integer.MAX_VALUE
@@ -272,7 +272,7 @@ open class Preferences {
 
     fun isReleaseNotesSeen(context: Context): Boolean {
         if (sReleaseNotesSeen == null) {
-            PackageInfo info = null
+            val info = null
             try {
                 info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0)
             } catch (PackageManager.NameNotFoundException e) {
@@ -299,7 +299,7 @@ open class Preferences {
     }
 
     fun getListSwipePreferences(context: Context): Array<SwipeAction> {
-        String left = get(context, R.string.pref_list_swipe_left, R.string.swipe_save),
+        val left = get(context, R.string.pref_list_swipe_left, R.string.swipe_save),
                 right = get(context, R.string.pref_list_swipe_right, R.string.swipe_vote)
         return SwipeAction[]{parseSwipeAction(left), parseSwipeAction(right)}
     }
@@ -331,7 +331,7 @@ open class Preferences {
     }
 
     private fun getFloatFromString(context: Context, key: Int, defaultValue: Float): Float {
-        String floatValue = get(context, key, null)
+        val floatValue = get(context, key, null)
         try {
             return Float.parseFloat(floatValue)
         } catch (NumberFormatException | NullPointerException e) {
@@ -425,7 +425,7 @@ open class Preferences {
         }
 
         fun getReadabilityTypeface(context: Context): String {
-            String typefaceName = get(context, R.string.pref_readability_font, null)
+            val typefaceName = get(context, R.string.pref_readability_font, null)
             if (TextUtils.isEmpty(typefaceName)) {
                 return getTypeface(context)
             }
@@ -467,7 +467,7 @@ open class Preferences {
         }
 
         private fun getPreferredReadabilityTextSize(context: Context): String {
-            String choice = get(context, R.string.pref_readability_text_size, null)
+            val choice = get(context, R.string.pref_readability_text_size, null)
             if (TextUtils.isEmpty(choice)) {
                 return getPreferredTextSize(context)
             }
@@ -514,7 +514,7 @@ open class Preferences {
         }
 
         fun isWifiOnly(context: Context): Boolean {
-            String wifiValue = context.getString(R.string.offline_data_wifi)
+            val wifiValue = context.getString(R.string.offline_data_wifi)
             return TextUtils.equals(wifiValue, get(context, R.string.pref_offline_data, wifiValue))
         }
     }

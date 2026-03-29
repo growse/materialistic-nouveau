@@ -41,13 +41,13 @@ open class FeedbackActivity : InjectableActivity() {
         setContentView(R.layout.activity_feedback)
         AppUtils.setTextWithLinks((TextView) findViewById(R.id.feedback_note),
                 AppUtils.fromHtml(getString(R.string.feedback_note)))
-        final TextInputLayout titleLayout = (TextInputLayout)
+        val titleLayout = (TextInputLayout)
                 findViewById(R.id.textinput_title)
-        final TextInputLayout bodyLayout = (TextInputLayout)
+        val bodyLayout = (TextInputLayout)
                 findViewById(R.id.textinput_body)
-        final EditText title = (EditText) findViewById(R.id.edittext_title)
-        final EditText body = (EditText) findViewById(R.id.edittext_body)
-        final View sendButton = findViewById(R.id.feedback_button)
+        val title = (EditText) findViewById(R.id.edittext_title)
+        val body = (EditText) findViewById(R.id.edittext_body)
+        val sendButton = findViewById(R.id.feedback_button)
         findViewById(R.id.button_rate).setOnClickListener(v -> {
             AppUtils.openPlayStore(FeedbackActivity.this)
             finish()

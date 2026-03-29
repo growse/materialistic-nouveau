@@ -22,23 +22,20 @@ import android.util.AttributeSet
 
 open class FlatCardView : CardView() {
 
-    constructor(context: Context) {
-        super(context)
+    constructor(context: Context) : super(context) {
     }
 
-    constructor(context: Context, attrs: AttributeSet) {
-        super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
     }
 
     fun flatten() {
         setRadius(0)
         setUseCompatPadding(false)
         if (getLayoutParams() is MarginLayoutParams) {
-            MarginLayoutParams marginLayoutParams = (MarginLayoutParams) getLayoutParams()
+            val marginLayoutParams = (MarginLayoutParams) getLayoutParams()
             marginLayoutParams.leftMargin = getContentPaddingLeft() - getPaddingLeft()
             marginLayoutParams.rightMargin = getContentPaddingRight() - getPaddingRight()
             marginLayoutParams.topMargin = getContentPaddingTop() - getPaddingTop()

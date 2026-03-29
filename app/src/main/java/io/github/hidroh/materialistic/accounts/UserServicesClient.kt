@@ -95,7 +95,7 @@ open class UserServicesClient : UserServices {
     }
 
     override fun voteUp(context: Context, itemId: String, callback: Callback): Boolean {
-        Pair<String, String> credentials = AppUtils.getCredentials(context)
+        val credentials = AppUtils.getCredentials(context)
         if (credentials == null) {
             return false
         }
@@ -108,7 +108,7 @@ open class UserServicesClient : UserServices {
     }
 
     override fun reply(context: Context, parentId: String, text: String, callback: Callback) {
-        Pair<String, String> credentials = AppUtils.getCredentials(context)
+        val credentials = AppUtils.getCredentials(context)
         if (credentials == null) {
             callback.onDone(false)
             return
@@ -120,7 +120,7 @@ open class UserServicesClient : UserServices {
     }
 
     override fun submit(context: Context, title: String, content: String, isUrl: Boolean, callback: Callback) {
-        Pair<String, String> credentials = AppUtils.getCredentials(context)
+        val credentials = AppUtils.getCredentials(context)
         if (credentials == null) {
             callback.onDone(false)
             return
@@ -261,7 +261,7 @@ open class UserServicesClient : UserServices {
         switch (uri.getPath()) {
             case ITEM_PATH:
                 UserServices.Exception exception = UserServices.Exception(R.string.item_exist)
-                String itemId = uri.getQueryParameter(ITEM_PARAM_ID)
+                val itemId = uri.getQueryParameter(ITEM_PARAM_ID)
                 if (!TextUtils.isEmpty(itemId)) {
                     exception.data = AppUtils.createItemUri(itemId)
                 }
@@ -273,12 +273,12 @@ open class UserServicesClient : UserServices {
 
     private fun getInputValue(html: String, name: String): String {
         // extract <input ... >
-        Matcher matcherInput = Pattern.compile(REGEX_INPUT).matcher(html)
+        val matcherInput = Pattern.compile(REGEX_INPUT).matcher(html)
         while (matcherInput.find()) {
-            String input = matcherInput.group()
+            val input = matcherInput.group()
             if (input.contains(name)) {
                 // extract value="..."
-                Matcher matcher = Pattern.compile(REGEX_VALUE).matcher(input)
+                val matcher = Pattern.compile(REGEX_VALUE).matcher(input)
                 return matcher.find() ? matcher.group(1) : null; // return first match if any
             }
         }
@@ -287,7 +287,7 @@ open class UserServicesClient : UserServices {
 
     private fun parseLoginError(response: Response): String {
         try {
-            Matcher matcher = Pattern.compile(REGEX_CREATE_ERROR_BODY).matcher(response.body().string())
+            val matcher = Pattern.compile(REGEX_CREATE_ERROR_BODY).matcher(response.body().string())
             return matcher.find() ? matcher.group(1).replaceAll("\\n|\\r|\\t|\\s+", " ").trim() : null
         } catch (IOException e) {
             return null

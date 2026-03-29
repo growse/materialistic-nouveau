@@ -49,7 +49,7 @@ import io.github.hidroh.materialistic.widget.SnappyLinearLayoutManager
 import io.github.hidroh.materialistic.widget.SubmissionRecyclerViewAdapter
 
 open class UserActivity : InjectableActivity(), Scrollable {
-    const val EXTRA_USERNAME: String = UserActivity.class.getName() + ".EXTRA_USERNAME"
+    val EXTRA_USERNAME: String = UserActivity::class.java.name + ".EXTRA_USERNAME"
     private const val STATE_USER: String = "state:user"
     private const val PARAM_ID: String = "id"
     private const val KARMA: String = " (%1$s)"
@@ -216,7 +216,7 @@ open class UserActivity : InjectableActivity(), Scrollable {
     }
 
     private fun bind() {
-        SpannableString karma = SpannableString(String.format(Locale.US, KARMA,
+        val karma = SpannableString(String.format(Locale.US, KARMA,
                 NumberFormat.getInstance(Locale.getDefault()).format(mUser.getKarma())))
         karma.setSpan(RelativeSizeSpan(0.8f), 0, karma.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         mTitle.append(karma)

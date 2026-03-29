@@ -28,15 +28,14 @@ import io.github.hidroh.materialistic.LoginActivity
 open class AccountAuthenticator : EmptyAccountAuthenticator() {
     private var mContext: Context? = null
 
-    constructor(context: Context) {
-        super(context)
+    constructor(context: Context) : super(context) {
         mContext = context
     }
 
     override fun addAccount(response: AccountAuthenticatorResponse, accountType: String, authTokenType: String, requiredFeatures: Array<String>, options: Bundle): Bundle {
-        Intent intent = Intent(mContext, LoginActivity::class.java)
+        val intent = Intent(mContext, LoginActivity::class.java)
         intent.putExtra(LoginActivity.EXTRA_ADD_ACCOUNT, true)
-        Bundle bundle = Bundle()
+        val bundle = Bundle()
         bundle.putParcelable(AccountManager.KEY_INTENT, intent)
         return bundle
     }

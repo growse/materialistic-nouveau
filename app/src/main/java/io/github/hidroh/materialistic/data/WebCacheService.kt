@@ -39,7 +39,7 @@ open class WebCacheService : Service() {
             stopSelf(startId)
             return START_STICKY
         }
-        CacheableWebView webView = CacheableWebView(this)
+        val webView = CacheableWebView(this)
         webView.setWebViewClient(AdBlockWebViewClient(Preferences.adBlockEnabled(this)))
         webView.setWebChromeClient(CacheableWebView.ArchiveClient() {
             public void onProgressChanged(WebView view, int newProgress) {

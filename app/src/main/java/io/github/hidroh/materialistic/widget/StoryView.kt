@@ -79,11 +79,10 @@ open class StoryView : RelativeLayout(), Checkable {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) {
-        super(context, attrs, defStyle)
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.StoryView)
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.StoryView)
         mIsLocal = ta.getBoolean(R.styleable.StoryView_local, false)
-        TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{
+        val a = context.getTheme().obtainStyledAttributes(new int[]{
                 android.R.attr.textColorTertiary,
                 android.R.attr.textColorSecondary,
                 R.attr.colorCardBackground,
@@ -139,7 +138,7 @@ open class StoryView : RelativeLayout(), Checkable {
 
     fun setStory(story: WebItem, hotThreshold: Int) {
         if (!mIsLocal && story is Item) {
-            Item item = (Item) story
+            val item = (Item) story
             boolean hot = item.getScore() >= hotThreshold * AppUtils.HOT_FACTOR
             mScoreTextView.setTextColor(hot ? mHotColorResId : mSecondaryTextColorResId)
             mRankTextView.setText(String.valueOf(item.getRank()))
@@ -210,7 +209,7 @@ open class StoryView : RelativeLayout(), Checkable {
     }
 
     fun setPromoted(change: Int) {
-        SpannableString spannable = SpannableString(String.format(Locale.US, PROMOTED, change))
+        val spannable = SpannableString(String.format(Locale.US, PROMOTED, change))
         spannable.setSpan(SuperscriptSpan(), 0, spannable.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         spannable.setSpan(RelativeSizeSpan(0.6f), 0, spannable.length(),
@@ -273,7 +272,7 @@ open class StoryView : RelativeLayout(), Checkable {
     }
 
     private fun decorateUpdated(): Spannable {
-        SpannableStringBuilder sb = SpannableStringBuilder("*")
+        val sb = SpannableStringBuilder("*")
         sb.setSpan(AsteriskSpan(getContext()), sb.length() - 1, sb.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         return sb

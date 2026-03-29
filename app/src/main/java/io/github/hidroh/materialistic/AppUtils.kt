@@ -100,16 +100,16 @@ open class AppUtils {
                     .putExtra(OfflineWebActivity.EXTRA_URL, url))
             return
         }
-        Intent intent = createViewIntent(context, item, url, session)
+        val intent = createViewIntent(context, item, url, session)
         if (!HackerNewsClient.BASE_WEB_URL.contains(Uri.parse(url).getHost())) {
             if (intent.resolveActivity(context.getPackageManager()) != null) {
                 context.startActivity(intent)
             }
             return
         }
-        List<ResolveInfo> activities = context.getPackageManager()
+        val activities = context.getPackageManager()
                 .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-        ArrayList<Intent> intents = ArrayList<>()
+        val intents = ArrayList<>()
         for (info in activities) {
             if (info.activityInfo.packageName.equalsIgnoreCase(context.getPackageName())) {
                 continue
@@ -143,18 +143,18 @@ open class AppUtils {
                     int x = (int) event.getX()
                     int y = (int) event.getY()
 
-                    TextView widget = (TextView) v
+                    val widget = (TextView) v
                     x -= widget.getTotalPaddingLeft()
                     y -= widget.getTotalPaddingTop()
 
                     x += widget.getScrollX()
                     y += widget.getScrollY()
 
-                    Layout layout = widget.getLayout()
+                    val layout = widget.getLayout()
                     int line = layout.getLineForVertical(y)
                     int off = layout.getOffsetForHorizontal(line, x)
 
-                    ClickableSpan[] links = Spannable.Factory.getInstance()
+                    val links = Spannable.Factory.getInstance()
                             .newSpannable(widget.getText())
                             .getSpans(off, off, ClickableSpan::class.java)
 
@@ -244,14 +244,14 @@ open class AppUtils {
     }
 
     fun getThemedResId(context: Context, attr: Int): Int {
-        TypedArray a = context.getTheme().obtainStyledAttributes(new int[]{attr})
+        val a = context.getTheme().obtainStyledAttributes(new int[]{attr})
         final int resId = a.getResourceId(0, 0)
         a.recycle()
         return resId
     }
 
     fun getDimension(context: Context, styleResId: Int, attr: Int): Float {
-        TypedArray a = context.getTheme().obtainStyledAttributes(styleResId, new int[]{attr})
+        val a = context.getTheme().obtainStyledAttributes(styleResId, new int[]{attr})
         float size = a.getDimension(0, 0)
         a.recycle()
         return size
@@ -289,7 +289,7 @@ open class AppUtils {
     }
 
     fun isOnWiFi(context: Context): Boolean {
-        NetworkInfo activeNetwork = ((ConnectivityManager) context.getSystemService(
+        val activeNetwork = ((ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting() &&
@@ -297,19 +297,19 @@ open class AppUtils {
     }
 
     fun hasConnection(context: Context): Boolean {
-        NetworkInfo activeNetworkInfo = ((ConnectivityManager) context.getSystemService(
+        val activeNetworkInfo = ((ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo()
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting()
     }
 
     @SuppressLint("MissingPermission")
     fun getCredentials(context: Context): Pair<String, String> {
-        String username = Preferences.getUsername(context)
+        val username = Preferences.getUsername(context)
         if (TextUtils.isEmpty(username)) {
             return null
         }
-        AccountManager accountManager = AccountManager.get(context)
-        Account[] accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
+        val accountManager = AccountManager.get(context)
+        val accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
         for (account in accounts) {
             if (TextUtils.equals(username, account.name)) {
                 return Pair.create(username, accountManager.getPassword(account))
@@ -328,7 +328,7 @@ open class AppUtils {
      */
     @SuppressLint("MissingPermission")
     fun showLogin(context: Context, alertDialogBuilder: AlertDialogBuilder) {
-        Account[] accounts = AccountManager.get(context).getAccountsByType(BuildConfig.APPLICATION_ID)
+        val accounts = AccountManager.get(context).getAccountsByType(BuildConfig.APPLICATION_ID)
         if (accounts.length == 0) { // no accounts, ask to login or re-login
             context.startActivity(Intent(context, LoginActivity::class.java))
         } else if (!TextUtils.isEmpty(Preferences.getUsername(context))) { // stale account, ask to re-login
@@ -341,7 +341,7 @@ open class AppUtils {
     @SuppressLint("MissingPermission")
     fun registerAccountsUpdatedListener(context: Context) {
         AccountManager.get(context).addOnAccountsUpdatedListener(accounts -> {
-            String username = Preferences.getUsername(context)
+            val username = Preferences.getUsername(context)
             if (TextUtils.isEmpty(username)) {
                 return
             }
@@ -357,7 +357,7 @@ open class AppUtils {
     @SuppressWarnings("deprecation")
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun openPlayStore(context: Context) {
-        Intent intent = Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_STORE_URL))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_STORE_URL))
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK |
@@ -371,11 +371,11 @@ open class AppUtils {
 
     @SuppressLint("MissingPermission")
     fun showAccountChooser(context: Context, alertDialogBuilder: AlertDialogBuilder, accounts: Array<Account>) {
-        String username = Preferences.getUsername(context)
-        final String[] items = String[accounts.length]
+        val username = Preferences.getUsername(context)
+        val items = String[accounts.length]
         int checked = -1
         for (int i = 0; i < accounts.length; i++) {
-            String accountName = accounts[i].name
+            val accountName = accounts[i].name
             items[i] = accountName
             if (TextUtils.equals(accountName, username)) {
                 checked = i
@@ -396,7 +396,7 @@ open class AppUtils {
                         dialog.dismiss()
                         break
                     case DialogInterface.BUTTON_NEGATIVE:
-                        Intent intent = Intent(context, LoginActivity::class.java)
+                        val intent = Intent(context, LoginActivity::class.java)
                         intent.putExtra(LoginActivity.EXTRA_ADD_ACCOUNT, true)
                         context.startActivity(intent)
                         dialog.dismiss()
@@ -440,7 +440,7 @@ open class AppUtils {
     }
 
     fun toggleFabAction(fab: FloatingActionButton, item: WebItem, commentMode: Boolean) {
-        Context context = fab.getContext()
+        val context = fab.getContext()
         fab.setImageResource(commentMode ? R.drawable.ic_reply_white_24dp : R.drawable.ic_zoom_out_map_white_24dp)
         fab.setOnClickListener(v -> {
             if (commentMode) {
@@ -494,9 +494,9 @@ open class AppUtils {
     }
 
     fun getDisplayHeight(context: Context): Int {
-        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
+        val display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay()
-        Point point = Point()
+        val point = Point()
         display.getSize(point)
         return point.y
     }
@@ -507,7 +507,7 @@ open class AppUtils {
     }
 
     fun share(context: Context, subject: String, text: String) {
-        Intent intent = Intent(Intent.ACTION_SEND)
+        val intent = Intent(Intent.ACTION_SEND)
                 .setType("text/plain")
                 .putExtra(Intent.EXTRA_SUBJECT, subject)
                 .putExtra(Intent.EXTRA_TEXT, !TextUtils.isEmpty(subject) ?

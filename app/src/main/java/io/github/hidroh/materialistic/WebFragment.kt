@@ -181,7 +181,7 @@ public class WebFragment extends LazyLoadFragment
     }
 
     protected void prepareOptionsMenu(Menu menu) {
-        MenuItem menuReadability = menu.findItem(R.id.menu_readability)
+        val menuReadability = menu.findItem(R.id.menu_readability)
         menuReadability.setVisible(modeToggleEnabled())
         mMenuTintDelegate.setIcon(menuReadability, mReadability ?
                 R.drawable.ic_web_black_24dp : R.drawable.ic_chrome_reader_mode_black_24dp)
@@ -444,7 +444,7 @@ public class WebFragment extends LazyLoadFragment
     }
 
     private void offerExternalApp() {
-        final Intent intent = Intent(Intent.ACTION_VIEW, Uri.parse(mItem.getUrl()))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mItem.getUrl()))
         if (intent.resolveActivity(getActivity().getPackageManager()) == null) {
             return
         }
@@ -503,7 +503,7 @@ public class WebFragment extends LazyLoadFragment
     }
 
     private void showPreferences() {
-        Bundle args = Bundle()
+        val args = Bundle()
         args.putInt(PopupSettingsFragment.EXTRA_TITLE, R.string.font_options)
         args.putIntArray(PopupSettingsFragment.EXTRA_XML_PREFERENCES,
                 new int[]{R.xml.preferences_readability})
@@ -526,7 +526,7 @@ public class WebFragment extends LazyLoadFragment
     }
 
     private void findInPage() {
-        String query = mEditText.getText().toString().trim()
+        val query = mEditText.getText().toString().trim()
         if (TextUtils.isEmpty(query)) {
             return
         }
@@ -548,7 +548,7 @@ public class WebFragment extends LazyLoadFragment
     }
 
     private void toggleSoftKeyboard(boolean visible) {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(
+        val imm = (InputMethodManager) getActivity().getSystemService(
                 Context.INPUT_METHOD_SERVICE)
         if (visible) {
             imm.showSoftInput(mEditText, InputMethodManager.SHOW_IMPLICIT)

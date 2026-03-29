@@ -32,7 +32,7 @@ import javax.inject.Inject
 import io.github.hidroh.materialistic.accounts.UserServices
 
 open class LoginActivity : AccountAuthenticatorActivity() {
-    const val EXTRA_ADD_ACCOUNT: String = LoginActivity.class.getName() + ".EXTRA_ADD_ACCOUNT"
+    val EXTRA_ADD_ACCOUNT: String = LoginActivity::class.java.name + ".EXTRA_ADD_ACCOUNT"
     @Inject var mUserServices: UserServices? = null
     @Inject var mAccountManager: AccountManager? = null
     private var mLoginButton: View? = null
@@ -46,7 +46,7 @@ open class LoginActivity : AccountAuthenticatorActivity() {
 
     protected override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
-        String username = Preferences.getUsername(this)
+        val username = Preferences.getUsername(this)
         boolean addAccount = getIntent().getBooleanExtra(EXTRA_ADD_ACCOUNT, false)
         setContentView(R.layout.activity_login)
         mUsernameLayout = (TextInputLayout) findViewById(R.id.textinput_username)
@@ -119,10 +119,10 @@ open class LoginActivity : AccountAuthenticatorActivity() {
     }
 
     private fun addAccount(username: String, password: String) {
-        Account account = Account(username, BuildConfig.APPLICATION_ID)
+        val account = Account(username, BuildConfig.APPLICATION_ID)
         mAccountManager.addAccountExplicitly(account, password, null)
         mAccountManager.setPassword(account, password); // for re-login with updated password
-        Bundle bundle = Bundle()
+        val bundle = Bundle()
         bundle.putString(AccountManager.KEY_ACCOUNT_NAME, username)
         bundle.putString(AccountManager.KEY_ACCOUNT_TYPE, BuildConfig.APPLICATION_ID)
         setAccountAuthenticatorResult(bundle)

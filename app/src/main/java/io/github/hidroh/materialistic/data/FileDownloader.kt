@@ -32,13 +32,13 @@ open class FileDownloader {
 
     @WorkerThread
     fun downloadFile(url: String, mimeType: String, callback: FileDownloaderCallback) {
-        File outputFile = File(mCacheDir, File(url).getName())
+        val outputFile = File(mCacheDir, File(url).getName())
         if (outputFile.exists()) {
             mMainHandler.post(() -> callback.onSuccess(outputFile.getPath()))
             return
         }
 
-        final Request request = Request.Builder().url(url)
+        val request = Request.Builder().url(url)
                 .addHeader("Content-Type", mimeType)
                 .build()
 
@@ -49,7 +49,7 @@ open class FileDownloader {
 
             public void onResponse(Call call, Response response) {
                 try {
-                    BufferedSink sink = Okio.buffer(Okio.sink(outputFile))
+                    val sink = Okio.buffer(Okio.sink(outputFile))
                     sink.writeAll(response.body().source())
                     sink.close()
                     mMainHandler.post(() -> callback.onSuccess(outputFile.getPath()))

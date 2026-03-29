@@ -36,8 +36,7 @@ abstract class PeekabooTouchHelperCallback : ItemTouchHelper.SimpleCallback() {
     private val mPadding: Int = 0
     private val mDefaultTextColor: Int = 0
 
-    constructor(context: Context) {
-        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+    constructor(context: Context) : super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         mDefaultTextColor = ContextCompat.getColor(context,
                 AppUtils.getThemedResId(context, android.R.attr.textColorPrimary))
         mPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.text_size_small))
@@ -55,10 +54,10 @@ abstract class PeekabooTouchHelperCallback : ItemTouchHelper.SimpleCallback() {
     }
 
     private fun drawPeekingText(canvas: Canvas, viewHolder: RecyclerView.ViewHolder, dX: Float) {
-        View itemView = viewHolder.itemView
+        val itemView = viewHolder.itemView
         boolean swipeRight = dX > 0
-        String text = swipeRight ? getRightText() : getLeftText()
-        Rect rect = Rect()
+        val text = swipeRight ? getRightText() : getLeftText()
+        val rect = Rect()
         mPaint.getTextBounds(text, 0, text.length(), rect)
         float textWidth = rect.right - rect.left,
                 textHeight = rect.bottom - rect.top,

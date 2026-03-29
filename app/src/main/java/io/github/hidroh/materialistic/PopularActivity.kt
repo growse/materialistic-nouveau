@@ -67,7 +67,7 @@ open class PopularActivity : BaseListActivity() {
     }
 
     protected override fun instantiateListFragment(): Fragment {
-        Bundle args = Bundle()
+        val args = Bundle()
         setRange(Preferences.getPopularRange(this))
         args.putString(ListFragment.EXTRA_FILTER, mRange)
         args.putString(ListFragment.EXTRA_ITEM_MANAGER, AlgoliaPopularClient::class.java.getName())
@@ -81,7 +81,7 @@ open class PopularActivity : BaseListActivity() {
     private fun filter(range: String) {
         setRange(range)
         Preferences.setPopularRange(this, range)
-        ListFragment listFragment = (ListFragment) getSupportFragmentManager()
+        val listFragment = (ListFragment) getSupportFragmentManager()
                 .findFragmentByTag(LIST_FRAGMENT_TAG)
         if (listFragment != null) {
             listFragment.filter(range)

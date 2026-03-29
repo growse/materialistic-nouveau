@@ -53,8 +53,8 @@ import io.github.hidroh.materialistic.widget.SnappyLinearLayoutManager
 
 open class ItemFragment : LazyLoadFragment(), Scrollable, Navigable {
 
-    const val EXTRA_ITEM: String = ItemFragment.class.getName() + ".EXTRA_ITEM"
-    const val EXTRA_CACHE_MODE: String = ItemFragment.class.getName() + ".EXTRA_CACHE_MODE"
+    val EXTRA_ITEM: String = ItemFragment::class.java.name + ".EXTRA_ITEM"
+    val EXTRA_CACHE_MODE: String = ItemFragment::class.java.name + ".EXTRA_CACHE_MODE"
     private const val STATE_ITEM: String = "state:item"
     private const val STATE_ITEM_ID: String = "state:itemId"
     private const val STATE_ADAPTER_ITEMS: String = "state:adapterItems"
@@ -98,7 +98,7 @@ open class ItemFragment : LazyLoadFragment(), Scrollable, Navigable {
             mAdapterItems = savedInstanceState.getParcelable(STATE_ADAPTER_ITEMS)
         } else {
             mCacheMode = getArguments().getInt(EXTRA_CACHE_MODE, ItemManager.MODE_DEFAULT)
-            WebItem item = getArguments().getParcelable(EXTRA_ITEM)
+            val item = getArguments().getParcelable(EXTRA_ITEM)
             if (item is Item) {
                 mItem = (Item) item
             }
@@ -222,7 +222,7 @@ open class ItemFragment : LazyLoadFragment(), Scrollable, Navigable {
         }
 
         mEmptyView.setVisibility(View.GONE)
-        String displayOption = Preferences.getCommentDisplayOption(getActivity())
+        val displayOption = Preferences.getCommentDisplayOption(getActivity())
         if (Preferences.isSinglePage(getActivity(), displayOption)) {
             boolean autoExpand = Preferences.isAutoExpand(getActivity(), displayOption)
             // if collapsed or no saved state then start a fresh (adapter items all collapsed)
@@ -254,7 +254,7 @@ open class ItemFragment : LazyLoadFragment(), Scrollable, Navigable {
     }
 
     private fun showPreferences() {
-        Bundle args = Bundle()
+        val args = Bundle()
         args.putInt(PopupSettingsFragment.EXTRA_TITLE, R.string.font_options)
         args.putInt(PopupSettingsFragment.EXTRA_SUMMARY, R.string.pull_up_hint)
         args.putIntArray(PopupSettingsFragment.EXTRA_XML_PREFERENCES, new int[]{

@@ -34,11 +34,10 @@ open class ThemeView : CardView() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         LayoutInflater.from(context).inflate(R.layout.theme_view, this, true)
-        TypedArray ta = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.theme})
-        ContextThemeWrapper wrapper = ContextThemeWrapper(context, ta.getResourceId(0, R.style.AppTheme))
+        val ta = context.obtainStyledAttributes(attrs, new int[]{android.R.attr.theme})
+        val wrapper = ContextThemeWrapper(context, ta.getResourceId(0, R.style.AppTheme))
         ta.recycle()
         int cardBackgroundColor = AppUtils.getThemedResId(wrapper, R.attr.colorCardBackground)
         int textColor = AppUtils.getThemedResId(wrapper, android.R.attr.textColorTertiary)

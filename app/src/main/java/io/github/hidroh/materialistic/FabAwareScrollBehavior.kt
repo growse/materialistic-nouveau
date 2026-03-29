@@ -29,8 +29,7 @@ import java.util.List
 open class FabAwareScrollBehavior : AppBarLayout.ScrollingViewBehavior() {
     const val HIDDEN: Any = new Object()
 
-    constructor(context: Context, attrs: AttributeSet) {
-        super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
     }
 
     override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
@@ -48,7 +47,7 @@ open class FabAwareScrollBehavior : AppBarLayout.ScrollingViewBehavior() {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
         if (dyConsumed > 0) {
             // User scrolled down -> hide the FAB
-            List<View> dependencies = coordinatorLayout.getDependencies(child)
+            val dependencies = coordinatorLayout.getDependencies(child)
             for (view in dependencies) {
                 if (view is FloatingActionButton) {
                     ((FloatingActionButton) view).hide()
@@ -56,7 +55,7 @@ open class FabAwareScrollBehavior : AppBarLayout.ScrollingViewBehavior() {
             }
         } else if (dyConsumed < 0) {
             // User scrolled up -> show the FAB
-            List<View> dependencies = coordinatorLayout.getDependencies(child)
+            val dependencies = coordinatorLayout.getDependencies(child)
             for (view in dependencies) {
                 if (view is FloatingActionButton && !HIDDEN.equals(view.getTag())) {
                     ((FloatingActionButton) view).show()

@@ -70,7 +70,7 @@ abstract class DrawerActivity : InjectableActivity() {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView)
                 if (drawerView.equals(mDrawer) && mPendingNavigation != null) {
-                    final Intent intent = Intent(DrawerActivity.this, mPendingNavigation)
+                    val intent = Intent(DrawerActivity.this, mPendingNavigation)
                     if (mPendingNavigationExtras != null) {
                         intent.putExtras(mPendingNavigationExtras)
                         mPendingNavigationExtras = null
@@ -121,8 +121,8 @@ abstract class DrawerActivity : InjectableActivity() {
     }
 
     override fun setContentView(layoutResID: Int) {
-        ViewGroup drawerLayout = (ViewGroup) findViewById(R.id.drawer_layout)
-        View view = getLayoutInflater().inflate(layoutResID, drawerLayout, false)
+        val drawerLayout = (ViewGroup) findViewById(R.id.drawer_layout)
+        val view = getLayoutInflater().inflate(layoutResID, drawerLayout, false)
         //noinspection ConstantConditions
         drawerLayout.addView(view, 0)
     }
@@ -131,8 +131,8 @@ abstract class DrawerActivity : InjectableActivity() {
     private fun setUpDrawer() {
         mDrawerAccount.setOnClickListener(v -> showLogin())
         mDrawerLogout.setOnClickListener(v -> confirmLogout())
-        View moreContainer = findViewById(R.id.drawer_more_container)
-        TextView moreToggle = (TextView) findViewById(R.id.drawer_more)
+        val moreContainer = findViewById(R.id.drawer_more_container)
+        val moreToggle = (TextView) findViewById(R.id.drawer_more)
         moreToggle.setOnClickListener(v -> {
             if (moreContainer.getVisibility() == View.VISIBLE) {
                 moreToggle.setTextColor(ContextCompat.getColor(DrawerActivity.this,
@@ -163,7 +163,7 @@ abstract class DrawerActivity : InjectableActivity() {
         findViewById(R.id.drawer_favorite).setOnClickListener(v -> navigate(FavoriteActivity::class.java))
         findViewById(R.id.drawer_submit).setOnClickListener(v -> navigate(SubmitActivity::class.java))
         findViewById(R.id.drawer_user).setOnClickListener(v -> {
-            Bundle extras = Bundle()
+            val extras = Bundle()
             extras.putString(UserActivity.EXTRA_USERNAME, Preferences.getUsername(this))
             navigate(UserActivity::class.java, extras)
         })
@@ -173,7 +173,7 @@ abstract class DrawerActivity : InjectableActivity() {
 
     @SuppressLint("MissingPermission")
     private fun showLogin() {
-        Account[] accounts = AccountManager.get(this)
+        val accounts = AccountManager.get(this)
                 .getAccountsByType(BuildConfig.APPLICATION_ID)
         if (accounts.length == 0) { // no accounts, ask to login or re-login
             startActivity(Intent(this, LoginActivity::class.java))
@@ -202,7 +202,7 @@ abstract class DrawerActivity : InjectableActivity() {
     }
 
     private fun setUsername() {
-        String username = Preferences.getUsername(this)
+        val username = Preferences.getUsername(this)
         if (!TextUtils.isEmpty(username)) {
             mDrawerAccount.setText(username)
             mDrawerLogout.setVisibility(View.VISIBLE)

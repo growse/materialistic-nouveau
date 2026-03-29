@@ -43,8 +43,7 @@ open class WebView : android.webkit.WebView() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         super.setWebViewClient(mClient)
     }
 
@@ -75,7 +74,7 @@ open class WebView : android.webkit.WebView() {
         override fun onPageStarted(view: android.webkit.WebView, url: String, favicon: Bitmap) {
             super.onPageStarted(view, url, favicon)
             view.pageUp(true)
-            WebView webView = (WebView) view
+            val webView = (WebView) view
             if (AppUtils.urlEquals(url, webView.mPendingUrl)) {
                 view.setVisibility(VISIBLE)
             }
@@ -86,7 +85,7 @@ open class WebView : android.webkit.WebView() {
 
         override fun onPageFinished(view: android.webkit.WebView, url: String) {
             super.onPageFinished(view, url)
-            WebView webView = (WebView) view
+            val webView = (WebView) view
             if (TextUtils.equals(url, BLANK)) { // has pending reload, open corresponding URL
                 if (!TextUtils.isEmpty(webView.mPendingHtml)) {
                     view.loadDataWithBaseURL(webView.mPendingUrl, webView.mPendingHtml,

@@ -28,8 +28,7 @@ import rx.Observable
 open class AlgoliaPopularClient : AlgoliaClient() {
 
     @Inject
-    constructor(factory: RestServiceFactory) {
-        super(factory)
+    constructor(factory: RestServiceFactory) : super(factory) {
     }
 
     @Retention(AnnotationRetention.SOURCE)

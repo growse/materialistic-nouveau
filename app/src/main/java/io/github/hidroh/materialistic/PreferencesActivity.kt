@@ -24,8 +24,8 @@ import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 
 open class PreferencesActivity : ThemedActivity() {
-    const val EXTRA_TITLE: String = PreferencesActivity.class.getName() + ".EXTRA_TITLE"
-    const val EXTRA_PREFERENCES: String = PreferencesActivity.class.getName() + ".EXTRA_PREFERENCES"
+    val EXTRA_TITLE: String = PreferencesActivity::class.java.name + ".EXTRA_TITLE"
+    val EXTRA_PREFERENCES: String = PreferencesActivity::class.java.name + ".EXTRA_PREFERENCES"
 
     protected override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ open class PreferencesActivity : ThemedActivity() {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE)
         if (savedInstanceState == null) {
-            Bundle args = Bundle()
+            val args = Bundle()
             args.putInt(EXTRA_PREFERENCES, getIntent().getIntExtra(EXTRA_PREFERENCES, 0))
             getSupportFragmentManager()
                     .beginTransaction()

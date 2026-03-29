@@ -38,8 +38,7 @@ open class ThreadPreviewRecyclerViewAdapter : ItemRecyclerViewAdapter<Submission
     private var mLevelIndicatorWidth: Int = 0
     private var mUsername: String? = null
 
-    constructor(itemManager: ItemManager, item: Item) {
-        super(itemManager)
+    constructor(itemManager: ItemManager, item: Item) : super(itemManager) {
         mItems.add(item)
         mUsername = item.getBy()
     }
@@ -56,7 +55,7 @@ open class ThreadPreviewRecyclerViewAdapter : ItemRecyclerViewAdapter<Submission
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubmissionViewHolder {
-        SubmissionViewHolder holder = SubmissionViewHolder(mLayoutInflater
+        val holder = SubmissionViewHolder(mLayoutInflater
                 .inflate(R.layout.item_submission, parent, false))
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
                 holder.itemView.getLayoutParams()

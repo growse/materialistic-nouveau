@@ -22,13 +22,13 @@ import androidx.annotation.NonNull
 import io.github.hidroh.materialistic.data.ItemManager
 
 open class NewActivity : BaseStoriesActivity() {
-    const val EXTRA_REFRESH: String = NewActivity.class.getName() + ".EXTRA_REFRESH"
+    val EXTRA_REFRESH: String = NewActivity::class.java.name + ".EXTRA_REFRESH"
 
     protected override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (intent.getBooleanExtra(EXTRA_REFRESH, false)) {
             // triggered by new submission from user, refresh list
-            ListFragment listFragment = ((ListFragment) getSupportFragmentManager()
+            val listFragment = ((ListFragment) getSupportFragmentManager()
                     .findFragmentByTag(LIST_FRAGMENT_TAG))
             if (listFragment != null) {
                 listFragment.filter(getFetchMode())

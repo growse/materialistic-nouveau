@@ -33,8 +33,8 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 open class PopupSettingsFragment : AppCompatDialogFragment() {
-    const val EXTRA_TITLE: String = PopupSettingsFragment.class.getName() + ".EXTRA_TITLE"
-    const val EXTRA_SUMMARY: String = PopupSettingsFragment.class.getName() + ".EXTRA_SUMMARY"
+    val EXTRA_TITLE: String = PopupSettingsFragment::class.java.name + ".EXTRA_TITLE"
+    val EXTRA_SUMMARY: String = PopupSettingsFragment::class.java.name + ".EXTRA_SUMMARY"
     static final String EXTRA_XML_PREFERENCES = PopupSettingsFragment::class.java.getName() +
             ".EXTRA_XML_PREFERENCES"
 
@@ -51,7 +51,7 @@ open class PopupSettingsFragment : AppCompatDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle) {
         super.onActivityCreated(savedInstanceState)
         if (savedInstanceState == null) {
-            Fragment fragment = Fragment.instantiate(getActivity(),
+            val fragment = Fragment.instantiate(getActivity(),
                     PreferenceFragment::class.java.getName(), getArguments())
             getChildFragmentManager()
                     .beginTransaction()
@@ -64,7 +64,7 @@ open class PopupSettingsFragment : AppCompatDialogFragment() {
 
         override fun onCreatePreferences(bundle: Bundle, s: String) {
             addPreferencesFromResource(R.xml.preferences_category)
-            Preference category = findPreference(getString(R.string.pref_category))
+            val category = findPreference(getString(R.string.pref_category))
             int summary, title
             if ((title = getArguments().getInt(EXTRA_TITLE, 0)) != 0) {
                 category.setTitle(title)
@@ -82,8 +82,7 @@ open class PopupSettingsFragment : AppCompatDialogFragment() {
     }
 
     open class BottomSheetDialog : com.google.android.material.bottomsheet.BottomSheetDialog() {
-        constructor(context: Context, theme: Int) {
-            super(context, theme)
+        constructor(context: Context, theme: Int) : super(context, theme) {
         }
 
         protected override fun onCreate(savedInstanceState: Bundle) {

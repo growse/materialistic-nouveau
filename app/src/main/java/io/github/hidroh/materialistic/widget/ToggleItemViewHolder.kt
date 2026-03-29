@@ -26,14 +26,12 @@ open class ToggleItemViewHolder : ItemRecyclerViewAdapter.ItemViewHolder() {
     var mToggle: TextView? = null
     var mLevel: View? = null
 
-    constructor(itemView: View) {
-        super(itemView)
+    constructor(itemView: View) : super(itemView) {
         mToggleButton = itemView.findViewById(R.id.button_toggle)
         mToggle = (TextView) itemView.findViewById(R.id.toggle)
         mLevel = itemView.findViewById(R.id.level)
     }
 
-    constructor(itemView: View, payload: Any) {
-        super(itemView, payload)
+    constructor(itemView: View, payload: Any) : super(itemView, payload) {
     }
 }

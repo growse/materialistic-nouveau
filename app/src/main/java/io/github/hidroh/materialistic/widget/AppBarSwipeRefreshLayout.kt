@@ -32,12 +32,10 @@ import io.github.hidroh.materialistic.R
 open class AppBarSwipeRefreshLayout : SwipeRefreshLayout(), AppBarLayout.OnOffsetChangedListener {
     private var mAppBar: AppBarLayout? = null
 
-    constructor(context: Context) {
-        super(context)
+    constructor(context: Context) : super(context) {
     }
 
-    constructor(context: Context, attrs: AttributeSet) {
-        super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
     }
 
     protected override fun onAttachedToWindow() {

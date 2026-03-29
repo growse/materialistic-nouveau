@@ -64,7 +64,7 @@ open class ThemePreference : Preference() {
     private var mSelectedTheme: String? = null
 
     fun getTheme(value: String, isTranslucent: Boolean): ThemeSpec {
-        ThemeSpec themeSpec = VALUES.get(VALUES.containsKey(value) ? value : LIGHT)
+        val themeSpec = VALUES.get(VALUES.containsKey(value) ? value : LIGHT)
         return isTranslucent ? themeSpec.getTranslucent() : themeSpec
     }
 
@@ -73,8 +73,7 @@ open class ThemePreference : Preference() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         setLayoutResource(R.layout.preference_theme)
     }
 
@@ -96,8 +95,8 @@ open class ThemePreference : Preference() {
         holder.itemView.setClickable(false)
         for (int i = 0; i < BUTTONS.size(); i++) {
             final int buttonId = BUTTONS.keyAt(i)
-            final String value = BUTTONS.valueAt(i)
-            View button = holder.findViewById(buttonId)
+            val value = BUTTONS.valueAt(i)
+            val button = holder.findViewById(buttonId)
             button.setClickable(true)
             button.setOnClickListener(v -> {
                 mSelectedTheme = value
@@ -139,8 +138,7 @@ open class ThemePreference : Preference() {
             this(summary, -1)
         }
 
-        constructor(summary: Int, themeOverrides: Int) {
-            super(summary, R.style.AppTheme_Dark, themeOverrides)
+        constructor(summary: Int, themeOverrides: Int) : super(summary, R.style.AppTheme_Dark, themeOverrides) {
         }
 
         override fun getTranslucent(): ThemeSpec {
@@ -157,8 +155,7 @@ open class ThemePreference : Preference() {
             this(summary, -1)
         }
 
-        constructor(summary: Int, themeOverrides: Int) {
-            super(summary, R.style.AppTheme_DayNight, themeOverrides)
+        constructor(summary: Int, themeOverrides: Int) : super(summary, R.style.AppTheme_DayNight, themeOverrides) {
         }
 
         override fun getTranslucent(): ThemeSpec {

@@ -90,7 +90,7 @@ public abstract class ListRecyclerViewAdapter
     }
 
     public final VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        VH holder = create(parent, viewType)
+        val holder = create(parent, viewType)
         if (viewType == VIEW_TYPE_FLAT) {
             holder.flatten()
         }
@@ -98,7 +98,7 @@ public abstract class ListRecyclerViewAdapter
     }
 
     public final void onBindViewHolder(final VH holder, int position) {
-        final T item = getItem(position)
+        val item = getItem(position)
         clearViewHolder(holder)
         if (!isItemAvailable(item)) {
             loadItem(holder.getAdapterPosition())
@@ -142,7 +142,7 @@ public abstract class ListRecyclerViewAdapter
     }
 
     public Bundle saveState() {
-        Bundle savedState = Bundle()
+        val savedState = Bundle()
         savedState.putInt(STATE_LAST_SELECTION_POSITION, mLastSelectedPosition)
         return savedState
     }
@@ -215,7 +215,7 @@ public abstract class ListRecyclerViewAdapter
     protected abstract int getItemCacheMode()
 
     private void openItem(T item) {
-        Intent intent = Intent(mContext, ItemActivity::class.java)
+        val intent = Intent(mContext, ItemActivity::class.java)
                 .putExtra(ItemActivity.EXTRA_CACHE_MODE, getItemCacheMode())
                 .putExtra(ItemActivity.EXTRA_ITEM, item)
                 .putExtra(ItemActivity.EXTRA_OPEN_COMMENTS, true)
@@ -235,8 +235,7 @@ public abstract class ListRecyclerViewAdapter
             fun showMoreOptions(anchor: View)
         }
 
-        constructor(itemView: View) {
-            super(itemView)
+        constructor(itemView: View) : super(itemView) {
             mCardView = (FlatCardView) itemView
             mStoryView = itemView.findViewById(R.id.story_view)
             mCardElevation = itemView.getContext().getResources()

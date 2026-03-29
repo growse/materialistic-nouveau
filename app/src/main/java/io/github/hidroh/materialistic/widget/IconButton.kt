@@ -44,10 +44,9 @@ open class IconButton : AppCompatImageButton() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         setBackgroundResource(AppUtils.getThemedResId(context, R.attr.selectableItemBackgroundBorderless))
-        TypedArray ta = context.getTheme().obtainStyledAttributes(attrs, R.styleable.IconButton, 0, 0)
+        val ta = context.getTheme().obtainStyledAttributes(attrs, R.styleable.IconButton, 0, 0)
         int colorDisabled = ContextCompat.getColor(context,
                 AppUtils.getThemedResId(context, android.R.attr.textColorSecondary))
         int colorDefault = ContextCompat.getColor(context,
@@ -75,7 +74,7 @@ open class IconButton : AppCompatImageButton() {
         if (drawable == null) {
             return null
         }
-        Drawable tintDrawable = DrawableCompat.wrap(mTinted ? drawable.mutate() : drawable)
+        val tintDrawable = DrawableCompat.wrap(mTinted ? drawable.mutate() : drawable)
         DrawableCompat.setTintList(tintDrawable, mColorStateList)
         return tintDrawable
     }

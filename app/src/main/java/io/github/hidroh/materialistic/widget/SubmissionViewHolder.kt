@@ -24,8 +24,7 @@ import io.github.hidroh.materialistic.R
 open class SubmissionViewHolder : ItemRecyclerViewAdapter.ItemViewHolder() {
     var mTitleTextView: TextView? = null
 
-    constructor(itemView: View) {
-        super(itemView)
+    constructor(itemView: View) : super(itemView) {
         mTitleTextView = (android.widget.TextView) itemView.findViewById(R.id.title)
         mCommentButton.setText(R.string.view_story)
     }

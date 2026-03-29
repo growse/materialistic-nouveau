@@ -29,9 +29,8 @@ open class PreferenceHelp : PreferenceGroup() {
     private val mLayoutResId: Int = 0
     private var mTitle: String? = null
 
-    constructor(context: Context, attrs: AttributeSet) {
-        super(context, attrs, R.attr.preferenceHelpStyle)
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PreferenceHelp)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs, R.attr.preferenceHelpStyle) {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.PreferenceHelp)
         try {
             mLayoutResId = a.getResourceId(R.styleable.PreferenceHelp_dialogLayout, 0)
             mTitle = a.getString(R.styleable.PreferenceHelp_dialogTitle)

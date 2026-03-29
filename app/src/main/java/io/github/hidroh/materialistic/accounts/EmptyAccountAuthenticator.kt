@@ -25,8 +25,7 @@ import android.os.Bundle
 
 open class EmptyAccountAuthenticator : AbstractAccountAuthenticator() {
 
-    constructor(context: Context) {
-        super(context)
+    constructor(context: Context) : super(context) {
     }
 
     override fun editProperties(response: AccountAuthenticatorResponse, accountType: String): Bundle {

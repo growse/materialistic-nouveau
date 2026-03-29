@@ -88,11 +88,11 @@ open class AlgoliaClient : ItemManager {
         if (algoliaHits == null) {
             return Item[0]
         }
-        Hit[] hits = algoliaHits.hits
-        Item[] stories = Item[hits == null ? 0 : hits.length]
+        val hits = algoliaHits.hits
+        val stories = Item[hits == null ? 0 : hits.length]
         for (int i = 0; i < stories.length; i++) {
             //noinspection ConstantConditions
-            HackerNewsItem item = HackerNewsItem(
+            val item = HackerNewsItem(
                     Long.parseLong(hits[i].objectID))
             item.rank = i + 1
             stories[i] = item

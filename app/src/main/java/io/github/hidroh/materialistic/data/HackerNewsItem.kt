@@ -272,9 +272,9 @@ open class HackerNewsItem : Item {
 
     override fun getDisplayedTime(context: Context): Spannable {
         if (displayedTime == null) {
-            SpannableStringBuilder builder = SpannableStringBuilder(dead ?
+            val builder = SpannableStringBuilder(dead ?
                     context.getString(R.string.dead_prefix) + " " : "")
-            SpannableString timeSpannable = SpannableString(
+            val timeSpannable = SpannableString(
                     AppUtils.getAbbreviatedTimeSpan(time * 1000))
             if (deleted) {
                 timeSpannable.setSpan(StrikethroughSpan(), 0, timeSpannable.length(),
@@ -319,14 +319,14 @@ open class HackerNewsItem : Item {
 
     @NonNull
     private fun createAuthorSpannable(authorLink: Boolean): SpannableString {
-        SpannableString bySpannable = SpannableString(AUTHOR_SEPARATOR + by)
+        val bySpannable = SpannableString(AUTHOR_SEPARATOR + by)
         if (!authorLink) {
             return bySpannable
         }
         bySpannable.setSpan(StyleSpan(Typeface.BOLD),
                 AUTHOR_SEPARATOR.length(), bySpannable.length(),
                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-        ClickableSpan clickableSpan = ClickableSpan() {
+        val clickableSpan = ClickableSpan() {
             public void onClick(View view) {
                 view.getContext().startActivity(Intent(Intent.ACTION_VIEW)
                         .setData(AppUtils.createUserUri(getBy())))
@@ -359,7 +359,7 @@ open class HackerNewsItem : Item {
         if (kidItems == null) {
             kidItems = HackerNewsItem[kids.length]
             for (int i = 0; i < kids.length; i++) {
-                HackerNewsItem item = HackerNewsItem(kids[i], level + 1)
+                val item = HackerNewsItem(kids[i], level + 1)
                 item.rank = i + 1
                 if (i > 0) {
                     item.previous = kids[i - 1]

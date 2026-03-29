@@ -27,8 +27,7 @@ open class ViewPager : androidx.viewpager.widget.ViewPager() {
         this(context, null)
     }
 
-    constructor(context: Context, attrs: AttributeSet) {
-        super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {

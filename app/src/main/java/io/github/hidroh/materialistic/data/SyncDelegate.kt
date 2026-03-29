@@ -93,7 +93,7 @@ open class SyncDelegate {
         mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = NotificationChannel(DOWNLOADS_CHANNEL_ID,
+            val channel = NotificationChannel(DOWNLOADS_CHANNEL_ID,
                     context.getString(R.string.notification_channel_downloads),
                     NotificationManager.IMPORTANCE_LOW)
             mNotificationManager.createNotificationChannel(channel)
@@ -131,11 +131,11 @@ open class SyncDelegate {
             ((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE))
                     .schedule(builder.build())
         } else {
-            Bundle extras = Bundle(job.toBundle())
+            val extras = Bundle(job.toBundle())
             extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true)
             Account syncAccount
-            AccountManager accountManager = AccountManager.get(context)
-            Account[] accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
+            val accountManager = AccountManager.get(context)
+            val accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)
             if (accounts.length == 0) {
                 syncAccount = Account(SYNC_ACCOUNT_NAME, BuildConfig.APPLICATION_ID)
                 accountManager.addAccountExplicitly(syncAccount, null, null)
@@ -154,7 +154,7 @@ open class SyncDelegate {
         // assume that connection wouldn't change until we finish syncing
         mJob = job
         if (!TextUtils.isEmpty(mJob.id)) {
-            Message message = Message.obtain(mHandler, this::stopSync)
+            val message = Message.obtain(mHandler, this::stopSync)
             message.what = Integer.valueOf(mJob.id)
             mHandler.sendMessageDelayed(message, TIMEOUT_MILLIS)
             mSyncProgress = SyncProgress(mJob)
@@ -165,7 +165,7 @@ open class SyncDelegate {
     }
 
     private fun syncDeferredItems() {
-        Set<String> itemIds = mSharedPreferences.getAll().keySet()
+        val itemIds = mSharedPreferences.getAll().keySet()
         for (itemId in itemIds) {
             scheduleSync(mContext, JobBuilder(mContext, itemId).setNotificationEnabled(false).build())
         }
@@ -209,7 +209,7 @@ open class SyncDelegate {
 
     private fun syncReadability(item: HackerNewsItem) {
         if (mJob.readabilityEnabled && item.isStoryType()) {
-            final String itemId = item.getId()
+            val itemId = item.getId()
             mReadabilityClient.parse(itemId, item.getRawUrl(), content -> notifyReadability())
         }
     }
@@ -445,7 +445,7 @@ open class SyncDelegate {
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         fun toPersistableBundle(): PersistableBundle {
-            PersistableBundle bundle = PersistableBundle()
+            val bundle = PersistableBundle()
             bundle.putString(EXTRA_ID, id)
             bundle.putInt(EXTRA_CONNECTION_ENABLED, connectionEnabled ? 1 : 0)
             bundle.putInt(EXTRA_READABILITY_ENABLED, readabilityEnabled ? 1 : 0)
@@ -456,7 +456,7 @@ open class SyncDelegate {
         }
 
         fun toBundle(): Bundle {
-            Bundle bundle = Bundle()
+            val bundle = Bundle()
             bundle.putString(EXTRA_ID, id)
             bundle.putBoolean(EXTRA_CONNECTION_ENABLED, connectionEnabled)
             bundle.putBoolean(EXTRA_READABILITY_ENABLED, readabilityEnabled)

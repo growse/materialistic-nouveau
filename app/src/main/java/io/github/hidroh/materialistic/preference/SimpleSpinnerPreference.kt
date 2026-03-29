@@ -34,8 +34,7 @@ open class SimpleSpinnerPreference : SpinnerPreference() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         mLayoutInflater = LayoutInflater.from(getContext())
     }
 
@@ -45,7 +44,7 @@ open class SimpleSpinnerPreference : SpinnerPreference() {
     }
 
     protected override fun bindDropDownView(position: Int, view: View) {
-        TextView textView = (TextView) view.findViewById(android.R.id.text1)
+        val textView = (TextView) view.findViewById(android.R.id.text1)
         textView.setText(mEntries[position])
     }
 }

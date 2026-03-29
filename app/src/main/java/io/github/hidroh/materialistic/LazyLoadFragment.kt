@@ -23,8 +23,8 @@ import android.os.Bundle
  * Base fragment that controls load timing depends on WIFI and visibility
  */
 abstract class LazyLoadFragment : BaseFragment() {
-    const val EXTRA_EAGER_LOAD: String = LazyLoadFragment.class.getName() + ".EXTRA_EAGER_LOAD"
-    const val EXTRA_RETAIN_INSTANCE: String = WebFragment.class.getName() + ".EXTRA_RETAIN_INSTANCE"
+    val EXTRA_EAGER_LOAD: String = LazyLoadFragment::class.java.name + ".EXTRA_EAGER_LOAD"
+    val EXTRA_RETAIN_INSTANCE: String = WebFragment::class.java.name + ".EXTRA_RETAIN_INSTANCE"
     private const val STATE_EAGER_LOAD: String = "state:eagerLoad"
     private const val STATE_LOADED: String = "state:loaded"
     private var mActivityCreated: boolean mEagerLoad, mLoaded,? = null

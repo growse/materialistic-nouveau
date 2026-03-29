@@ -57,7 +57,7 @@ open class CommentItemDecoration : RecyclerView.ItemDecoration() {
             return
         }
         for (int i = 0; i < parent.getChildCount(); i++) {
-            View child = parent.getChildAt(i)
+            val child = parent.getChildAt(i)
             int level = parent.getChildViewHolder(child).getItemViewType()
             for (int j = 0; j < level; j++) {
                 int left = mHorizontalMargin + j * mLevelIndicatorWidth + mLevelIndicatorWidth / 2

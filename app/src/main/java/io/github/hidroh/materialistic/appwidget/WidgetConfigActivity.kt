@@ -43,7 +43,7 @@ open class WidgetConfigActivity : InjectableActivity() {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_widget_config)
         if (savedInstanceState == null) {
-            Bundle args = Bundle()
+            val args = Bundle()
             args.putInt(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId)
             getSupportFragmentManager()
                     .beginTransaction()
@@ -95,7 +95,7 @@ open class WidgetConfigActivity : InjectableActivity() {
         }
 
         private fun setFilterQuery() {
-            String key = getString(R.string.pref_widget_query)
+            val key = getString(R.string.pref_widget_query)
             getPreferenceManager().findPreference(key)
                     .setSummary(getPreferenceManager().getSharedPreferences()
                             .getString(key, null))

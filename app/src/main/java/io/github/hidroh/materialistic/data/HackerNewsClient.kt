@@ -217,9 +217,9 @@ open class HackerNewsClient : ItemManager, UserManager {
         if (ids == null) {
             return null
         }
-        HackerNewsItem[] items = HackerNewsItem[ids.length]
+        val items = HackerNewsItem[ids.length]
         for (int i = 0; i < items.length; i++) {
-            HackerNewsItem item = HackerNewsItem(ids[i])
+            val item = HackerNewsItem(ids[i])
             item.rank = i + 1
             items[i] = item
         }

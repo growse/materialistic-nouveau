@@ -136,7 +136,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
                 if (direction == ItemTouchHelper.LEFT) {
                     dismiss(viewHolder.itemView, viewHolder.getAdapterPosition())
                 } else {
-                    Favorite item = getItem(viewHolder.getAdapterPosition())
+                    val item = getItem(viewHolder.getAdapterPosition())
                     if (item != null) {
                         mSyncScheduler.scheduleSync(mContext, item.getId())
                     }
@@ -165,7 +165,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
     }
 
     protected void bindItem(final ItemViewHolder holder, int position) {
-        final Favorite favorite = getItem(holder.getAdapterPosition())
+        val favorite = getItem(holder.getAdapterPosition())
         holder.setOnLongClickListener(v -> {
             if (mActionModeDelegate.startActionMode(mActionModeCallback)) {
                 toggle(favorite.getId(), holder.getAdapterPosition())
@@ -208,7 +208,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
             return
         }
         if (!mSelected.isEmpty()) { // has pending removals, notify removed
-            List<Integer> positions = ArrayList<>(mSelected.keySet())
+            val positions = ArrayList<>(mSelected.keySet())
             Collections.sort(positions)
             mSelected.clear()
             for (int i = positions.size() - 1; i >= 0; i--) {
@@ -236,7 +236,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
 
     @Synthetic
     void dismiss(View view, final int position) {
-        final Favorite item = getItem(position)
+        val item = getItem(position)
         mSelected.put(position, item.getId())
         mFavoriteManager.remove(mContext, mSelected.values())
         Snackbar.make(view, R.string.toast_removed, Snackbar.LENGTH_LONG)
@@ -322,8 +322,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
         private val mDeleteColor: Int = 0
         private val mRefreshColor: Int = 0
 
-        constructor(context: Context) {
-            super(context)
+        constructor(context: Context) : super(context) {
             mDeleteText = context.getString(R.string.delete)
             mRefreshText = context.getString(R.string.refresh)
             mDeleteColor = ContextCompat.getColor(context, R.color.red500)

@@ -34,14 +34,14 @@ import io.github.hidroh.materialistic.widget.SnappyLinearLayoutManager
 import io.github.hidroh.materialistic.widget.ThreadPreviewRecyclerViewAdapter
 
 open class ThreadPreviewActivity : InjectableActivity() {
-    const val EXTRA_ITEM: String = ThreadPreviewActivity.class.getName() + ".EXTRA_ITEM"
+    val EXTRA_ITEM: String = ThreadPreviewActivity::class.java.name + ".EXTRA_ITEM"
 
     @Inject @Named(ActivityModule.HN) var mItemManager: ItemManager? = null
     @Inject var mKeyDelegate: KeyDelegate? = null
 
     protected override fun onCreate(savedInstanceState: Bundle) {
         super.onCreate(savedInstanceState)
-        Item item = getIntent().getParcelableExtra(EXTRA_ITEM)
+        val item = getIntent().getParcelableExtra(EXTRA_ITEM)
         if (item == null) {
             finish()
             return
@@ -52,7 +52,7 @@ open class ThreadPreviewActivity : InjectableActivity() {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP)
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view)
+        val recyclerView = (RecyclerView) findViewById(R.id.recycler_view)
         recyclerView.setLayoutManager(SnappyLinearLayoutManager(this, false))
         recyclerView.addItemDecoration(CommentItemDecoration(this))
         recyclerView.setAdapter(ThreadPreviewRecyclerViewAdapter(mItemManager, item))

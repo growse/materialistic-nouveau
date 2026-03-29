@@ -65,13 +65,13 @@ public class FavoriteFragment extends BaseListFragment
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_favorite, container, false)
+        val view = inflater.inflate(R.layout.fragment_favorite, container, false)
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view)
         mEmptySearchView = view.findViewById(R.id.empty_search)
         mEmptyView = view.findViewById(R.id.empty)
         mEmptyView.findViewById(R.id.header_card_view)
                 .setOnLongClickListener(v -> {
-                    View bookmark = mEmptyView.findViewById(R.id.bookmarked)
+                    val bookmark = mEmptyView.findViewById(R.id.bookmarked)
                     bookmark.setVisibility(bookmark.getVisibility() == View.VISIBLE ?
                                     View.INVISIBLE : View.VISIBLE)
                     return true
@@ -198,7 +198,7 @@ public class FavoriteFragment extends BaseListFragment
     }
 
     private void createSearchView(MenuItem menuSearch) {
-        final SearchView searchView = (SearchView) mActionViewResolver.getActionView(menuSearch)
+        val searchView = (SearchView) mActionViewResolver.getActionView(menuSearch)
         searchView.setQueryHint(getString(R.string.hint_search_saved_stories))
         searchView.setSearchableInfo(((SearchManager) getActivity()
                 .getSystemService(Context.SEARCH_SERVICE))

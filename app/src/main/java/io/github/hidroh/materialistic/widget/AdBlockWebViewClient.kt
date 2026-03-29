@@ -60,7 +60,7 @@ open class AdBlockWebViewClient : WebViewClient() {
             return super.shouldInterceptRequest(view, request)
         }
         boolean ad
-        String url = request.getUrl().toString()
+        val url = request.getUrl().toString()
         if (!mLoadedUrls.containsKey(url)) {
             ad = AdBlocker.isAd(url)
             mLoadedUrls.put(url, ad)

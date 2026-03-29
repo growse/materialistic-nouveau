@@ -85,7 +85,7 @@ public class SinglePageItemRecyclerViewAdapter
             }
 
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                Item item = getItem(viewHolder.getAdapterPosition())
+                val item = getItem(viewHolder.getAdapterPosition())
                 if (item == null || item.getKidCount() == 0) {
                     return 0
                 }
@@ -94,7 +94,7 @@ public class SinglePageItemRecyclerViewAdapter
 
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition()
-                Item item = getItem(position)
+                val item = getItem(position)
                 if (item != null) {
                     notifyItemChanged(position)
                     toggleKids(item)
@@ -127,7 +127,7 @@ public class SinglePageItemRecyclerViewAdapter
         if (viewType == VIEW_TYPE_FOOTER) {
             return ToggleItemViewHolder(mLayoutInflater.inflate(R.layout.item_footer, parent, false), null)
         }
-        final ToggleItemViewHolder holder =
+        val holder = 
                 ToggleItemViewHolder(mLayoutInflater.inflate(R.layout.item_comment, parent, false))
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
                 holder.itemView.getLayoutParams()
@@ -138,7 +138,7 @@ public class SinglePageItemRecyclerViewAdapter
 
     public void onBindViewHolder(ToggleItemViewHolder holder, int position, List<Object> payloads) {
         if (payloads.contains(TOGGLE)) {
-            Item item = getItem(position)
+            val item = getItem(position)
             if (item != null) {
                 bindToggle(holder, item, mState.isExpanded(item))
             }
@@ -166,7 +166,7 @@ public class SinglePageItemRecyclerViewAdapter
     }
 
     public int getItemViewType(int position) {
-        Item item = getItem(position)
+        val item = getItem(position)
         if (item == null) { // footer
             return VIEW_TYPE_FOOTER
         }
@@ -187,7 +187,7 @@ public class SinglePageItemRecyclerViewAdapter
         if (position < 0) {
             return
         }
-        Item item = getItem(position)
+        val item = getItem(position)
         if (item == null) {
             return
         }
@@ -362,7 +362,7 @@ public class SinglePageItemRecyclerViewAdapter
         @SuppressWarnings("unchecked")
         @Synthetic
         constructor(source: Parcel) {
-            ArrayList<Item> savedList = source.readArrayList(Item::class.java.getClassLoader())
+            val savedList = source.readArrayList(Item::class.java.getClassLoader())
             addAll(0, savedList)
             expanded.addAll(source.createStringArrayList())
         }

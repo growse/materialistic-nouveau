@@ -34,7 +34,7 @@ open class LauncherActivity : Activity() {
         map.put(getString(R.string.pref_launch_screen_value_show), ShowActivity::class.java)
         map.put(getString(R.string.pref_launch_screen_value_jobs), JobsActivity::class.java)
         map.put(getString(R.string.pref_launch_screen_value_saved), FavoriteActivity::class.java)
-        String launchScreen = Preferences.getLaunchScreen(this)
+        val launchScreen = Preferences.getLaunchScreen(this)
         startActivity(Intent(this, map.containsKey(launchScreen) ?
                 map.get(launchScreen) : ListActivity::class.java))
         finish()

@@ -84,7 +84,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
             ((Injectable) mContext).inject(this)
         }
         mLayoutInflater = AppUtils.createLayoutInflater(mContext)
-        TypedArray ta = mContext.obtainStyledAttributes(new int[]{
+        val ta = mContext.obtainStyledAttributes(new int[]{
                 android.R.attr.textColorTertiary,
                 android.R.attr.textColorSecondary,
                 R.attr.colorCardBackground,
@@ -98,7 +98,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     }
 
     public void onBindViewHolder(final VH holder, int position) {
-        final Item item = getItem(position)
+        val item = getItem(position)
         if (item == null) {
             return
         }
@@ -111,7 +111,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     }
 
     public long getItemId(int position) {
-        Item item = getItem(position)
+        val item = getItem(position)
         return item != null ? item.getLongId() : RecyclerView.NO_ID
     }
 
@@ -150,7 +150,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         decorateDead(holder, item)
         holder.mContentTextView.setLineSpacing(0f, mLineHeight)
         AppUtils.setTextWithLinks(holder.mContentTextView, item.getDisplayedText())
-        Integer lineCount = mLineCounted.get(item.getId())
+        val lineCount = mLineCounted.get(item.getId())
         if (lineCount != null && lineCount > 0) {
             toggleCollapsibleContent(holder, item, lineCount)
         } else {
@@ -278,8 +278,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         var mMoreButton: View? = null
         var mContentView: View? = null
 
-        constructor(itemView: View) {
-            super(itemView)
+        constructor(itemView: View) : super(itemView) {
             mPostedTextView = (TextView) itemView.findViewById(R.id.posted)
             mPostedTextView.setMovementMethod(LinkMovementMethod.getInstance())
             mContentTextView = (TextView) itemView.findViewById(R.id.text)
@@ -290,8 +289,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
             mContentView = itemView.findViewById(R.id.content)
         }
 
-        constructor(itemView: View, payload: Any) {
-            super(itemView)
+        constructor(itemView: View, payload: Any) : super(itemView) {
             mIsFooter = true
         }
 

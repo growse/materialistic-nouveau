@@ -36,10 +36,9 @@ open class TintableTextView : AppCompatTextView() {
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         mTextColor = getTextColor(context, attrs)
-        TypedArray ta = context.getTheme().obtainStyledAttributes(attrs,
+        val ta = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.TintableTextView, 0, 0)
         setCompoundDrawablesWithIntrinsicBounds(
                 ta.getDrawable(R.styleable.TintableTextView_iconStart),
@@ -56,21 +55,21 @@ open class TintableTextView : AppCompatTextView() {
     override fun setTextColor(color: Int) {
         mTextColor = color
         super.setTextColor(color)
-        Drawable[] drawables = getCompoundDrawables()
+        val drawables = getCompoundDrawables()
         setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3])
     }
 
     private fun getTextColor(context: Context, attrs: AttributeSet): Int {
         int defaultTextColor = ContextCompat.getColor(getContext(),
                 AppUtils.getThemedResId(getContext(), android.R.attr.textColorTertiary))
-        TypedArray ta = context.obtainStyledAttributes(attrs,
+        val ta = context.obtainStyledAttributes(attrs,
                 new int[]{android.R.attr.textAppearance, android.R.attr.textColor})
         int ap = ta.getResourceId(0, 0)
         int textColor
         if (ap == 0) {
             textColor = ta.getColor(1, defaultTextColor)
         } else {
-            TypedArray tap = context.obtainStyledAttributes(ap, new int[]{android.R.attr.textColor})
+            val tap = context.obtainStyledAttributes(ap, new int[]{android.R.attr.textColor})
             textColor = tap.getColor(0, defaultTextColor)
             tap.recycle()
         }

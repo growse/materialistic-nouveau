@@ -83,8 +83,7 @@ open class NavFloatingActionButton : FloatingActionButton(), ViewTreeObserver.On
         this(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) {
-        super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         bindNavigationPad()
         mVibrationEnabled = Preferences.navigationVibrationEnabled(context)
         if (!isInEditMode()) {
@@ -118,7 +117,7 @@ open class NavFloatingActionButton : FloatingActionButton(), ViewTreeObserver.On
 
     @Synthetic
     fun bindNavigationPad() {
-        GestureDetectorCompat detectorCompat = GestureDetectorCompat(getContext(),
+        val detectorCompat = GestureDetectorCompat(getContext(),
                 GestureDetector.SimpleOnGestureListener() {
                     public boolean onDown(MotionEvent e) {
                         return mNavigable != null
@@ -250,7 +249,7 @@ open class NavFloatingActionButton : FloatingActionButton(), ViewTreeObserver.On
     }
 
     private fun getDisplayMetrics(): DisplayMetrics {
-        DisplayMetrics metrics = DisplayMetrics()
+        val metrics = DisplayMetrics()
         ((WindowManager) getContext().getSystemService(Activity.WINDOW_SERVICE))
                 .getDefaultDisplay().getMetrics(metrics)
         return metrics
@@ -259,7 +258,7 @@ open class NavFloatingActionButton : FloatingActionButton(), ViewTreeObserver.On
     private fun getPreferences(): SharedPreferences {
         if (mPreferences == null) {
             mPreferences = getSharedPreferences(getContext())
-            DisplayMetrics metrics = getDisplayMetrics()
+            val metrics = getDisplayMetrics()
             mPreferenceX = String.format(Locale.US, PREFERENCES_FAB_X,
                     getContext().getClass().getName(), metrics.widthPixels, metrics.heightPixels)
             mPreferenceY = String.format(Locale.US, PREFERENCES_FAB_Y,

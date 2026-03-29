@@ -32,8 +32,7 @@ import io.github.hidroh.materialistic.data.ItemManager
 open class SubmissionRecyclerViewAdapter : ItemRecyclerViewAdapter<SubmissionViewHolder>() {
     private var mItems: Array<Item>? = null
 
-    constructor(itemManager: ItemManager, items: Array<Item>) {
-        super(itemManager)
+    constructor(itemManager: ItemManager, items: Array<Item>) : super(itemManager) {
         mItems = items
     }
 

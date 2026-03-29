@@ -31,8 +31,7 @@ open class AsteriskSpan : ReplacementSpan() {
     private val mTextColor: Int = 0
     private val mPadding: Float = 0
 
-    constructor(context: Context) {
-        super()
+    constructor(context: Context) : super() {
         mBackgroundColor = ContextCompat.getColor(context,
                 AppUtils.getThemedResId(context, R.attr.colorAccent))
         mTextColor = ContextCompat.getColor(context, android.R.color.transparent)

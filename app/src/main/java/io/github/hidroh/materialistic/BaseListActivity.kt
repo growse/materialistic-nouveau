@@ -99,7 +99,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE)
         findViewById(R.id.toolbar).setOnClickListener(v -> {
-            Scrollable scrollable = getScrollableList()
+            val scrollable = getScrollableList()
             if (scrollable != null) {
                 scrollable.scrollToTop()
             }
@@ -152,7 +152,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
     protected override fun onPostCreate(savedInstanceState: Bundle) {
         super.onPostCreate(savedInstanceState)
         if (!Preferences.isReleaseNotesSeen(this)) {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.content_frame),
+            val snackbar = Snackbar.make(findViewById(R.id.content_frame),
                     R.string.hint_update, Snackbar.LENGTH_INDEFINITE)
             snackbar.setAction(R.string.title_activity_release,
                     v -> {
@@ -181,9 +181,9 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
         }
         if (isSearchable()) {
             getMenuInflater().inflate(R.menu.menu_search, menu)
-            MenuItem menuSearch = menu.findItem(R.id.menu_search)
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE)
-            SearchView searchView = (SearchView) mActionViewResolver.getActionView(menuSearch)
+            val menuSearch = menu.findItem(R.id.menu_search)
+            val searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE)
+            val searchView = (SearchView) mActionViewResolver.getActionView(menuSearch)
             searchView.setSearchableInfo(searchManager.getSearchableInfo(
                     ComponentName(this, SearchActivity::class.java)))
             searchView.setIconified(true)
@@ -202,13 +202,13 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.getItemId() == R.id.menu_share) {
-            View anchor = findViewById(R.id.menu_share)
+            val anchor = findViewById(R.id.menu_share)
             AppUtils.share(this, mPopupMenu, anchor == null ?
                     findViewById(R.id.toolbar) : anchor, mSelectedItem)
             return true
         }
         if (item.getItemId() == R.id.menu_external) {
-            View anchor = findViewById(R.id.menu_external)
+            val anchor = findViewById(R.id.menu_external)
             AppUtils.openExternal(this, mPopupMenu, anchor == null ?
                     findViewById(R.id.toolbar) : anchor,
                     mSelectedItem, mCustomTabsDelegate.getSession())
@@ -269,7 +269,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
     }
 
     override fun onItemSelected(item: WebItem) {
-        WebItem previousItem = mSelectedItem
+        val previousItem = mSelectedItem
         mSelectedItem = item
         if (mIsMultiPane) {
             if (previousItem != null && item != null &&
@@ -344,7 +344,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
                 mViewPager.getCurrentItem() < 0) {
             return null
         }
-        Fragment item = ((ItemPagerAdapter) mViewPager.getAdapter())
+        val item = ((ItemPagerAdapter) mViewPager.getAdapter())
                 .getItem(mViewPager.getCurrentItem())
         if (item is KeyDelegate.BackInterceptor) {
             return (KeyDelegate.BackInterceptor) item
@@ -357,7 +357,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
         if (mExternalBrowser && mStoryViewMode != Preferences.StoryViewMode.Comment) {
             AppUtils.openWebUrlExternal(this, mSelectedItem, mSelectedItem.getUrl(), mCustomTabsDelegate.getSession())
         } else {
-            Intent intent = Intent(this, ItemActivity::class.java)
+            val intent = Intent(this, ItemActivity::class.java)
                     .putExtra(ItemActivity.EXTRA_CACHE_MODE, getItemCacheMode())
                     .putExtra(ItemActivity.EXTRA_ITEM, mSelectedItem)
             startActivity(mMultiWindowEnabled ? AppUtils.multiWindowIntent(this, intent) : intent)
@@ -403,7 +403,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
         // fragment manager always restores view pager fragments,
         // even when view pager no longer exists (e.g. after rotation),
         // so we have to explicitly remove those with view pager ID
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+        val transaction = getSupportFragmentManager().beginTransaction()
         //noinspection Convert2streamapi
         for (fragment in getSupportFragmentManager().getFragments()) {
             if (fragment != null && fragment.getId() == R.id.content) {

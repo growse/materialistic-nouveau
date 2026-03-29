@@ -85,7 +85,7 @@ open class CustomTabsDelegate {
         if (mClient == null) {
             return false
         }
-        CustomTabsSession session = getSession()
+        val session = getSession()
         return session != null && session.mayLaunchUrl(uri, extras, otherLikelyBundles)
     }
 
@@ -117,8 +117,8 @@ open class CustomTabsDelegate {
 
     @Nullable
     private fun getPackageNameToUse(context: Context): String {
-        List<String> browsersWithCustomTabsSupport = getBrowsersWithCustomTabsSupport(context)
-        String defaultBrowser = getDefaultBrowser(context)
+        val browsersWithCustomTabsSupport = getBrowsersWithCustomTabsSupport(context)
+        val defaultBrowser = getDefaultBrowser(context)
 
         for (browser in browsersWithCustomTabsSupport) {
             if (TextUtils.equals(browser, defaultBrowser)) {
@@ -141,9 +141,9 @@ open class CustomTabsDelegate {
      */
     @Nullable
     private fun getDefaultBrowser(context: Context): String {
-        Intent browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://example.com/"))
-        PackageManager pm = context.getPackageManager()
-        ResolveInfo resolveInfo = pm.resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY)
+        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://example.com/"))
+        val pm = context.getPackageManager()
+        val resolveInfo = pm.resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY)
 
         if (resolveInfo == null) { // If no default browser could be found
             return null
@@ -159,9 +159,9 @@ open class CustomTabsDelegate {
      * @return List of all Packages with custom Tabs support
      */
     private fun getBrowsersWithCustomTabsSupport(context: Context): List<String> {
-        List<String> packagesSupportingCustomTabs = ArrayList<>()
-        PackageManager pm = context.getPackageManager()
-        List<ResolveInfo> resolvedActivityList = pm.queryIntentActivities(
+        val packagesSupportingCustomTabs = ArrayList<>()
+        val pm = context.getPackageManager()
+        val resolvedActivityList = pm.queryIntentActivities(
                 Intent(Intent.ACTION_VIEW, Uri.parse("http://www.example.com")), 0)
         //noinspection Convert2streamapi
         for (info in resolvedActivityList) {
@@ -184,14 +184,14 @@ open class CustomTabsDelegate {
         }
 
         override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
-            CustomTabsDelegate delegate = mDelegate.get()
+            val delegate = mDelegate.get()
             if (delegate != null) {
                 delegate.onServiceConnected(client)
             }
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            CustomTabsDelegate delegate = mDelegate.get()
+            val delegate = mDelegate.get()
             if (delegate != null) {
                 delegate.onServiceDisconnected()
             }

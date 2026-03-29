@@ -45,7 +45,7 @@ open class MenuTintDelegate {
      */
     fun onOptionsMenuCreated(menu: Menu) {
         for (int i = 0; i < menu.size(); i++) {
-            Drawable drawable = menu.getItem(i).getIcon()
+            val drawable = menu.getItem(i).getIcon()
             if (drawable == null) {
                 continue
             }
@@ -57,7 +57,7 @@ open class MenuTintDelegate {
     @SuppressWarnings("unused")
     fun setIcon(item: MenuItem, icon: Int) {
         item.setIcon(icon)
-        Drawable drawable = item.getIcon()
+        val drawable = item.getIcon()
         drawable = DrawableCompat.wrap(drawable)
         DrawableCompat.setTint(drawable, mTextColorPrimary)
     }

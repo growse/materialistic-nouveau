@@ -47,8 +47,8 @@ open class ItemSyncJobService : JobService() {
     }
 
     override fun onStartJob(jobParameters: JobParameters): Boolean {
-        String jobId = String.valueOf(jobParameters.getJobId())
-        SyncDelegate syncDelegate = createSyncDelegate()
+        val jobId = String.valueOf(jobParameters.getJobId())
+        val syncDelegate = createSyncDelegate()
         mSyncDelegates.put(jobId, syncDelegate)
         syncDelegate.subscribe(token -> {
             if (TextUtils.equals(jobId, token)) {
@@ -61,7 +61,7 @@ open class ItemSyncJobService : JobService() {
     }
 
     override fun onStopJob(jobParameters: JobParameters): Boolean {
-        String key = String.valueOf(jobParameters.getJobId())
+        val key = String.valueOf(jobParameters.getJobId())
         if (mSyncDelegates.containsKey(key)) {
             mSyncDelegates.remove(key).stopSync()
         }

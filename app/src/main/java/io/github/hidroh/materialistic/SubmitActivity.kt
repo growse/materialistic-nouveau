@@ -81,7 +81,7 @@ open class SubmitActivity : InjectableActivity() {
         mContentEditText.setText(text)
         if (TextUtils.isEmpty(subject)) {
             if (isUrl(text)) {
-                WebView webView = WebView(this)
+                val webView = WebView(this)
                 webView.setWebChromeClient(WebChromeClient() {
                     public void onReceivedTitle(WebView view, String title) {
                         if (mTitleEditText.length() == 0) {
@@ -127,7 +127,7 @@ open class SubmitActivity : InjectableActivity() {
             return true
         }
         if (item.getItemId() == R.id.menu_guidelines) {
-            WebView webView = WebView(this)
+            val webView = WebView(this)
             webView.loadUrl(HN_GUIDELINES_URL)
             mAlertDialogBuilder
                     .init(this)
@@ -181,7 +181,7 @@ open class SubmitActivity : InjectableActivity() {
         } else if (successful) {
             Toast.makeText(this, R.string.submit_successful, Toast.LENGTH_SHORT).show()
             if (!isFinishing()) {
-                Intent intent = Intent(this, NewActivity::class.java)
+                val intent = Intent(this, NewActivity::class.java)
                 intent.putExtra(NewActivity.EXTRA_REFRESH, true)
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 startActivity(intent); // TODO should go to profile instead?
@@ -210,7 +210,7 @@ open class SubmitActivity : InjectableActivity() {
     }
 
     private fun extractUrl(text: String) {
-        Matcher matcher = Pattern.compile(REGEX_FUZZY_URL).matcher(text)
+        val matcher = Pattern.compile(REGEX_FUZZY_URL).matcher(text)
         if (matcher.find() && matcher.groupCount() >= 3) { // group 1: title, group 2: url, group 3: scheme
             mTitleEditText.setText(trimTitle(matcher.group(1).trim()))
             mContentEditText.setText(matcher.group(2))

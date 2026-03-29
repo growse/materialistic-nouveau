@@ -32,8 +32,7 @@ open class SnappyLinearLayoutManager : LinearLayoutManager() {
 
     private val mExtraSpace: Int = 0
 
-    constructor(context: Context, preload: Boolean) {
-        super(context)
+    constructor(context: Context, preload: Boolean) : super(context) {
         mExtraSpace = preload ? AppUtils.getDisplayHeight(context) : 0
     }
 

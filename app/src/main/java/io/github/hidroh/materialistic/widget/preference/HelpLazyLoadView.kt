@@ -26,14 +26,13 @@ import io.github.hidroh.materialistic.Preferences
 import io.github.hidroh.materialistic.R
 
 open class HelpLazyLoadView : ScrollView() {
-    constructor(context: Context, attrs: AttributeSet) {
-        super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         addView(LayoutInflater.from(context).inflate(R.layout.include_help_lazy_load, this, false))
     }
 
     protected override fun onFinishInflate() {
         super.onFinishInflate()
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout)
+        val tabLayout = (TabLayout) findViewById(R.id.tab_layout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.comments))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.article))
         Preferences.StoryViewMode defaultView = Preferences.getDefaultStoryView(getContext())

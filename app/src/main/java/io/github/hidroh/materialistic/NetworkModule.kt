@@ -62,31 +62,31 @@ open class NetworkModule {
                     private SocketFactory mDefaultFactory = SocketFactory.getDefault()
 
                     public Socket createSocket() throws IOException {
-                        Socket socket = mDefaultFactory.createSocket()
+                        val socket = mDefaultFactory.createSocket()
                         TrafficStats.setThreadStatsTag(1)
                         return socket
                     }
 
                     public Socket createSocket(String host, int port) throws IOException {
-                        Socket socket = mDefaultFactory.createSocket(host, port)
+                        val socket = mDefaultFactory.createSocket(host, port)
                         TrafficStats.setThreadStatsTag(1)
                         return socket
                     }
 
                     public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
-                        Socket socket = mDefaultFactory.createSocket(host, port, localHost, localPort)
+                        val socket = mDefaultFactory.createSocket(host, port, localHost, localPort)
                         TrafficStats.setThreadStatsTag(1)
                         return socket
                     }
 
                     public Socket createSocket(InetAddress host, int port) throws IOException {
-                        Socket socket = mDefaultFactory.createSocket(host, port)
+                        val socket = mDefaultFactory.createSocket(host, port)
                         TrafficStats.setThreadStatsTag(1)
                         return socket
                     }
 
                     public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
-                        Socket socket = mDefaultFactory.createSocket(address, port, localAddress, localPort)
+                        val socket = mDefaultFactory.createSocket(address, port, localAddress, localPort)
                         TrafficStats.setThreadStatsTag(1)
                         return socket
                     }
@@ -122,7 +122,7 @@ open class NetworkModule {
         }
 
         override fun intercept(chain: Chain): Response {
-            Request request = chain.request()
+            val request = chain.request()
             boolean forceCache = CACHE_ENABLED_HOSTS.containsKey(request.url().host()) &&
                     !AppUtils.hasConnection(mContext)
             return chain.proceed(forceCache ?
@@ -136,8 +136,8 @@ open class NetworkModule {
     open class CacheOverrideNetworkInterceptor : Interceptor {
 
         override fun intercept(chain: Chain): Response {
-            Request request = chain.request()
-            Response response = chain.proceed(request)
+            val request = chain.request()
+            val response = chain.proceed(request)
             if (!ConnectionAwareInterceptor.CACHE_ENABLED_HOSTS
                     .containsKey(request.url().host())) {
                 return response

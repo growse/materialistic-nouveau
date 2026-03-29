@@ -46,8 +46,8 @@ import rx.Scheduler
 
 open class ListFragment : BaseListFragment() {
 
-    const val EXTRA_ITEM_MANAGER: String = ListFragment.class.getName() + ".EXTRA_ITEM_MANAGER"
-    const val EXTRA_FILTER: String = ListFragment.class.getName() + ".EXTRA_FILTER"
+    val EXTRA_ITEM_MANAGER: String = ListFragment::class.java.name + ".EXTRA_ITEM_MANAGER"
+    val EXTRA_FILTER: String = ListFragment::class.java.name + ".EXTRA_FILTER"
     private const val STATE_FILTER: String = "state:filter"
     private const val STATE_CACHE_MODE: String = "state:cacheMode"
     private val mPreferenceObservable: Preferences.Observable = new Preferences.Observable()
@@ -106,7 +106,7 @@ open class ListFragment : BaseListFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle): View {
-        final View view = inflater.inflate(R.layout.fragment_list, container, false)
+        val view = inflater.inflate(R.layout.fragment_list, container, false)
         mErrorView = view.findViewById(R.id.empty)
         mEmptyView = view.findViewById(R.id.empty_search)
         mRecyclerView = view.findViewById(R.id.recycler_view)
@@ -128,7 +128,7 @@ open class ListFragment : BaseListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle) {
         super.onActivityCreated(savedInstanceState)
         MaterialisticDatabase.getInstance(getContext()).getLiveData().observe(getViewLifecycleOwner(), mObserver)
-        String managerClassName = getArguments().getString(EXTRA_ITEM_MANAGER)
+        val managerClassName = getArguments().getString(EXTRA_ITEM_MANAGER)
         ItemManager itemManager
         if (TextUtils.equals(managerClassName, AlgoliaClient::class.java.getName())) {
             itemManager = mAlgoliaItemManager
@@ -161,7 +161,7 @@ open class ListFragment : BaseListFragment() {
                         .setAction(R.string.show_me, actionClickListener)
                         .show()
             } else {
-                final Snackbar snackbar = Snackbar.make(mRecyclerView,
+                val snackbar = Snackbar.make(mRecyclerView,
                         getResources().getQuantityString(R.plurals.showing_new_stories,
                                 itemCount, itemCount),
                         Snackbar.LENGTH_INDEFINITE)
