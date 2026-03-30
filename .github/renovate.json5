@@ -7,7 +7,7 @@
   ],
   "assignees": ["growse"],
   "ignoreDeps": ["android"],
-  "forkProcessingEnabled": true,
+  "forkProcessing": "enabled",
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
