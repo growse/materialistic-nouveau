@@ -16,7 +16,6 @@ repos:
       - id: check-merge-conflict
       - id: check-yaml
       - id: check-xml
-      - id: check-toml
       - id: check-added-large-files
       - id: mixed-line-ending
         exclude: project/gradlew.bat
