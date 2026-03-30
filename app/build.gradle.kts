@@ -50,7 +50,7 @@ android {
         isHtmlReport = false
         isXmlReport = false
         isTextReport = true
-        lintConfig = file("${rootProject.rootDir}/lint.xml")
+        lintConfig = rootProject.file("lint.xml")
         isAbortOnError = true
         isExplainIssues = false
         isAbsolutePaths = false
