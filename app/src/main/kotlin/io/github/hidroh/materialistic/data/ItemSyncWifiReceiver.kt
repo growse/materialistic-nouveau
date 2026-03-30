@@ -20,18 +20,16 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.os.Build
 import android.text.TextUtils
-
 import io.github.hidroh.materialistic.AppUtils
 
 open class ItemSyncWifiReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        if (!TextUtils.equals(intent.getAction(), ConnectivityManager.CONNECTIVITY_ACTION)) {
-            return
-        }
-        if (AppUtils.isOnWiFi(context)) {
-            SyncDelegate.scheduleSync(context, SyncDelegate.JobBuilder(context, null).build())
-        }
+  override fun onReceive(context: Context, intent: Intent) {
+    if (!TextUtils.equals(intent.getAction(), ConnectivityManager.CONNECTIVITY_ACTION)) {
+      return
     }
+    if (AppUtils.isOnWiFi(context)) {
+      SyncDelegate.scheduleSync(context, SyncDelegate.JobBuilder(context, null).build())
+    }
+  }
 }

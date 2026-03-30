@@ -26,25 +26,35 @@ import androidx.annotation.NonNull
 import androidx.annotation.VisibleForTesting
 
 /**
- * Simple sync adapter that triggers OkHttp requests so their responses become available in
- * cache for subsequent requests
+ * Simple sync adapter that triggers OkHttp requests so their responses become available in cache
+ * for subsequent requests
  */
 open class ItemSyncAdapter : AbstractThreadedSyncAdapter() {
-    private var mFactory: RestServiceFactory? = null
-    private var mReadabilityClient: ReadabilityClient? = null
+  private var mFactory: RestServiceFactory? = null
+  private var mReadabilityClient: ReadabilityClient? = null
 
-    constructor(context: Context, factory: RestServiceFactory, readabilityClient: ReadabilityClient) : super(context, true) {
-        mFactory = factory
-        mReadabilityClient = readabilityClient
-    }
+  constructor(
+      context: Context,
+      factory: RestServiceFactory,
+      readabilityClient: ReadabilityClient,
+  ) : super(context, true) {
+    mFactory = factory
+    mReadabilityClient = readabilityClient
+  }
 
-    override fun onPerformSync(account: Account, extras: Bundle, authority: String, provider: ContentProviderClient, syncResult: SyncResult) {
-        createSyncDelegate().performSync(SyncDelegate.Job(extras))
-    }
+  override fun onPerformSync(
+      account: Account,
+      extras: Bundle,
+      authority: String,
+      provider: ContentProviderClient,
+      syncResult: SyncResult,
+  ) {
+    createSyncDelegate().performSync(SyncDelegate.Job(extras))
+  }
 
-    @VisibleForTesting
-    @NonNull
-    fun createSyncDelegate(): SyncDelegate {
-        return SyncDelegate(getContext(), mFactory, mReadabilityClient)
-    }
+  @VisibleForTesting
+  @NonNull
+  fun createSyncDelegate(): SyncDelegate {
+    return SyncDelegate(getContext(), mFactory, mReadabilityClient)
+  }
 }

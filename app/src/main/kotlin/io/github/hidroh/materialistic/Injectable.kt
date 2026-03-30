@@ -18,16 +18,15 @@ package io.github.hidroh.materialistic
 
 import dagger.ObjectGraph
 
-/**
- * Interface for context that can be injected with dependencies
- */
+/** Interface for context that can be injected with dependencies */
 interface Injectable {
-    /**
-     * Injects the members of given object, including injectable members
-     * inherited from its supertypes.
-     * @param object object with members to be injected
-     */
-    fun inject(`object`: Any)
+  /**
+   * Injects the members of given object, including injectable members inherited from its
+   * supertypes.
+   *
+   * @param object object with members to be injected
+   */
+  fun inject(`object`: Any)
 
-    fun getApplicationGraph(): ObjectGraph
+  fun getApplicationGraph(): ObjectGraph
 }

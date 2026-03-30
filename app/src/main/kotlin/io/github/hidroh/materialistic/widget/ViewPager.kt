@@ -21,20 +21,19 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 
 open class ViewPager : androidx.viewpager.widget.ViewPager() {
-    private var mSwipeEnabled: Boolean = true
+  private var mSwipeEnabled: Boolean = true
 
-    constructor(context: Context) {
-        this(context, null)
-    }
+  constructor(context: Context) {
+    this(context, null)
+  }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-    }
+  constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
 
-    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-        return mSwipeEnabled && super.onInterceptTouchEvent(ev)
-    }
+  override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+    return mSwipeEnabled && super.onInterceptTouchEvent(ev)
+  }
 
-    fun setSwipeEnabled(enabled: Boolean) {
-        mSwipeEnabled = enabled
-    }
+  fun setSwipeEnabled(enabled: Boolean) {
+    mSwipeEnabled = enabled
+  }
 }

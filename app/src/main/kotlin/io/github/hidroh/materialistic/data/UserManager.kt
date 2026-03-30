@@ -18,16 +18,19 @@ package io.github.hidroh.materialistic.data
 
 import android.content.Context
 import android.os.Parcelable
-import androidx.annotation.NonNull
 
 interface UserManager {
-    fun getUser(username: String, listener: ResponseListener<User>)
+  fun getUser(username: String, listener: ResponseListener<User>)
 
-    interface User : Parcelable {
-        fun getId(): String
-        fun getAbout(): String
-        fun getKarma(): Long
-        fun getCreated(context: Context): String
-        fun getItems(): Array<Item>
-    }
+  interface User : Parcelable {
+    fun getId(): String
+
+    fun getAbout(): String
+
+    fun getKarma(): Long
+
+    fun getCreated(context: Context): String
+
+    fun getItems(): Array<Item>
+  }
 }

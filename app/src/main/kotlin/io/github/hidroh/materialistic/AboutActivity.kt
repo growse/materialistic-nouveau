@@ -18,9 +18,9 @@ package io.github.hidroh.materialistic
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBar
-import android.view.MenuItem
 
 class AboutActivity : InjectableActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +28,8 @@ class AboutActivity : InjectableActivity() {
     setContentView(R.layout.activity_about)
     setSupportActionBar(findViewById(R.id.toolbar))
 
-    supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_HOME or
-        ActionBar.DISPLAY_HOME_AS_UP or ActionBar.DISPLAY_SHOW_TITLE
+    supportActionBar!!.displayOptions =
+        ActionBar.DISPLAY_SHOW_HOME or ActionBar.DISPLAY_HOME_AS_UP or ActionBar.DISPLAY_SHOW_TITLE
 
     var versionName = ""
     var versionCode = 0
@@ -40,7 +40,10 @@ class AboutActivity : InjectableActivity() {
       // do nothing
     }
 
-    setTextWithLinks(R.id.text_application_info, getString(R.string.application_info_text, versionName, versionCode))
+    setTextWithLinks(
+        R.id.text_application_info,
+        getString(R.string.application_info_text, versionName, versionCode),
+    )
     setTextWithLinks(R.id.text_developer_info, getString(R.string.developer_info_text))
     setTextWithLinks(R.id.text_libraries, getString(R.string.libraries_text))
     setTextWithLinks(R.id.text_license, getString(R.string.license_text))

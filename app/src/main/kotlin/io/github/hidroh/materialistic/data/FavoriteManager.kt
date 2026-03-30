@@ -34,24 +34,25 @@ import io.github.hidroh.materialistic.ktx.closeQuietly
 import io.github.hidroh.materialistic.ktx.getUri
 import io.github.hidroh.materialistic.ktx.setChannel
 import io.github.hidroh.materialistic.ktx.toSendIntentChooser
-import okio.Okio
-import rx.Observable
-import rx.Scheduler
-import rx.android.schedulers.AndroidSchedulers
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import okio.Okio
+import rx.Observable
+import rx.Scheduler
+import rx.android.schedulers.AndroidSchedulers
 
-/**
- * Data repository for {@link Favorite}
- */
+/** Data repository for {@link Favorite} */
 @Singleton
-class FavoriteManager @Inject constructor(
+class FavoriteManager
+@Inject
+constructor(
     private val cache: LocalCache,
     @Named(DataModule.IO_THREAD) private val ioScheduler: Scheduler,
-    private val dao: MaterialisticDatabase.SavedStoriesDao) : LocalItemManager<Favorite> {
+    private val dao: MaterialisticDatabase.SavedStoriesDao,
+) : LocalItemManager<Favorite> {
 
   companion object {
     private const val CHANNEL_EXPORT = "export"
@@ -85,11 +86,12 @@ class FavoriteManager @Inject constructor(
 
   override fun getSize() = cursor?.count ?: 0
 
-  override fun getItem(position: Int) = if (cursor?.moveToPosition(position) == true) {
-      cursor!!.favorite
-    } else {
-      null
-    }
+  override fun getItem(position: Int) =
+      if (cursor?.moveToPosition(position) == true) {
+        cursor!!.favorite
+      } else {
+        null
+      }
 
   override fun attach(observer: LocalItemManager.Observer, filter: String?) {
     loader = FavoriteRoomLoader(filter, observer)
@@ -105,8 +107,9 @@ class FavoriteManager @Inject constructor(
 
   /**
    * Exports all favorites matched given query to file
-   * @param context   an instance of {@link android.content.Context}
-   * @param query     query to filter stories to be retrieved
+   *
+   * @param context an instance of {@link android.content.Context}
+   * @param query query to filter stories to be retrieved
    */
   fun export(context: Context, query: String?) {
     val appContext = context.applicationContext
@@ -132,8 +135,9 @@ class FavoriteManager @Inject constructor(
 
   /**
    * Adds given story as favorite
-   * @param context   an instance of {@link android.content.Context}
-   * @param story     story to be added as favorite
+   *
+   * @param context an instance of {@link android.content.Context}
+   * @param story story to be added as favorite
    */
   fun add(context: Context, story: WebItem) {
     Observable.defer { Observable.just(story) }
@@ -147,24 +151,26 @@ class FavoriteManager @Inject constructor(
   }
 
   /**
-   * Clears all stories matched given query from favorites
-   * will be sent upon completion
-   * @param context   an instance of {@link android.content.Context}
-   * @param query     query to filter stories to be cleared
+   * Clears all stories matched given query from favorites will be sent upon completion
+   *
+   * @param context an instance of {@link android.content.Context}
+   * @param query query to filter stories to be cleared
    */
   fun clear(context: Context, query: String?) {
     Observable.defer { Observable.just(query) }
         .map { deleteMultiple(it) }
         .subscribeOn(ioScheduler)
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe { MaterialisticDatabase.getInstance(context).setLiveValue(buildCleared().build()) }
+        .subscribe {
+          MaterialisticDatabase.getInstance(context).setLiveValue(buildCleared().build())
+        }
   }
 
   /**
-   * Removes story with given ID from favorites
-   * upon completion
-   * @param context   an instance of {@link android.content.Context}
-   * @param itemId    story ID to be removed from favorites
+   * Removes story with given ID from favorites upon completion
+   *
+   * @param context an instance of {@link android.content.Context}
+   * @param itemId story ID to be removed from favorites
    */
   fun remove(context: Context, itemId: String?) {
     if (itemId == null) return
@@ -177,10 +183,10 @@ class FavoriteManager @Inject constructor(
   }
 
   /**
-   * Removes multiple stories with given IDs from favorites
-   * be sent upon completion
-   * @param context   an instance of {@link android.content.Context}
-   * @param itemIds   array of story IDs to be removed from favorites
+   * Removes multiple stories with given IDs from favorites be sent upon completion
+   *
+   * @param context an instance of {@link android.content.Context}
+   * @param itemIds array of story IDs to be removed from favorites
    */
   fun remove(context: Context, itemIds: Collection<String>?) {
     if (itemIds.orEmpty().isEmpty()) return
@@ -193,11 +199,14 @@ class FavoriteManager @Inject constructor(
   }
 
   @WorkerThread
-  fun check(itemId: String?) = Observable.just(if (itemId.isNullOrEmpty()) {
-    false
-  } else {
-    cache.isFavorite(itemId)
-  })!!
+  fun check(itemId: String?) =
+      Observable.just(
+          if (itemId.isNullOrEmpty()) {
+            false
+          } else {
+            cache.isFavorite(itemId)
+          }
+      )!!
 
   @WorkerThread
   private fun toFile(context: Context, cursor: Cursor): Uri? {
@@ -228,23 +237,26 @@ class FavoriteManager @Inject constructor(
 
   private fun notifyExportStart(context: Context) {
     NotificationManagerCompat.from(context)
-      .notify(
-        notificationId, createNotificationBuilder(context)
-          .setCategory(NotificationCompat.CATEGORY_PROGRESS)
-          .setProgress(0, 0, true)
-          .setContentIntent(
-            PendingIntent.getActivity(
-              context, 0,
-              Intent(context, FavoriteActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-              when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                else -> PendingIntent.FLAG_UPDATE_CURRENT
-              }
-            )
-          )
-          .build()
-      )
+        .notify(
+            notificationId,
+            createNotificationBuilder(context)
+                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+                .setProgress(0, 0, true)
+                .setContentIntent(
+                    PendingIntent.getActivity(
+                        context,
+                        0,
+                        Intent(context, FavoriteActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                        when {
+                          Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
+                              PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                          else -> PendingIntent.FLAG_UPDATE_CURRENT
+                        },
+                    )
+                )
+                .build(),
+        )
   }
 
   private fun notifyExportDone(context: Context, uri: Uri?) {
@@ -254,21 +266,24 @@ class FavoriteManager @Inject constructor(
       if (uri == null) return
       context.grantUriPermission(context.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
       notify(
-        notificationId, createNotificationBuilder(context)
-          .setPriority(NotificationCompat.PRIORITY_HIGH)
-          .setVibrate(longArrayOf(0L))
-          .setContentText(context.getString(R.string.export_notification))
-          .setContentIntent(
-            PendingIntent.getActivity(
-              context, 0,
-              uri.toSendIntentChooser(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-              when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                else -> PendingIntent.FLAG_UPDATE_CURRENT
-              }
-            )
-          )
-          .build()
+          notificationId,
+          createNotificationBuilder(context)
+              .setPriority(NotificationCompat.PRIORITY_HIGH)
+              .setVibrate(longArrayOf(0L))
+              .setContentText(context.getString(R.string.export_notification))
+              .setContentIntent(
+                  PendingIntent.getActivity(
+                      context,
+                      0,
+                      uri.toSendIntentChooser(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+                      when {
+                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
+                            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                        else -> PendingIntent.FLAG_UPDATE_CURRENT
+                      },
+                  )
+              )
+              .build(),
       )
     }
   }
@@ -282,11 +297,12 @@ class FavoriteManager @Inject constructor(
           .setAutoCancel(true)
 
   @WorkerThread
-  private fun query(filter: String?): android.database.Cursor = if (filter.isNullOrEmpty()) {
-    dao.selectAllToCursor()
-  } else {
-    dao.searchToCursor(filter)
-  }
+  private fun query(filter: String?): android.database.Cursor =
+      if (filter.isNullOrEmpty()) {
+        dao.selectAllToCursor()
+      } else {
+        dao.searchToCursor(filter)
+      }
 
   @WorkerThread
   private fun insert(story: WebItem) {
@@ -307,20 +323,25 @@ class FavoriteManager @Inject constructor(
     return deleted
   }
 
-  /**
-   * A cursor wrapper to retrieve associated {@link Favorite}
-   */
+  /** A cursor wrapper to retrieve associated {@link Favorite} */
   private class Cursor(cursor: android.database.Cursor) : CursorWrapper(cursor) {
     val favorite: Favorite
-      get() = Favorite(
-          getString(getColumnIndexOrThrow(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_ITEM_ID)),
-          getString(getColumnIndexOrThrow(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_URL)),
-          getString(getColumnIndex(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_TITLE)),
-          getString(getColumnIndex(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_TIME)).toLong())
+      get() =
+          Favorite(
+              getString(
+                  getColumnIndexOrThrow(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_ITEM_ID)
+              ),
+              getString(getColumnIndexOrThrow(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_URL)),
+              getString(getColumnIndex(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_TITLE)),
+              getString(getColumnIndex(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_TIME))
+                  .toLong(),
+          )
   }
 
-  inner class FavoriteRoomLoader(private val filter: String?,
-                                 private val observer: LocalItemManager.Observer) {
+  inner class FavoriteRoomLoader(
+      private val filter: String?,
+      private val observer: LocalItemManager.Observer,
+  ) {
     @AnyThread
     fun load() {
       Observable.defer { Observable.just(filter) }

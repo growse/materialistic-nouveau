@@ -21,8 +21,7 @@ import androidx.annotation.WorkerThread
 
 @WorkerThread
 interface LocalCache {
-  @Nullable
-  fun getReadability(itemId: String?): String?
+  @Nullable fun getReadability(itemId: String?): String?
 
   fun putReadability(itemId: String?, content: String?)
 

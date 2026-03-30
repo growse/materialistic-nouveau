@@ -16,11 +16,12 @@
 
 package io.github.hidroh.materialistic.annotation
 
-
-/**
- * Indicates that target's visibility can be relaxed to avoid synthetic methods
- */
+/** Indicates that target's visibility can be relaxed to avoid synthetic methods */
 @Retention(AnnotationRetention.SOURCE)
-@Target(AnnotationTarget.FIELD, AnnotationTarget.CONSTRUCTOR, AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
-annotation class Synthetic {
-}
+@Target(
+    AnnotationTarget.FIELD,
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.CLASS,
+)
+annotation class Synthetic {}

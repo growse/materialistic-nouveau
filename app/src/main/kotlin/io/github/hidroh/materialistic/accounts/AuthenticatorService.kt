@@ -22,15 +22,15 @@ import android.os.IBinder
 import androidx.annotation.Nullable
 
 open class AuthenticatorService : Service() {
-    private var mAuthenticator: AccountAuthenticator? = null
+  private var mAuthenticator: AccountAuthenticator? = null
 
-    override fun onCreate() {
-        super.onCreate()
-        mAuthenticator = AccountAuthenticator(this)
-    }
+  override fun onCreate() {
+    super.onCreate()
+    mAuthenticator = AccountAuthenticator(this)
+  }
 
-    @Nullable
-    override fun onBind(intent: Intent): IBinder {
-        return mAuthenticator.getIBinder()
-    }
+  @Nullable
+  override fun onBind(intent: Intent): IBinder {
+    return mAuthenticator.getIBinder()
+  }
 }

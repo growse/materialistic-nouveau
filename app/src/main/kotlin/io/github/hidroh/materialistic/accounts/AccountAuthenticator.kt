@@ -18,25 +18,29 @@ package io.github.hidroh.materialistic.accounts
 
 import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
-import android.accounts.NetworkErrorException
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-
 import io.github.hidroh.materialistic.LoginActivity
 
 open class AccountAuthenticator : EmptyAccountAuthenticator() {
-    private var mContext: Context? = null
+  private var mContext: Context? = null
 
-    constructor(context: Context) : super(context) {
-        mContext = context
-    }
+  constructor(context: Context) : super(context) {
+    mContext = context
+  }
 
-    override fun addAccount(response: AccountAuthenticatorResponse, accountType: String, authTokenType: String, requiredFeatures: Array<String>, options: Bundle): Bundle {
-        val intent = Intent(mContext, LoginActivity::class.java)
-        intent.putExtra(LoginActivity.EXTRA_ADD_ACCOUNT, true)
-        val bundle = Bundle()
-        bundle.putParcelable(AccountManager.KEY_INTENT, intent)
-        return bundle
-    }
+  override fun addAccount(
+      response: AccountAuthenticatorResponse,
+      accountType: String,
+      authTokenType: String,
+      requiredFeatures: Array<String>,
+      options: Bundle,
+  ): Bundle {
+    val intent = Intent(mContext, LoginActivity::class.java)
+    intent.putExtra(LoginActivity.EXTRA_ADD_ACCOUNT, true)
+    val bundle = Bundle()
+    bundle.putParcelable(AccountManager.KEY_INTENT, intent)
+    return bundle
+  }
 }

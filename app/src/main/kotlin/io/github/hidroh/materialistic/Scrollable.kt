@@ -16,24 +16,22 @@
 
 package io.github.hidroh.materialistic
 
-/**
- * Interface for things that can be scrolled vertically
- */
+/** Interface for things that can be scrolled vertically */
 interface Scrollable {
-    /**
-     * Scrolls this instance to top, i.e. until no more content above
-     */
-    fun scrollToTop()
+  /** Scrolls this instance to top, i.e. until no more content above */
+  fun scrollToTop()
 
-    /**
-     * Scrolls to reveal more content below current content
-     * @return  true if successful, false if unable to scroll
-     */
-    fun scrollToNext(): Boolean
+  /**
+   * Scrolls to reveal more content below current content
+   *
+   * @return true if successful, false if unable to scroll
+   */
+  fun scrollToNext(): Boolean
 
-    /**
-     * Scrolls to reveal more content above current content
-     * @return  true if successful, false if unable to scroll
-     */
-    fun scrollToPrevious(): Boolean
+  /**
+   * Scrolls to reveal more content above current content
+   *
+   * @return true if successful, false if unable to scroll
+   */
+  fun scrollToPrevious(): Boolean
 }

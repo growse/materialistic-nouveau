@@ -17,12 +17,12 @@
 package io.github.hidroh.materialistic
 
 interface Navigable {
-    companion object {
-        const val DIRECTION_UP = 0
-        const val DIRECTION_DOWN = 1
-        const val DIRECTION_LEFT = 2
-        const val DIRECTION_RIGHT = 3
-    }
+  companion object {
+    const val DIRECTION_UP = 0
+    const val DIRECTION_DOWN = 1
+    const val DIRECTION_LEFT = 2
+    const val DIRECTION_RIGHT = 3
+  }
 
-    fun onNavigate(direction: Int)
+  fun onNavigate(direction: Int)
 }

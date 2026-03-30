@@ -23,13 +23,14 @@ import android.os.Build
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 open class WidgetRefreshJobService : JobService() {
-    override fun onStartJob(jobParameters: JobParameters): Boolean {
-        WidgetHelper(this).refresh(jobParameters.getJobId())
-        jobFinished(jobParameters, false); // if we're able to start job means we have network conn
-        return true
-    }
+  override fun onStartJob(jobParameters: JobParameters): Boolean {
+    WidgetHelper(this).refresh(jobParameters.getJobId())
+    jobFinished(jobParameters, false)
+    // if we're able to start job means we have network conn
+    return true
+  }
 
-    override fun onStopJob(jobParameters: JobParameters): Boolean {
-        return true
-    }
+  override fun onStopJob(jobParameters: JobParameters): Boolean {
+    return true
+  }
 }

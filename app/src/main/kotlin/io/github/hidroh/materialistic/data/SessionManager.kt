@@ -18,32 +18,35 @@ package io.github.hidroh.materialistic.data
 
 import androidx.annotation.WorkerThread
 import io.github.hidroh.materialistic.DataModule
-import rx.Observable
-import rx.Scheduler
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
+import rx.Observable
+import rx.Scheduler
 
-/**
- * Data repository for session state
- */
+/** Data repository for session state */
 @Singleton
-class SessionManager @Inject constructor(
-    @Named(DataModule.IO_THREAD)
-    private val ioScheduler: Scheduler,
-    private val cache: LocalCache) {
+class SessionManager
+@Inject
+constructor(
+    @Named(DataModule.IO_THREAD) private val ioScheduler: Scheduler,
+    private val cache: LocalCache,
+) {
 
   @WorkerThread
-  fun isViewed(itemId: String?): Observable<Boolean> = Observable.just(
-      if (itemId.isNullOrEmpty()) {
-        false
-      } else {
-        cache.isViewed(itemId)
-      })
+  fun isViewed(itemId: String?): Observable<Boolean> =
+      Observable.just(
+          if (itemId.isNullOrEmpty()) {
+            false
+          } else {
+            cache.isViewed(itemId)
+          }
+      )
 
   /**
    * Marks an item as already being viewed
-   * @param itemId    item ID that has been viewed
+   *
+   * @param itemId item ID that has been viewed
    */
   fun view(itemId: String?) {
     if (itemId.isNullOrEmpty()) return

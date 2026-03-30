@@ -17,17 +17,16 @@
 package io.github.hidroh.materialistic
 
 import androidx.annotation.NonNull
-
 import io.github.hidroh.materialistic.data.ItemManager
 
 open class ShowActivity : BaseStoriesActivity() {
 
-    protected override fun getDefaultTitle(): String {
-        return getString(R.string.title_activity_show)
-    }
+  protected override fun getDefaultTitle(): String {
+    return getString(R.string.title_activity_show)
+  }
 
-    @NonNull
-    protected override fun getFetchMode(): String {
-        return ItemManager.SHOW_FETCH_MODE
-    }
+  @NonNull
+  protected override fun getFetchMode(): String {
+    return ItemManager.SHOW_FETCH_MODE
+  }
 }

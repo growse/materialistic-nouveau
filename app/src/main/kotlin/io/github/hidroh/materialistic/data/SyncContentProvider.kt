@@ -20,36 +20,46 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
-import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 
 open class SyncContentProvider : ContentProvider() {
-    const val PROVIDER_AUTHORITY: String = "io.github.hidroh.materialistic.syncprovider"
+  const val PROVIDER_AUTHORITY: String = "io.github.hidroh.materialistic.syncprovider"
 
-    override fun onCreate(): Boolean {
-        return true
-    }
+  override fun onCreate(): Boolean {
+    return true
+  }
 
-    @Nullable
-    override fun query(uri: Uri, projection: Array<String>, selection: String, selectionArgs: Array<String>, sortOrder: String): Cursor {
-        return null
-    }
+  @Nullable
+  override fun query(
+      uri: Uri,
+      projection: Array<String>,
+      selection: String,
+      selectionArgs: Array<String>,
+      sortOrder: String,
+  ): Cursor {
+    return null
+  }
 
-    @Nullable
-    override fun getType(uri: Uri): String {
-        return null
-    }
+  @Nullable
+  override fun getType(uri: Uri): String {
+    return null
+  }
 
-    @Nullable
-    override fun insert(uri: Uri, values: ContentValues): Uri {
-        return null
-    }
+  @Nullable
+  override fun insert(uri: Uri, values: ContentValues): Uri {
+    return null
+  }
 
-    override fun delete(uri: Uri, selection: String, selectionArgs: Array<String>): Int {
-        return 0
-    }
+  override fun delete(uri: Uri, selection: String, selectionArgs: Array<String>): Int {
+    return 0
+  }
 
-    override fun update(uri: Uri, values: ContentValues, selection: String, selectionArgs: Array<String>): Int {
-        return 0
-    }
+  override fun update(
+      uri: Uri,
+      values: ContentValues,
+      selection: String,
+      selectionArgs: Array<String>,
+  ): Int {
+    return 0
+  }
 }

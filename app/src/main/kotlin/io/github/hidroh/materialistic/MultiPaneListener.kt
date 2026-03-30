@@ -16,30 +16,28 @@
 
 package io.github.hidroh.materialistic
 
-import androidx.annotation.Nullable
-
 import io.github.hidroh.materialistic.data.WebItem
 
-/**
- * Interface for multi-pane view events
- */
+/** Interface for multi-pane view events */
 interface MultiPaneListener {
-    /**
-     * Fired when an item has been selected in list view when multi-pane is active
-     * @param item          selected item or null if selection is clear
-     *
-     */
-    fun onItemSelected(item: WebItem)
+  /**
+   * Fired when an item has been selected in list view when multi-pane is active
+   *
+   * @param item selected item or null if selection is clear
+   */
+  fun onItemSelected(item: WebItem)
 
-    /**
-     * Gets item that has been opened via {@link #onItemSelected(WebItem)}
-     * @return  opened item or null
-     */
-    fun getSelectedItem(): WebItem
+  /**
+   * Gets item that has been opened via {@link #onItemSelected(WebItem)}
+   *
+   * @return opened item or null
+   */
+  fun getSelectedItem(): WebItem
 
-    /**
-     * Checks if multi pane configuration is active
-     * @return true if multi pane, false if single pane
-     */
-    fun isMultiPane(): Boolean
+  /**
+   * Checks if multi pane configuration is active
+   *
+   * @return true if multi pane, false if single pane
+   */
+  fun isMultiPane(): Boolean
 }

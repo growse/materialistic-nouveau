@@ -19,17 +19,15 @@ package io.github.hidroh.materialistic
 import android.view.MenuItem
 import android.view.View
 
-/**
- * Injectable utility to resolve action view for menu items
- */
+/** Injectable utility to resolve action view for menu items */
 open class ActionViewResolver {
-    /**
-     * Returns the currently set action view for this menu item.
-     *
-     * @param menuItem the item to query
-     * @return This item's action view
-     */
-    fun getActionView(menuItem: MenuItem): View {
-        return menuItem.getActionView()
-    }
+  /**
+   * Returns the currently set action view for this menu item.
+   *
+   * @param menuItem the item to query
+   * @return This item's action view
+   */
+  fun getActionView(menuItem: MenuItem): View {
+    return menuItem.getActionView()
+  }
 }

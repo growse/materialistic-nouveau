@@ -17,7 +17,6 @@
 package io.github.hidroh.materialistic.widget.preference
 
 import android.content.Context
-import androidx.core.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
@@ -29,38 +28,47 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ScrollView
 import android.widget.TextView
-
+import androidx.core.content.ContextCompat
 import io.github.hidroh.materialistic.R
 import io.github.hidroh.materialistic.widget.AsteriskSpan
 
 open class HelpListView : ScrollView() {
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        addView(LayoutInflater.from(context).inflate(R.layout.include_help_list_view, this, false))
-    }
+  constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    addView(LayoutInflater.from(context).inflate(R.layout.include_help_list_view, this, false))
+  }
 
-    protected override fun onFinishInflate() {
-        super.onFinishInflate()
-        ((TextView) findViewById(R.id.item_new).findViewById(R.id.rank))
-                .append(makeAsteriskSpan())
-        val spannable = SpannableString("+5")
-        spannable.setSpan(SuperscriptSpan(), 0, spannable.length(),
-                Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(RelativeSizeSpan(0.6f), 0, spannable.length(),
-                Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(ForegroundColorSpan(
-                ContextCompat.getColor(getContext(), R.color.greenA700)), 0, spannable.length(),
-                Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
-        ((TextView) findViewById(R.id.item_promoted).findViewById(R.id.rank)).append(spannable)
-        val comments = (TextView) findViewById(R.id.item_new_comments).findViewById(R.id.comment)
-        val sb = SpannableStringBuilder("46")
-        sb.append(makeAsteriskSpan())
-        comments.setText(sb)
-    }
+  protected override fun onFinishInflate() {
+    super.onFinishInflate()
+    ((TextView) findViewById (R.id.item_new).findViewById(R.id.rank)).append(makeAsteriskSpan())
+    val spannable = SpannableString("+5")
+    spannable.setSpan(SuperscriptSpan(), 0, spannable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+    spannable.setSpan(
+        RelativeSizeSpan(0.6f),
+        0,
+        spannable.length(),
+        Spanned.SPAN_INCLUSIVE_EXCLUSIVE,
+    )
+    spannable.setSpan(
+        ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.greenA700)),
+        0,
+        spannable.length(),
+        Spanned.SPAN_INCLUSIVE_EXCLUSIVE,
+    )
+    ((TextView) findViewById (R.id.item_promoted).findViewById(R.id.rank)).append(spannable)
+    val comments = (TextView) findViewById (R.id.item_new_comments).findViewById(R.id.comment)
+    val sb = SpannableStringBuilder("46")
+    sb.append(makeAsteriskSpan())
+    comments.setText(sb)
+  }
 
-    private fun makeAsteriskSpan(): Spannable {
-        val sb = SpannableString("*")
-        sb.setSpan(AsteriskSpan(getContext()), sb.length() - 1, sb.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        return sb
-    }
+  private fun makeAsteriskSpan(): Spannable {
+    val sb = SpannableString("*")
+    sb.setSpan(
+        AsteriskSpan(getContext()),
+        sb.length() - 1,
+        sb.length(),
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+    )
+    return sb
+  }
 }

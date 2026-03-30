@@ -19,17 +19,20 @@ package io.github.hidroh.materialistic.data.android
 import io.github.hidroh.materialistic.DataModule
 import io.github.hidroh.materialistic.data.LocalCache
 import io.github.hidroh.materialistic.data.MaterialisticDatabase
-import rx.Observable
-import rx.Scheduler
 import javax.inject.Inject
 import javax.inject.Named
+import rx.Observable
+import rx.Scheduler
 
-class Cache @Inject constructor(
+class Cache
+@Inject
+constructor(
     private val database: MaterialisticDatabase,
     private val savedStoriesDao: MaterialisticDatabase.SavedStoriesDao,
     private val readStoriesDao: MaterialisticDatabase.ReadStoriesDao,
     private val readableDao: MaterialisticDatabase.ReadableDao,
-    @Named(DataModule.MAIN_THREAD) private val mainScheduler: Scheduler) : LocalCache {
+    @Named(DataModule.MAIN_THREAD) private val mainScheduler: Scheduler,
+) : LocalCache {
 
   override fun getReadability(itemId: String?) = readableDao.selectByItemId(itemId)?.content
 

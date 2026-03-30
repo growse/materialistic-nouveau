@@ -17,10 +17,10 @@
 package io.github.hidroh.materialistic.data
 
 open class SearchRecentSuggestionsProvider : android.content.SearchRecentSuggestionsProvider() {
-    const val PROVIDER_AUTHORITY: String = "io.github.hidroh.materialistic.recentprovider"
-    const val MODE: Int = DATABASE_MODE_QUERIES
+  const val PROVIDER_AUTHORITY: String = "io.github.hidroh.materialistic.recentprovider"
+  const val MODE: Int = DATABASE_MODE_QUERIES
 
-    constructor() {
-        setupSuggestions(PROVIDER_AUTHORITY, MODE)
-    }
+  constructor() {
+    setupSuggestions(PROVIDER_AUTHORITY, MODE)
+  }
 }

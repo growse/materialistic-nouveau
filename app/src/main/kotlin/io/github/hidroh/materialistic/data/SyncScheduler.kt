@@ -19,7 +19,7 @@ package io.github.hidroh.materialistic.data
 import android.content.Context
 
 open class SyncScheduler {
-    fun scheduleSync(context: Context, itemId: String) {
-        SyncDelegate.scheduleSync(context, SyncDelegate.JobBuilder(context, itemId).build())
-    }
+  fun scheduleSync(context: Context, itemId: String) {
+    SyncDelegate.scheduleSync(context, SyncDelegate.JobBuilder(context, itemId).build())
+  }
 }

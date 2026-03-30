@@ -39,10 +39,17 @@ class ReleaseNotesActivity : InjectableActivity() {
       webViewClient = WebViewClient()
       webChromeClient = WebChromeClient()
       setBackgroundColor(Color.TRANSPARENT)
-      loadDataWithBaseURL(null, getString(R.string.release_notes,
-          AppUtils.toHtmlColor(this@ReleaseNotesActivity, android.R.attr.textColorPrimary),
-          AppUtils.toHtmlColor(this@ReleaseNotesActivity, android.R.attr.textColorLink)),
-          "text/html", "UTF-8", null)
+      loadDataWithBaseURL(
+          null,
+          getString(
+              R.string.release_notes,
+              AppUtils.toHtmlColor(this@ReleaseNotesActivity, android.R.attr.textColorPrimary),
+              AppUtils.toHtmlColor(this@ReleaseNotesActivity, android.R.attr.textColorLink),
+          ),
+          "text/html",
+          "UTF-8",
+          null,
+      )
     }
     Preferences.setReleaseNotesSeen(this)
   }

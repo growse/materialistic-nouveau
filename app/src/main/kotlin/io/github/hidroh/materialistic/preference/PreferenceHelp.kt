@@ -17,42 +17,43 @@
 package io.github.hidroh.materialistic.preference
 
 import android.content.Context
-import android.content.res.TypedArray
+import android.util.AttributeSet
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceViewHolder
-import android.util.AttributeSet
-
 import io.github.hidroh.materialistic.R
 
 open class PreferenceHelp : PreferenceGroup() {
-    private val mLayoutResId: Int = 0
-    private var mTitle: String? = null
+  private val mLayoutResId: Int = 0
+  private var mTitle: String? = null
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs, R.attr.preferenceHelpStyle) {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.PreferenceHelp)
-        try {
-            mLayoutResId = a.getResourceId(R.styleable.PreferenceHelp_dialogLayout, 0)
-            mTitle = a.getString(R.styleable.PreferenceHelp_dialogTitle)
-        } finally {
-            a.recycle()
-        }
+  constructor(
+      context: Context,
+      attrs: AttributeSet,
+  ) : super(context, attrs, R.attr.preferenceHelpStyle) {
+    val a = context.obtainStyledAttributes(attrs, R.styleable.PreferenceHelp)
+    try {
+      mLayoutResId = a.getResourceId(R.styleable.PreferenceHelp_dialogLayout, 0)
+      mTitle = a.getString(R.styleable.PreferenceHelp_dialogTitle)
+    } finally {
+      a.recycle()
     }
+  }
 
-    protected override fun onClick() {
-        if (mLayoutResId == 0) {
-            return
-        }
-        AlertDialog.Builder(getContext())
-                .setTitle(mTitle)
-                .setView(mLayoutResId)
-                .setPositiveButton(R.string.got_it, null)
-                .create()
-                .show()
+  protected override fun onClick() {
+    if (mLayoutResId == 0) {
+      return
     }
+    AlertDialog.Builder(getContext())
+        .setTitle(mTitle)
+        .setView(mLayoutResId)
+        .setPositiveButton(R.string.got_it, null)
+        .create()
+        .show()
+  }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder) {
-        super.onBindViewHolder(holder)
-        holder.setDividerAllowedAbove(false)
-    }
+  override fun onBindViewHolder(holder: PreferenceViewHolder) {
+    super.onBindViewHolder(holder)
+    holder.setDividerAllowedAbove(false)
+  }
 }

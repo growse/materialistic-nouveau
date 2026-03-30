@@ -16,12 +16,8 @@
 
 package io.github.hidroh.materialistic
 
-import androidx.sqlite.db.SupportSQLiteOpenHelper
 import android.content.Context
-
-import javax.inject.Named
-import javax.inject.Singleton
-
+import androidx.sqlite.db.SupportSQLiteOpenHelper
 import dagger.Module
 import dagger.Provides
 import io.github.hidroh.materialistic.accounts.UserServices
@@ -37,97 +33,121 @@ import io.github.hidroh.materialistic.data.ReadabilityClient
 import io.github.hidroh.materialistic.data.SyncScheduler
 import io.github.hidroh.materialistic.data.UserManager
 import io.github.hidroh.materialistic.data.android.Cache
+import javax.inject.Named
+import javax.inject.Singleton
 import okhttp3.Call
 import rx.Scheduler
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import static
 
-import static io.github.hidroh.materialistic.ActivityModule.ALGOLIA
+io.github.hidroh.materialistic.ActivityModule.ALGOLIA
+
 import static io.github.hidroh.materialistic.ActivityModule.HN
+
 import static io.github.hidroh.materialistic.ActivityModule.POPULAR
 
 @Module(library = true, complete = false, includes = NetworkModule::class.java)
 open class DataModule {
-    const val MAIN_THREAD: String = "main"
-    const val IO_THREAD: String = "io"
+  const val MAIN_THREAD: String = "main"
+  const val IO_THREAD: String = "io"
 
-    @Provides @Singleton @Named(HN)
-    fun provideHackerNewsClient(client: HackerNewsClient): ItemManager {
-        return client
-    }
+  @Provides
+  @Singleton
+  @Named(HN)
+  fun provideHackerNewsClient(client: HackerNewsClient): ItemManager {
+    return client
+  }
 
-    @Provides @Singleton @Named(ALGOLIA)
-    fun provideAlgoliaClient(client: AlgoliaClient): ItemManager {
-        return client
-    }
+  @Provides
+  @Singleton
+  @Named(ALGOLIA)
+  fun provideAlgoliaClient(client: AlgoliaClient): ItemManager {
+    return client
+  }
 
-    @Provides @Singleton @Named(POPULAR)
-    fun provideAlgoliaPopularClient(client: AlgoliaPopularClient): ItemManager {
-        return client
-    }
+  @Provides
+  @Singleton
+  @Named(POPULAR)
+  fun provideAlgoliaPopularClient(client: AlgoliaPopularClient): ItemManager {
+    return client
+  }
 
-    @Provides @Singleton
-    fun provideUserManager(client: HackerNewsClient): UserManager {
-        return client
-    }
+  @Provides
+  @Singleton
+  fun provideUserManager(client: HackerNewsClient): UserManager {
+    return client
+  }
 
-    @Provides @Singleton
-    fun provideFeedbackClient(client: FeedbackClient.Impl): FeedbackClient {
-        return client
-    }
+  @Provides
+  @Singleton
+  fun provideFeedbackClient(client: FeedbackClient.Impl): FeedbackClient {
+    return client
+  }
 
-    @Provides @Singleton
-    fun provideReadabilityClient(client: ReadabilityClient.Impl): ReadabilityClient {
-        return client
-    }
+  @Provides
+  @Singleton
+  fun provideReadabilityClient(client: ReadabilityClient.Impl): ReadabilityClient {
+    return client
+  }
 
-    @Provides @Singleton
-    fun provideUserServices(callFactory: Call.Factory, ioScheduler: Scheduler): UserServices {
-        return UserServicesClient(callFactory, ioScheduler)
-    }
+  @Provides
+  @Singleton
+  fun provideUserServices(callFactory: Call.Factory, ioScheduler: Scheduler): UserServices {
+    return UserServicesClient(callFactory, ioScheduler)
+  }
 
-    @Provides @Singleton @Named(IO_THREAD)
-    fun provideIoScheduler(): Scheduler {
-        return Schedulers.io()
-    }
+  @Provides
+  @Singleton
+  @Named(IO_THREAD)
+  fun provideIoScheduler(): Scheduler {
+    return Schedulers.io()
+  }
 
-    @Provides @Singleton @Named(MAIN_THREAD)
-    fun provideMainThreadScheduler(): Scheduler {
-        return AndroidSchedulers.mainThread()
-    }
+  @Provides
+  @Singleton
+  @Named(MAIN_THREAD)
+  fun provideMainThreadScheduler(): Scheduler {
+    return AndroidSchedulers.mainThread()
+  }
 
-    @Provides @Singleton
-    fun provideSyncScheduler(): SyncScheduler {
-        return SyncScheduler()
-    }
+  @Provides
+  @Singleton
+  fun provideSyncScheduler(): SyncScheduler {
+    return SyncScheduler()
+  }
 
-    @Provides @Singleton
-    fun provideLocalCache(cache: Cache): LocalCache {
-        return cache
-    }
+  @Provides
+  @Singleton
+  fun provideLocalCache(cache: Cache): LocalCache {
+    return cache
+  }
 
-    @Provides @Singleton
-    fun provideDatabase(context: Context): MaterialisticDatabase {
-        return MaterialisticDatabase.getInstance(context)
-    }
+  @Provides
+  @Singleton
+  fun provideDatabase(context: Context): MaterialisticDatabase {
+    return MaterialisticDatabase.getInstance(context)
+  }
 
-    @Provides
-    fun provideSavedStoriesDao(database: MaterialisticDatabase): MaterialisticDatabase.SavedStoriesDao {
-        return database.getSavedStoriesDao()
-    }
+  @Provides
+  fun provideSavedStoriesDao(
+      database: MaterialisticDatabase
+  ): MaterialisticDatabase.SavedStoriesDao {
+    return database.getSavedStoriesDao()
+  }
 
-    @Provides
-    fun provideReadStoriesDao(database: MaterialisticDatabase): MaterialisticDatabase.ReadStoriesDao {
-        return database.getReadStoriesDao()
-    }
+  @Provides
+  fun provideReadStoriesDao(database: MaterialisticDatabase): MaterialisticDatabase.ReadStoriesDao {
+    return database.getReadStoriesDao()
+  }
 
-    @Provides
-    fun provideReadableDao(database: MaterialisticDatabase): MaterialisticDatabase.ReadableDao {
-        return database.getReadableDao()
-    }
+  @Provides
+  fun provideReadableDao(database: MaterialisticDatabase): MaterialisticDatabase.ReadableDao {
+    return database.getReadableDao()
+  }
 
-    @Provides
-    fun provideOpenHelper(database: MaterialisticDatabase): SupportSQLiteOpenHelper {
-        return database.getOpenHelper()
-    }
+  @Provides
+  fun provideOpenHelper(database: MaterialisticDatabase): SupportSQLiteOpenHelper {
+    return database.getOpenHelper()
+  }
 }

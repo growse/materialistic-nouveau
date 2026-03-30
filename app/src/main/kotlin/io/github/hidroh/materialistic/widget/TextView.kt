@@ -17,19 +17,22 @@
 package io.github.hidroh.materialistic.widget
 
 import android.content.Context
-import androidx.appcompat.widget.AppCompatTextView
 import android.util.AttributeSet
-
+import androidx.appcompat.widget.AppCompatTextView
 import io.github.hidroh.materialistic.Application
 
 open class TextView : AppCompatTextView() {
-    constructor(context: Context, attrs: AttributeSet) {
-        this(context, attrs, 0)
-    }
+  constructor(context: Context, attrs: AttributeSet) {
+    this(context, attrs, 0)
+  }
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        if (!isInEditMode()) {
-            setTypeface(Application.TYPE_FACE)
-        }
+  constructor(
+      context: Context,
+      attrs: AttributeSet,
+      defStyleAttr: Int,
+  ) : super(context, attrs, defStyleAttr) {
+    if (!isInEditMode()) {
+      setTypeface(Application.TYPE_FACE)
     }
+  }
 }

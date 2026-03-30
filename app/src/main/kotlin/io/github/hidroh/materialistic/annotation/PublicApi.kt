@@ -16,11 +16,9 @@
 
 package io.github.hidroh.materialistic.annotation
 
-
 /**
  * Indicates target's visibility (and its members) can be made public to allow API discoverability
  */
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CONSTRUCTOR, AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
-annotation class PublicApi {
-}
+annotation class PublicApi {}

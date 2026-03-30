@@ -17,16 +17,15 @@
 package io.github.hidroh.materialistic
 
 import androidx.annotation.NonNull
-
 import io.github.hidroh.materialistic.data.ItemManager
 
 open class BestActivity : BaseStoriesActivity() {
-    @NonNull
-    protected override fun getFetchMode(): String {
-        return ItemManager.BEST_FETCH_MODE
-    }
+  @NonNull
+  protected override fun getFetchMode(): String {
+    return ItemManager.BEST_FETCH_MODE
+  }
 
-    protected override fun getDefaultTitle(): String {
-        return getString(R.string.title_activity_best)
-    }
+  protected override fun getDefaultTitle(): String {
+    return getString(R.string.title_activity_best)
+  }
 }
