@@ -6,7 +6,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "io.github.hidroh.materialistic"
+        applicationId "com.growse.android.io.github.hidroh.materialistic"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 79
