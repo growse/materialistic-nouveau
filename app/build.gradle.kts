@@ -71,7 +71,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.google.android.material:material:1.8.0")
+    implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.preference:preference:1.2.0")
     implementation("androidx.browser:browser:1.5.0")
     implementation("com.squareup.dagger:dagger:$daggerVersion")
