@@ -127,7 +127,7 @@ public class SinglePageItemRecyclerViewAdapter
         if (viewType == VIEW_TYPE_FOOTER) {
             return ToggleItemViewHolder(mLayoutInflater.inflate(R.layout.item_footer, parent, false), null)
         }
-        val holder = 
+        val holder =
                 ToggleItemViewHolder(mLayoutInflater.inflate(R.layout.item_comment, parent, false))
         final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
                 holder.itemView.getLayoutParams()

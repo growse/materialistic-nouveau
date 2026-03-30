@@ -56,4 +56,3 @@ open class SnappyLinearLayoutManager : LinearLayoutManager() {
         return mExtraSpace == 0 ? super.getExtraLayoutSpace(state) : mExtraSpace
     }
 }
-

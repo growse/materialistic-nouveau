@@ -24,6 +24,10 @@ android {
         resConfigs 'en', 'zh-rCN', 'es'
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
