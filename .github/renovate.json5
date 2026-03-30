@@ -1,0 +1,40 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":disableRateLimiting",
+    ":rebaseStalePrs"
+  ],
+  "assignees": ["growse"],
+  "ignoreDeps": ["android"],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "addLabels": ["major"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "addLabels": ["minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["patch"]
+    },
+    {
+      "matchUpdateTypes": ["pin"],
+      "addLabels": ["pin"]
+    },
+    {
+      "matchManagers": ["bundler"],
+      "automerge": true
+    }
+  ],
+  "labels": ["dependencies"],
+  "platformAutomerge": true,
+  "automergeStrategy": "rebase",
+  "pre-commit": {
+    "enabled": true
+  },
+  // Don't keep PRs up to date as that invalidates the test check
+  "rebaseWhen": "conflicted"
+}
