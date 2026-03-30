@@ -1,15 +1,9 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ktfmt)
 }
-
-val okHttpVersion = "3.9.1"
-val daggerVersion = "1.2.5"
-val retrofitVersion = "2.9.0"
-val roomVersion = "2.5.1"
-val lifecycleVersion = "2.6.1"
-val kotlinVersion = "2.1.0"
 
 android {
     compileSdk = 35
@@ -67,29 +61,29 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.google.android.material:material:1.8.0")
-    implementation("androidx.preference:preference:1.2.0")
-    implementation("androidx.browser:browser:1.5.0")
-    implementation("com.squareup.dagger:dagger:$daggerVersion")
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
-    implementation("com.squareup.retrofit2:adapter-rxjava:$retrofitVersion")
-    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
-    implementation("io.reactivex:rxandroid:1.2.1")
-    implementation("io.reactivex:rxjava:1.3.8")
-    implementation("androidx.room:room-runtime:$roomVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.cardview)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.material)
+    implementation(libs.androidx.preference)
+    implementation(libs.androidx.browser)
+    implementation(libs.dagger)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.adapter.rxjava)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.rxandroid)
+    implementation(libs.rxjava)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.compiler)
+    implementation(libs.kotlin.stdlib)
 
-    kapt("androidx.room:room-compiler:$roomVersion")
-    kapt("com.squareup.dagger:dagger-compiler:$daggerVersion")
-    kaptTest("androidx.room:room-compiler:$roomVersion")
-    kaptTest("com.squareup.dagger:dagger-compiler:$daggerVersion")
+    kapt(libs.androidx.room.compiler)
+    kapt(libs.dagger.compiler)
+    kaptTest(libs.androidx.room.compiler)
+    kaptTest(libs.dagger.compiler)
 }
