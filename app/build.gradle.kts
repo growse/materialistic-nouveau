@@ -8,7 +8,7 @@ val okHttpVersion = "3.9.1"
 val daggerVersion = "1.2.5"
 val retrofitVersion = "2.9.0"
 val roomVersion = "2.5.1"
-val lifecycleVersion = "2.6.1"
+val lifecycleVersion = "2.10.0"
 val kotlinVersion = "2.1.0"
 
 android {
