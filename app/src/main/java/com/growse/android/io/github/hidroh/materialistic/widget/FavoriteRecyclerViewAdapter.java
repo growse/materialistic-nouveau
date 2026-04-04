@@ -82,7 +82,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
         public boolean onActionItemClicked(final ActionMode actionMode, MenuItem menuItem) {
             if (menuItem.getItemId() == R.id.menu_clear) {
                 mAlertDialogBuilder
-                        .init(mContext)
+                        .init(context)
                         .setMessage(R.string.confirm_clear_selected)
                         .setPositiveButton(android.R.string.ok,
                                 (dialog, which) -> {
@@ -126,8 +126,8 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
         super(context);
         mActionModeDelegate = actionModeDelegate;
         mMenuTintDelegate = new MenuTintDelegate();
-        mMenuTintDelegate.onActivityCreated(mContext);
-        mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(mContext) {
+        mMenuTintDelegate.onActivityCreated(this.context);
+        mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelperCallback(FavoriteRecyclerViewAdapter.this.context) {
             @Override
             public int getSwipeDirs(RecyclerView recyclerView,
                                     RecyclerView.ViewHolder viewHolder) {
@@ -144,7 +144,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
                 } else {
                     Favorite item = getItem(viewHolder.getAdapterPosition());
                     if (item != null) {
-                        mSyncScheduler.scheduleSync(mContext, item.getId());
+                        mSyncScheduler.scheduleSync(FavoriteRecyclerViewAdapter.this.context, item.getId());
                     }
                     notifyItemChanged(viewHolder.getAdapterPosition());
                 }
@@ -240,13 +240,13 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
 
     @Synthetic
     void removeSelection() {
-        mFavoriteManager.remove(mContext, mSelected.values());
+        mFavoriteManager.remove(context, mSelected.values());
     }
 
     @Synthetic
     void refreshSelection() {
         for (String id : mSelected.values()) {
-            mSyncScheduler.scheduleSync(mContext, id);
+            mSyncScheduler.scheduleSync(context, id);
         }
     }
 
@@ -254,11 +254,11 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
     void dismiss(View view, final int position) {
         final Favorite item = getItem(position);
         mSelected.put(position, item.getId());
-        mFavoriteManager.remove(mContext, mSelected.values());
+        mFavoriteManager.remove(context, mSelected.values());
         Snackbar.make(view, R.string.toast_removed, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, v -> {
                     mPendingAdd = position;
-                    mFavoriteManager.add(mContext, item);
+                    mFavoriteManager.add(context, item);
                 })
                 .show();
     }
@@ -273,7 +273,7 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
     }
 
     private void showMoreOptions(View v, final Favorite item) {
-        mPopupMenu.create(mContext, v, Gravity.NO_GRAVITY)
+        mPopupMenu.create(context, v, Gravity.NO_GRAVITY)
                 .inflate(R.menu.menu_contextual_favorite)
                 .setOnMenuItemClickListener(menuItem -> {
                     if (menuItem.getItemId() == R.id.menu_contextual_vote) {
@@ -281,13 +281,13 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
                         return true;
                     }
                     if (menuItem.getItemId() == R.id.menu_contextual_comment) {
-                        mContext.startActivity(new Intent(mContext, ComposeActivity.class)
+                        context.startActivity(new Intent(context, ComposeActivity.class)
                                 .putExtra(ComposeActivity.EXTRA_PARENT_ID, item.getId())
                                 .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, item.getDisplayedTitle()));
                         return true;
                     }
                     if (menuItem.getItemId() == R.id.menu_contextual_share) {
-                        AppUtils.share(mContext, item.getDisplayedTitle(), item.getUrl());
+                        AppUtils.share(context, item.getDisplayedTitle(), item.getUrl());
                         return true;
                     }
                     return false;
@@ -296,17 +296,17 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
     }
 
     private void vote(final Favorite item) {
-        mUserServices.voteUp(mContext, item.getId(), new VoteCallback(this));
+        mUserServices.voteUp(context, item.getId(), new VoteCallback(this));
     }
 
     @Synthetic
     void onVoted(Boolean successful) {
         if (successful == null) {
-            Toast.makeText(mContext, R.string.vote_failed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.vote_failed, Toast.LENGTH_SHORT).show();
         } else if (successful) {
-            Toast.makeText(mContext, R.string.voted, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.voted, Toast.LENGTH_SHORT).show();
         } else {
-            AppUtils.showLogin(mContext, mAlertDialogBuilder);
+            AppUtils.showLogin(context, mAlertDialogBuilder);
         }
     }
 

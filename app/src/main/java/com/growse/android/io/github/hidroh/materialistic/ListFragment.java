@@ -42,6 +42,9 @@ import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatabase;
 import com.growse.android.io.github.hidroh.materialistic.widget.StoryRecyclerViewAdapter;
+
+import java.util.List;
+
 import rx.Scheduler;
 
 public class ListFragment extends BaseListFragment {
@@ -103,6 +106,7 @@ public class ListFragment extends BaseListFragment {
             mFilter = savedInstanceState.getString(STATE_FILTER);
             mCacheMode = savedInstanceState.getInt(STATE_CACHE_MODE);
         } else {
+            assert getArguments() != null;
             mFilter = getArguments().getString(EXTRA_FILTER);
         }
     }
@@ -117,7 +121,7 @@ public class ListFragment extends BaseListFragment {
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.white);
         mSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(
-                AppUtils.getThemedResId(getActivity(), R.attr.colorAccent));
+                AppUtils.getThemedResId(requireActivity(), R.attr.colorAccent));
         if (savedInstanceState == null) {
             mSwipeRefreshLayout.setRefreshing(true);
         }
@@ -198,7 +202,7 @@ public class ListFragment extends BaseListFragment {
 
     @Override
     public void onDetach() {
-        mPreferenceObservable.unsubscribe(getActivity());
+        mPreferenceObservable.unsubscribe(requireActivity());
         mRefreshCallback = null;
         super.onDetach();
     }
@@ -213,7 +217,7 @@ public class ListFragment extends BaseListFragment {
     @Override
     protected StoryRecyclerViewAdapter getAdapter() {
         if (mAdapter == null) {
-            mAdapter = new StoryRecyclerViewAdapter(getContext());
+            mAdapter = new StoryRecyclerViewAdapter(requireContext());
         }
         return mAdapter;
     }
@@ -236,7 +240,7 @@ public class ListFragment extends BaseListFragment {
         }
         if (items == null) {
             mSwipeRefreshLayout.setRefreshing(false);
-            if (getAdapter().getItems() == null || getAdapter().getItems().size() == 0) {
+            if (getAdapter().getItems().size() == 0) {
                 // TODO make refreshing indicator visible in error view
                 mEmptyView.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.INVISIBLE);
@@ -246,7 +250,7 @@ public class ListFragment extends BaseListFragment {
                         Toast.LENGTH_SHORT).show();
             }
         } else {
-            getAdapter().setItems(items);
+            getAdapter().setItems(List.of(items));
             if (items.length == 0) {
                 mEmptyView.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.INVISIBLE);

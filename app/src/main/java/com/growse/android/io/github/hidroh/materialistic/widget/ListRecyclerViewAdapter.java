@@ -56,7 +56,7 @@ public abstract class ListRecyclerViewAdapter
     private static final int VIEW_TYPE_CARD = 0;
     private static final int VIEW_TYPE_FLAT = 1;
     private CustomTabsDelegate mCustomTabsDelegate;
-    protected Context mContext;
+    protected Context context;
     private MultiPaneListener mMultiPaneListener;
     LayoutInflater mInflater;
     @Inject PopupMenu mPopupMenu;
@@ -70,25 +70,25 @@ public abstract class ListRecyclerViewAdapter
     private boolean mMultiWindowEnabled;
 
     public ListRecyclerViewAdapter(Context context) {
-        mContext = context;
-        mInflater = AppUtils.createLayoutInflater(mContext);
-        ((Injectable) mContext).inject(this);
-        mMultiPaneListener = (MultiPaneListener) mContext;
-        mMultiWindowEnabled = Preferences.multiWindowEnabled(mContext);
+        this.context = context;
+        mInflater = AppUtils.createLayoutInflater(this.context);
+        ((Injectable) this.context).inject(this);
+        mMultiPaneListener = (MultiPaneListener) this.context;
+        mMultiWindowEnabled = Preferences.multiWindowEnabled(this.context);
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        mPreferenceObservable.subscribe(mContext, (key, contextChanged) ->
-                mMultiWindowEnabled = Preferences.multiWindowEnabled(mContext),
+        mPreferenceObservable.subscribe(context, (key, contextChanged) ->
+                mMultiWindowEnabled = Preferences.multiWindowEnabled(context),
                 R.string.pref_multi_window);
     }
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        mPreferenceObservable.unsubscribe(mContext);
+        mPreferenceObservable.unsubscribe(context);
     }
 
     @Override
@@ -161,7 +161,7 @@ public abstract class ListRecyclerViewAdapter
     }
 
     final boolean isAttached() {
-        return mContext != null;
+        return context != null;
     }
 
     protected abstract VH create(ViewGroup parent, int viewType);
@@ -221,12 +221,12 @@ public abstract class ListRecyclerViewAdapter
     protected abstract int getItemCacheMode();
 
     private void openItem(T item) {
-        Intent intent = new Intent(mContext, ItemActivity.class)
+        Intent intent = new Intent(context, ItemActivity.class)
                 .putExtra(ItemActivity.EXTRA_CACHE_MODE, getItemCacheMode())
                 .putExtra(ItemActivity.EXTRA_ITEM, item)
                 .putExtra(ItemActivity.EXTRA_OPEN_COMMENTS, true);
-        mContext.startActivity(mMultiWindowEnabled ?
-                AppUtils.multiWindowIntent((Activity) mContext, intent) : intent);
+        context.startActivity(mMultiWindowEnabled ?
+                AppUtils.multiWindowIntent((Activity) context, intent) : intent);
     }
 
     /**
