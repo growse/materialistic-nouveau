@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <io.github.hidroh.materialistic.widget.TintableTextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
         android:text="@string/file_not_supported"
         app:iconTop="@drawable/ic_save_white_48dp"
         android:padding="@dimen/activity_vertical_margin"

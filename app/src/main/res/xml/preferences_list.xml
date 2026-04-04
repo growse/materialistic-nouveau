@@ -19,14 +19,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
         android:key="@string/pref_story_display"
         android:title="@string/pref_story_display_title"
         app:entries="@array/pref_story_display_options"
         app:entryValues="@array/pref_story_display_values"
         android:defaultValue="@string/pref_story_display_value_article" />
 
-    <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
         android:key="@string/pref_multi_window"
         android:title="@string/pref_multi_window_title"
         android:summary="@string/pref_multi_window_summary"
@@ -47,7 +47,7 @@
         android:summary="@string/pref_highlight_updated_summary"
         android:defaultValue="true" />
 
-    <io.github.hidroh.materialistic.preference.PreferenceHelp
+    <com.growse.android.io.github.hidroh.materialistic.preference.PreferenceHelp
         android:key="@string/pref_highlight_updated_help"
         android:title="@string/whats_this"
         app:dialogTitle="@string/pref_highlight_updated_title"
@@ -60,14 +60,14 @@
         android:summary="@string/pref_auto_viewed_summary"
         android:defaultValue="false" />
 
-    <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
         android:key="@string/pref_list_swipe_left"
         android:title="@string/pref_list_swipe_left_title"
         app:entries="@array/pref_list_swipe_options"
         app:entryValues="@array/pref_list_swipe_values"
         android:defaultValue="@string/swipe_save" />
 
-    <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
         android:key="@string/pref_list_swipe_right"
         android:title="@string/pref_list_swipe_right_title"
         app:entries="@array/pref_list_swipe_options"

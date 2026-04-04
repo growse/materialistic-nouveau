@@ -17,7 +17,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name">Materialistic</string>
+    <string name="app_name">Materialistic Nouveau</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_list">Top Stories</string>
     <string name="title_activity_best">Best Stories</string>

@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <io.github.hidroh.materialistic.widget.TintableTextView
+            <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@id/drawer_display"
                 android:text="@string/display"
                 app:iconStart="@drawable/ic_palette_white_24dp"
@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider" />
 
-            <io.github.hidroh.materialistic.widget.TintableTextView
+            <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@id/menu_list"
                 android:text="@string/list"
                 app:iconStart="@drawable/ic_list_white_24dp"
@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider" />
 
-            <io.github.hidroh.materialistic.widget.TintableTextView
+            <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@id/menu_comments"
                 android:text="@string/comments"
                 app:iconStart="@drawable/ic_format_size_white_24dp"
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider" />
 
-            <io.github.hidroh.materialistic.widget.TintableTextView
+            <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@id/menu_readability"
                 android:text="@string/readability"
                 app:iconStart="@drawable/ic_local_library_white_24dp"
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider" />
 
-            <io.github.hidroh.materialistic.widget.TintableTextView
+            <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@id/drawer_offline"
                 android:text="@string/offline"
                 app:iconStart="@drawable/ic_cloud_off_white_24dp"
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider" />
 
-            <io.github.hidroh.materialistic.widget.TintableTextView
+            <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@id/drawer_about"
                 android:text="@string/title_activity_about"
                 app:iconStart="@drawable/ic_info_white_24dp"
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/divider" />
 
-            <io.github.hidroh.materialistic.widget.TintableTextView
+            <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@id/drawer_release"
                 android:text="@string/title_activity_release"
                 app:iconStart="@drawable/ic_new_releases_white_24dp"

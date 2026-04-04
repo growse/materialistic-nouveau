@@ -28,7 +28,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <io.github.hidroh.materialistic.widget.TintableTextView
+        <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
             android:text="@string/help_navigate"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
@@ -47,31 +47,31 @@
 
         </FrameLayout>
 
-        <io.github.hidroh.materialistic.widget.TintableTextView
+        <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
             android:text="@string/help_navigate_up"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall" />
 
-        <io.github.hidroh.materialistic.widget.TintableTextView
+        <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
             android:text="@string/help_navigate_down"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall" />
 
-        <io.github.hidroh.materialistic.widget.TintableTextView
+        <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
             android:text="@string/help_navigate_right"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall" />
 
-        <io.github.hidroh.materialistic.widget.TintableTextView
+        <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
             android:text="@string/help_navigate_left"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="?attr/listPreferredItemHeightSmall" />
 
-        <io.github.hidroh.materialistic.widget.TintableTextView
+        <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
             android:text="@string/help_navigate_move"
             android:gravity="center_vertical"
             android:layout_width="match_parent"

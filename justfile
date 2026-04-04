@@ -1,6 +1,6 @@
 set dotenv-load := true
 set positional-arguments := true
-gradlec := "./gradlew --scan"
+gradlec := "./gradlew"
 
 default:
     @just --list

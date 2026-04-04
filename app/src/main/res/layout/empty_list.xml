@@ -26,7 +26,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <io.github.hidroh.materialistic.widget.TintableTextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
         app:iconTop="@drawable/ic_cloud_off_white_48dp"
         android:text="@string/connection_error"
         android:breakStrategy="balanced"

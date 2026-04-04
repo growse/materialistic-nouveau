@@ -23,7 +23,7 @@
         android:title="@string/widget_options"
         style="@style/Preference.Category.Hint">
 
-        <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+        <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
             android:key="@string/pref_widget_section"
             android:title="@string/pref_widget_section_title"
             android:defaultValue="@string/pref_widget_section_value_top"
@@ -35,14 +35,14 @@
             android:key="@string/pref_widget_query"
             android:title="@string/pref_widget_query_title" />
 
-        <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+        <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
             android:key="@string/pref_widget_theme"
             android:title="@string/pref_theme_title"
             android:defaultValue="@string/pref_widget_theme_value_transparent"
             app:entries="@array/pref_widget_theme_options"
             app:entryValues="@array/pref_widget_theme_values" />
 
-        <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+        <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
             android:key="@string/pref_widget_frequency"
             android:title="@string/pref_widget_frequency_title"
             android:defaultValue="6"

@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<io.github.hidroh.materialistic.widget.preference.HelpLazyLoadView
+<com.growse.android.io.github.hidroh.materialistic.widget.preference.HelpLazyLoadView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

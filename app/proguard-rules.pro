@@ -17,5 +17,5 @@
 }
 
 -dontobfuscate
--keep class io.github.hidroh.materialistic.** { *; }
--keep interface io.github.hidroh.materialistic.** { *; }
+-keep class com.growse.android.io.github.hidroh.materialistic.** { *; }
+-keep interface com.growse.android.io.github.hidroh.materialistic.** { *; }

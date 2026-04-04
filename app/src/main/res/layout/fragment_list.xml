@@ -16,7 +16,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="io.github.hidroh.materialistic.ListActivity"
+    tools:context="com.growse.android.io.github.hidroh.materialistic.ListActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,7 +24,7 @@
 
     <include layout="@layout/empty_list" />
 
-    <io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout
+    <com.growse.android.io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout
         android:id="@id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -36,6 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout>
+    </com.growse.android.io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout>
 
 </FrameLayout>

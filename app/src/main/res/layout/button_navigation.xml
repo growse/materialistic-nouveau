@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 
-<io.github.hidroh.materialistic.widget.NavFloatingActionButton
+<com.growse.android.io.github.hidroh.materialistic.widget.NavFloatingActionButton
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

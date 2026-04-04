@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:background="?attr/colorPrimary">
-    <io.github.hidroh.materialistic.widget.TextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TextView
         android:id="@android:id/text2"
         android:text="@string/loading_text"
         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -86,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <io.github.hidroh.materialistic.widget.IconButton
+        <com.growse.android.io.github.hidroh.materialistic.widget.IconButton
             android:id="@+id/vote_button"
             android:contentDescription="@string/vote_up"
             tools:visibility="visible"
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <io.github.hidroh.materialistic.widget.IconButton
+        <com.growse.android.io.github.hidroh.materialistic.widget.IconButton
             android:id="@id/bookmarked"
             android:contentDescription="@string/save"
             android:visibility="gone"
@@ -110,7 +110,7 @@
 
     </LinearLayout>
 
-    <io.github.hidroh.materialistic.widget.TintableTextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
         android:id="@+id/button_article"
         android:text="@string/article"
         android:layout_below="@id/meta_container"

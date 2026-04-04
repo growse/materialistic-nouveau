@@ -36,7 +36,7 @@
         android:dependency="@string/pref_saved_item_sync"
         android:defaultValue="false" />
 
-    <io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
         android:key="@string/pref_offline_data"
         android:title="@string/pref_offline_data_title"
         android:dependency="@string/pref_saved_item_sync"

@@ -24,7 +24,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
 
-    <io.github.hidroh.materialistic.widget.TintableTextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
         android:text="@string/help_volume_up"
         app:iconStart="@drawable/ic_volume_up_black_24dp"
         android:drawablePadding="@dimen/padding"
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/listPreferredItemHeightSmall" />
 
-    <io.github.hidroh.materialistic.widget.TintableTextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
         android:text="@string/help_long_volume_up"
         app:iconStart="@drawable/ic_touch_app_white_24dp"
         android:drawablePadding="@dimen/padding"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/listPreferredItemHeightSmall" />
 
-    <io.github.hidroh.materialistic.widget.TintableTextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
         android:text="@string/help_volume_down"
         app:iconStart="@drawable/ic_volume_down_black_24dp"
         android:drawablePadding="@dimen/padding"

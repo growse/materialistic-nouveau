@@ -50,7 +50,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <io.github.hidroh.materialistic.widget.CacheableWebView
+                <com.growse.android.io.github.hidroh.materialistic.widget.CacheableWebView
                     android:id="@id/web_view"
                     android:scrollbarStyle="insideOverlay"
                     android:scrollbars="vertical"

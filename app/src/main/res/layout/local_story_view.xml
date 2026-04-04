@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <io.github.hidroh.materialistic.widget.TextView
+    <com.growse.android.io.github.hidroh.materialistic.widget.TextView
         android:id="@id/title"
         android:text="@string/loading_text"
         style="@style/textTitleStyle"

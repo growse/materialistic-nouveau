@@ -18,8 +18,8 @@
 <sync-adapter
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:contentAuthority="io.github.hidroh.materialistic.provider"
-    android:accountType="io.github.hidroh.materialistic"
+    android:contentAuthority="com.growse.android.io.github.hidroh.materialistic.provider"
+    android:accountType="com.growse.android.io.github.hidroh.materialistic"
     android:userVisible="false"
     android:supportsUploading="false"
     android:allowParallelSyncs="false"

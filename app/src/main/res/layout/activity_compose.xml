@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <io.github.hidroh.materialistic.widget.TintableTextView
+                <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                     android:id="@+id/toggle"
                     app:iconEnd="@drawable/ic_expand_more_white_24dp"
                     style="@style/TextAppearance.AppCompat.Medium"

@@ -53,7 +53,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <io.github.hidroh.materialistic.widget.ViewPager
+    <com.growse.android.io.github.hidroh.materialistic.widget.ViewPager
         android:id="@+id/view_pager"
         app:layout_behavior="@string/fab_scrolling_view_behavior"
         android:layout_width="match_parent"

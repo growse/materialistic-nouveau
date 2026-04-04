@@ -15,13 +15,13 @@
   ~ limitations under the License.
   -->
 
-<io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout
+<com.growse.android.io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@id/swipe_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.github.hidroh.materialistic.ItemActivity">
+    tools:context="com.growse.android.io.github.hidroh.materialistic.ItemActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,4 +39,4 @@
 
     </RelativeLayout>
 
-</io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout>
+</com.growse.android.io.github.hidroh.materialistic.widget.AppBarSwipeRefreshLayout>

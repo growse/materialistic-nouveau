@@ -26,8 +26,8 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="io.github.hidroh.materialistic"
-            android:targetClass="io.github.hidroh.materialistic.ListActivity" />
+            android:targetPackage="com.growse.android.io.github.hidroh.materialistic"
+            android:targetClass="com.growse.android.io.github.hidroh.materialistic.ListActivity" />
     </shortcut>
     <shortcut
         android:shortcutId="new"
@@ -37,8 +37,8 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="io.github.hidroh.materialistic"
-            android:targetClass="io.github.hidroh.materialistic.NewActivity" />
+            android:targetPackage="com.growse.android.io.github.hidroh.materialistic"
+            android:targetClass="com.growse.android.io.github.hidroh.materialistic.NewActivity" />
     </shortcut>
     <shortcut
         android:shortcutId="favorite"
@@ -48,8 +48,8 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="io.github.hidroh.materialistic"
-            android:targetClass="io.github.hidroh.materialistic.FavoriteActivity" />
+            android:targetPackage="com.growse.android.io.github.hidroh.materialistic"
+            android:targetClass="com.growse.android.io.github.hidroh.materialistic.FavoriteActivity" />
     </shortcut>
     <shortcut
         android:shortcutId="compose"
@@ -59,7 +59,7 @@
         tools:targetApi="n_mr1">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="io.github.hidroh.materialistic"
-            android:targetClass="io.github.hidroh.materialistic.SubmitActivity" />
+            android:targetPackage="com.growse.android.io.github.hidroh.materialistic"
+            android:targetClass="com.growse.android.io.github.hidroh.materialistic.SubmitActivity" />
     </shortcut>
 </shortcuts>
