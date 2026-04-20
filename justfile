@@ -17,6 +17,9 @@ build-all:
 unit-test:
     {{gradlec}} app:testDebugUnitTest
 
+instrumented-test:
+    {{gradlec}} connectedDebugAndroidTest
+
 espresso:
     {{gradlec}} app:createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=*
 
