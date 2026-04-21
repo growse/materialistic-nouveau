@@ -78,7 +78,7 @@ public class SinglePageItemRecyclerViewAdapter
     @Override
     public void attach(Context context, RecyclerView recyclerView) {
         super.attach(context, recyclerView);
-        mLevelIndicatorWidth = AppUtils.getDimensionInDp(mContext, R.dimen.level_indicator_width);
+        mLevelIndicatorWidth = AppUtils.getDimensionInDp(context, R.dimen.level_indicator_width);
         mColors = mResourcesProvider.obtainTypedArray(R.array.color_codes);
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 0, ItemTouchHelper.RIGHT) {
@@ -268,8 +268,8 @@ public class SinglePageItemRecyclerViewAdapter
         if (item == null) {
             return;
         }
-        holder.mPostedTextView.setText(item.getDisplayedTime(mContext));
-        holder.mPostedTextView.append(item.getDisplayedAuthor(mContext, true,
+        holder.mPostedTextView.setText(item.getDisplayedTime(context));
+        holder.mPostedTextView.append(item.getDisplayedAuthor(context, true,
                 getThreadColor(getItemViewType(holder.getAdapterPosition()))));
         bindKids(holder, item);
     }
@@ -323,7 +323,7 @@ public class SinglePageItemRecyclerViewAdapter
     }
 
     private void changeToggleState(ToggleItemViewHolder holder, Item item, boolean expanded) {
-        holder.mToggle.setText(mContext.getResources()
+        holder.mToggle.setText(context.getResources()
                 .getQuantityString(R.plurals.comments_count, item.getKidCount(), item.getKidCount()));
         holder.mToggle.setCompoundDrawablesWithIntrinsicBounds(0, 0, expanded ?
                 R.drawable.ic_expand_less_white_24dp : R.drawable.ic_expand_more_white_24dp, 0);
@@ -337,14 +337,14 @@ public class SinglePageItemRecyclerViewAdapter
         if (mState.isExpanded(item)) {
             return;
         }
-        mRecyclerView.post(() -> {
-            if (mRecyclerView == null) {
+        recyclerView.post(() -> {
+            if (recyclerView == null) {
                 return; // adapter detached
             }
             int index = mState.expand(item);
             notifyItemRangeInserted(index, item.getKidCount());
             notifyItemChanged(index - 1, TOGGLE);
-            mRecyclerView.getItemAnimator().isRunning(() -> setSelectedPosition(index, callback));
+            recyclerView.getItemAnimator().isRunning(() -> setSelectedPosition(index, callback));
         });
     }
 

@@ -48,7 +48,7 @@ public class ThreadPreviewRecyclerViewAdapter extends ItemRecyclerViewAdapter<Su
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         attach(recyclerView.getContext(), recyclerView);
-        mLevelIndicatorWidth = AppUtils.getDimensionInDp(mContext, R.dimen.level_indicator_width);
+        mLevelIndicatorWidth = AppUtils.getDimensionInDp(context, R.dimen.level_indicator_width);
     }
 
     @Override
@@ -82,8 +82,8 @@ public class ThreadPreviewRecyclerViewAdapter extends ItemRecyclerViewAdapter<Su
     @Override
     protected void bind(SubmissionViewHolder holder, final Item item) {
         super.bind(holder, item);
-        holder.mPostedTextView.setText(item.getDisplayedTime(mContext));
-        holder.mPostedTextView.append(item.getDisplayedAuthor(mContext,
+        holder.mPostedTextView.setText(item.getDisplayedTime(context));
+        holder.mPostedTextView.append(item.getDisplayedAuthor(context,
                 !TextUtils.equals(item.getBy(), mUsername), 0));
         holder.mMoreButton.setVisibility(View.GONE);
         if (TextUtils.equals(item.getType(), Item.COMMENT_TYPE)) {
@@ -115,7 +115,7 @@ public class ThreadPreviewRecyclerViewAdapter extends ItemRecyclerViewAdapter<Su
     }
 
     private void openItem(Item item) {
-        mContext.startActivity(new Intent(mContext, ItemActivity.class)
+        context.startActivity(new Intent(context, ItemActivity.class)
                 .putExtra(ItemActivity.EXTRA_ITEM, item));
     }
 }
