@@ -1,7 +1,7 @@
 [versions]
 agp = "9.1.0"
 kotlin = "2.2.21"
-kaspresso = "1.5.5"
+kaspresso = "1.6.1"
 androidx-test-ext-junit = "1.2.1"
 androidx-test-runner = "1.6.2"
 junit = "4.13.2"
