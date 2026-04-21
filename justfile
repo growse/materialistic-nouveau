@@ -5,29 +5,42 @@ gradlec := "./gradlew"
 default:
     @just --list
 
+[group('general')]
 gradle *args='':
     {{gradlec}} $@
 
-build:
-    {{gradlec}} assembleDebug
-
-build-all:
-    {{gradlec}} assembleDebug app:assembleAndroidTest app:assembleDebugUnitTest assembleRelease
-
-unit-test:
-    {{gradlec}} app:testDebugUnitTest
-
-instrumented-test:
-    {{gradlec}} connectedDebugAndroidTest
-
-espresso:
-    {{gradlec}} app:createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=*
-
-small-espresso:
-    {{gradlec}} clean createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=androidx.test.filters.SmallTest
-
+[group('general')]
 tasks:
     {{gradlec}} tasks --all
 
+[group('general')]
 clean:
     {{gradlec}} clean
+
+[group('build')]
+build:
+    {{gradlec}} assembleDebug
+
+[group('build')]
+build-all:
+    {{gradlec}} assembleDebug app:assembleAndroidTest app:assembleDebugUnitTest assembleRelease
+
+[group('format')]
+format:
+    {{gradlec}} ktfmtFormat
+
+[group('test')]
+unit-test:
+    {{gradlec}} app:testDebugUnitTest
+
+[group('test')]
+instrumented-test:
+    {{gradlec}} connectedDebugAndroidTest
+
+[group('test')]
+espresso:
+    {{gradlec}} app:createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=*
+
+[group('test')]
+small-espresso:
+    {{gradlec}} clean createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=androidx.test.filters.SmallTest
