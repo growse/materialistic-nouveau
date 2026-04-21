@@ -16,12 +16,11 @@
 
 package com.growse.android.io.github.hidroh.materialistic.data
 
-import androidx.annotation.Nullable
 import androidx.annotation.WorkerThread
 
 @WorkerThread
 interface LocalCache {
-  @Nullable fun getReadability(itemId: String?): String?
+  fun getReadability(itemId: String?): String?
 
   fun putReadability(itemId: String?, content: String?)
 

@@ -90,7 +90,7 @@
             android:visibility="gone"
             tools:visibility="visible"
             tools:ignore="RtlHardcoded"
-            tools:targetApi="lollipop">
+>
 
             <com.growse.android.io.github.hidroh.materialistic.widget.TintableTextView
                 android:id="@+id/toggle"
