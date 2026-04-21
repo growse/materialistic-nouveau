@@ -19,12 +19,14 @@ package com.growse.android.io.github.hidroh.materialistic.data
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.CursorWrapper
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.AnyThread
 import androidx.annotation.WorkerThread
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.growse.android.io.github.hidroh.materialistic.FavoriteActivity
@@ -236,6 +238,13 @@ constructor(
   }
 
   private fun notifyExportStart(context: Context) {
+    if (
+        ActivityCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.POST_NOTIFICATIONS,
+        ) != PackageManager.PERMISSION_GRANTED
+    )
+        return
     NotificationManagerCompat.from(context)
         .notify(
             notificationId,
@@ -260,6 +269,13 @@ constructor(
   }
 
   private fun notifyExportDone(context: Context, uri: Uri?) {
+    if (
+        ActivityCompat.checkSelfPermission(
+            context,
+            android.Manifest.permission.POST_NOTIFICATIONS,
+        ) != PackageManager.PERMISSION_GRANTED
+    )
+        return
     val manager = NotificationManagerCompat.from(context)
     with(manager) {
       cancel(notificationId)

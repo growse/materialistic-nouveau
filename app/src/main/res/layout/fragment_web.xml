@@ -20,7 +20,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorCardBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="Overdraw">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
@@ -35,7 +36,7 @@
             android:animateLayoutChanges="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:targetApi="honeycomb">
+>
 
             <include
                 layout="@layout/toolbar_web"

@@ -29,6 +29,10 @@ build-all:
 format:
     {{gradlec}} ktfmtFormat
 
+[group('format')]
+lint:
+    {{gradlec}} app:lintDebug
+
 [group('test')]
 unit-test:
     {{gradlec}} app:testDebugUnitTest
