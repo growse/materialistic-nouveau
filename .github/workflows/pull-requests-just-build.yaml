@@ -1,5 +1,5 @@
 ---
-name: PR Opened (Just Build)
+name: PR Opened (Build, Test, and Lint)
 
 "on":
   pull_request:
@@ -7,10 +7,17 @@ name: PR Opened (Just Build)
     branches:
       - main
     paths:
+      - ".github/actions/**"
       - ".github/workflows/build-test-lint.yaml"
-      - "/gradle.properties"
-      - "/gradle/wrapper/gradle-wrapper.properties"
-      - "/buildSrc/src/**"
+      - ".github/workflows/pull-requests-just-build.yaml"
+      - "app/src/**"
+      - "app/*.pro"
+      - "buildSrc/src/**"
+      - "*.gradle.kts"
+      - "app/*.gradle.kts"
+      - "gradle.properties"
+      - "gradle/wrapper/gradle-wrapper.properties"
+      - "gradle/libs.versions.toml"
 
 jobs:
   build-test-lint:
