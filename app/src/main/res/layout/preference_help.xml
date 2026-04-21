@@ -33,4 +33,5 @@
     android:background="?attr/selectableItemBackground"
     android:textAppearance="?android:attr/textAppearanceSmall"
     android:textColor="?android:attr/textColorSecondary"
-    android:maxLines="4" />
+    android:maxLines="4"
+    tools:ignore="Overdraw" />
