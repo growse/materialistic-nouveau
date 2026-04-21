@@ -17,7 +17,6 @@
 package com.growse.android.io.github.hidroh.materialistic.widget;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -36,7 +35,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Locale;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GestureDetectorCompat;
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
@@ -115,11 +113,17 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
     public void setNavigable(Navigable navigable) {
         mNavigable = navigable;
     }
 
     @Synthetic
+    @SuppressLint("ClickableViewAccessibility")
     void bindNavigationPad() {
         GestureDetectorCompat detectorCompat = new GestureDetectorCompat(getContext(),
                 new GestureDetector.SimpleOnGestureListener() {
@@ -170,7 +174,6 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
                 });
         //noinspection Convert2Lambda
         super.setOnTouchListener(new OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 return detectorCompat.onTouchEvent(motionEvent);
@@ -179,6 +182,7 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
     }
 
     @Synthetic
+    @SuppressLint("ClickableViewAccessibility")
     void startDrag(float startX, float startY) {
         if (mVibrationEnabled) {
             mVibrator.vibrate(VIBRATE_DURATION_MS * 2);
@@ -186,7 +190,6 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
         Toast.makeText(getContext(), R.string.hint_drag, Toast.LENGTH_SHORT).show();
         //noinspection Convert2Lambda
         super.setOnTouchListener(new OnTouchListener() {
-            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -200,6 +203,8 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
                         bindNavigationPad();
                         if (mMoved) {
                             persistPosition();
+                        } else {
+                            view.performClick();
                         }
                         break;
                     default:
@@ -245,7 +250,6 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
     }
 
     @SuppressLint("CommitPrefEdits")
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Synthetic void persistPosition() {
         getPreferences()
                 .edit()
@@ -254,7 +258,6 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
                 .apply();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     private void restorePosition() {
         setX(getPreferences().getFloat(mPreferenceX, getX()));
         setY(getPreferences().getFloat(mPreferenceY, getY()));

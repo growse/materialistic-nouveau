@@ -20,7 +20,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
-import android.os.Build;
+
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,11 +81,11 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     @Override
     public void attach(Context context, RecyclerView recyclerView) {
         super.attach(context, recyclerView);
-        if (mContext instanceof Injectable) {
-            ((Injectable) mContext).inject(this);
+        if (context instanceof Injectable) {
+            ((Injectable) context).inject(this);
         }
-        mLayoutInflater = AppUtils.createLayoutInflater(mContext);
-        TypedArray ta = mContext.obtainStyledAttributes(new int[]{
+        mLayoutInflater = AppUtils.createLayoutInflater(context);
+        TypedArray ta = context.obtainStyledAttributes(new int[]{
                 android.R.attr.textColorTertiary,
                 android.R.attr.textColorSecondary,
                 R.attr.colorCardBackground,
@@ -158,7 +158,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
             toggleCollapsibleContent(holder, item, lineCount);
         } else {
             holder.mContentTextView.post(() -> {
-                if (mContext == null) {
+                if (context == null) {
                     return;
                 }
                 int count = holder.mContentTextView.getLineCount();
@@ -179,7 +179,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
 
     @Synthetic
     boolean isAttached() {
-        return mContext != null;
+        return context != null;
     }
 
     private void load(int adapterPosition, Item item) {
@@ -214,7 +214,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         }
         holder.mContentTextView.setMaxLines(mContentMaxLines);
         holder.mReadMoreTextView.setVisibility(View.VISIBLE);
-        holder.mReadMoreTextView.setText(mContext.getString(R.string.read_more, lineCount));
+        holder.mReadMoreTextView.setText(context.getString(R.string.read_more, lineCount));
         holder.mReadMoreTextView.setOnClickListener(v -> {
             item.setContentExpanded(true);
             v.setVisibility(View.GONE);
@@ -231,7 +231,7 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         }
         holder.mMoreButton.setVisibility(View.VISIBLE);
         holder.mMoreButton.setOnClickListener(v ->
-            mPopupMenu.create(mContext, holder.mMoreButton, Gravity.NO_GRAVITY)
+            mPopupMenu.create(context, holder.mMoreButton, Gravity.NO_GRAVITY)
                 .inflate(R.menu.menu_contextual_comment)
                 .setOnMenuItemClickListener(menuItem -> {
                     if (menuItem.getItemId() == R.id.menu_contextual_vote) {
@@ -239,13 +239,13 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
                         return true;
                     }
                     if (menuItem.getItemId() == R.id.menu_contextual_comment) {
-                        mContext.startActivity(new Intent(mContext, ComposeActivity.class)
+                        context.startActivity(new Intent(context, ComposeActivity.class)
                                 .putExtra(ComposeActivity.EXTRA_PARENT_ID, item.getId())
                                 .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, item.getText()));
                         return true;
                     }
                     if (menuItem.getItemId() == R.id.menu_contextual_share) {
-                        AppUtils.share(mContext,
+                        AppUtils.share(context,
                                 item.isStoryType() ? item.getDisplayedTitle() : null,
                                 item.isStoryType() ? item.getUrl() :
                                         item.getDisplayedText() == null ?
@@ -258,17 +258,17 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     }
 
     private void vote(final Item item) {
-        mUserServices.voteUp(mContext, item.getId(), new VoteCallback(this));
+        mUserServices.voteUp(context, item.getId(), new VoteCallback(this));
     }
 
     @Synthetic
     void onVoted(Boolean successful) {
         if (successful == null) {
-            Toast.makeText(mContext, R.string.vote_failed, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.vote_failed, Toast.LENGTH_SHORT).show();
         } else if (successful) {
-            Toast.makeText(mContext, R.string.voted, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.voted, Toast.LENGTH_SHORT).show();
         } else {
-            AppUtils.showLogin(mContext, mAlertDialogBuilder);
+            AppUtils.showLogin(context, mAlertDialogBuilder);
         }
     }
 

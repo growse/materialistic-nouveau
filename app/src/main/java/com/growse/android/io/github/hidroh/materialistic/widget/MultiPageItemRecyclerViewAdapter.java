@@ -72,10 +72,10 @@ public class MultiPageItemRecyclerViewAdapter
         if (item == null) {
             return;
         }
-        holder.mPostedTextView.setText(item.getDisplayedTime(mContext));
-        holder.mPostedTextView.append(item.getDisplayedAuthor(mContext, true, 0));
+        holder.mPostedTextView.setText(item.getDisplayedTime(context));
+        holder.mPostedTextView.append(item.getDisplayedAuthor(context, true, 0));
         if (item.getKidCount() > 0) {
-            holder.mCommentButton.setText(mContext.getResources()
+            holder.mCommentButton.setText(context.getResources()
                     .getQuantityString(R.plurals.comments_count, item.getKidCount(), item.getKidCount()));
             holder.mCommentButton.setVisibility(View.VISIBLE);
             holder.mCommentButton.setOnClickListener(v -> openItem(item));
@@ -88,7 +88,7 @@ public class MultiPageItemRecyclerViewAdapter
     }
 
     private void openItem(Item item) {
-        mContext.startActivity(new Intent(mContext, ItemActivity.class)
+        context.startActivity(new Intent(context, ItemActivity.class)
                 .putExtra(ItemActivity.EXTRA_ITEM, item)
                 .putExtra(ItemActivity.EXTRA_OPEN_COMMENTS, true));
     }
