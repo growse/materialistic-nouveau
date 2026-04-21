@@ -217,7 +217,7 @@ object Preferences {
 
   @JvmStatic
   fun getCommentMaxLines(context: Context): Int {
-    val maxLinesString = get(context, R.string.pref_max_lines, null)
+    val maxLinesString = get(context, R.string.pref_max_lines, 10)
     var maxLines = maxLinesString.toInt()
     if (maxLines < 0) {
       maxLines = Int.MAX_VALUE
@@ -242,7 +242,7 @@ object Preferences {
 
   @JvmStatic
   fun getUsername(context: Context): String {
-    return get(context, R.string.pref_username, null)
+    return get(context, R.string.pref_username, "")
   }
 
   @JvmStatic
@@ -367,19 +367,19 @@ object Preferences {
       @StringRes key: Int,
       defaultValue: Float,
   ): Float {
-    val floatValue = get(context, key, null)
-    try {
-      return floatValue.toFloat()
+    val floatValue = get(context, key, "")
+    return try {
+      floatValue.toFloat()
     } catch (_: NumberFormatException) {
-      return defaultValue
+      defaultValue
     } catch (_: NullPointerException) {
-      return defaultValue
+      defaultValue
     }
   }
 
   @Synthetic
-  fun get(context: Context, @StringRes key: Int, defaultValue: String?): String {
-    return get(context, context.getString(key), defaultValue)
+  fun get(context: Context, @StringRes key: Int, defaultValue: String): String {
+    return get(context, context.getString(key), defaultValue) ?: defaultValue
   }
 
   private fun get(context: Context, @StringRes key: Int, @StringRes defaultValue: Int): String {
@@ -387,8 +387,8 @@ object Preferences {
         .getString(context.getString(key), context.getString(defaultValue))!!
   }
 
-  private fun get(context: Context, key: String?, defaultValue: String?): String {
-    return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultValue)!!
+  private fun get(context: Context, key: String?, defaultValue: String?): String? {
+    return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultValue)
   }
 
   private fun setInt(context: Context, @StringRes key: Int, value: Int) {
@@ -462,12 +462,12 @@ object Preferences {
 
     @JvmStatic
     fun getTypeface(context: Context): String {
-      return get(context, R.string.pref_font, null)
+      return get(context, R.string.pref_font, "")
     }
 
     @JvmStatic
     fun getReadabilityTypeface(context: Context): String {
-      val typefaceName = get(context, R.string.pref_readability_font, null)
+      val typefaceName = get(context, R.string.pref_readability_font, getTypeface(context))
       if (TextUtils.isEmpty(typefaceName)) {
         return getTypeface(context)
       }
@@ -514,20 +514,15 @@ object Preferences {
       set(context, R.string.pref_daynight_auto, false)
     }
 
-    private fun getPreferredReadabilityTextSize(context: Context): String {
-      val choice = get(context, R.string.pref_readability_text_size, null)
-      if (TextUtils.isEmpty(choice)) {
-        return getPreferredTextSize(context)
-      }
-      return choice
-    }
+    private fun getPreferredReadabilityTextSize(context: Context): String =
+        get(context, R.string.pref_readability_text_size, getPreferredTextSize(context))
 
     private fun getPreferredTextSize(context: Context): String {
       return get(context, R.string.pref_text_size, 0.toString())
     }
 
     private fun getTheme(context: Context, isTransulcent: Boolean): ThemeSpec {
-      return ThemePreference.getTheme(get(context, R.string.pref_theme, null), isTransulcent)
+      return ThemePreference.getTheme(get(context, R.string.pref_theme, ""), isTransulcent)
     }
   }
 
