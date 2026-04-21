@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:ignore="RtlSymmetry"
-        tools:targetApi="ice_cream_sandwich"/>
+/>
 
     <TextView
         android:id="@id/subtitle"

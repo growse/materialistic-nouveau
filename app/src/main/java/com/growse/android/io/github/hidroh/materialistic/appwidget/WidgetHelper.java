@@ -81,7 +81,6 @@ class WidgetHelper {
         mAppWidgetManager.updateAppWidget(appWidgetId, remoteViews);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     void refresh(int appWidgetId) {
         mAppWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, android.R.id.list);
         update(appWidgetId);
@@ -107,7 +106,6 @@ class WidgetHelper {
         getJobScheduler().cancel(appWidgetId);
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private JobScheduler getJobScheduler() {
         return (JobScheduler) mContext.getSystemService(Context.JOB_SCHEDULER_SERVICE);
     }
@@ -136,7 +134,6 @@ class WidgetHelper {
                                 0));
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void updateCollection(int appWidgetId, RemoteViews remoteViews, WidgetConfig config) {
         remoteViews.setTextViewText(R.id.subtitle,
                 DateUtils.formatDateTime(mContext, System.currentTimeMillis(),

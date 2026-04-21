@@ -9,14 +9,14 @@ name: Push to default publish to internal track
       - ".github/workflows/trunk-build.yaml"
       - ".github/workflows/build-test-lint.yaml"
       - ".github/workflows/release.yaml"
-      - "/app/src/**"
-      - "/app/*.pro"
-      - "/buildSrc/src/**"
-      - "/*.gradle.kts"
-      - "/app/*.gradle.kts"
-      - "/gradle.properties"
-      - "/gradle/wrapper/gradle-wrapper.properties"
-      - "/gradle/libs.versions.toml"
+      - "app/src/**"
+      - "app/*.pro"
+      - "buildSrc/src/**"
+      - "*.gradle.kts"
+      - "app/*.gradle.kts"
+      - "gradle.properties"
+      - "gradle/wrapper/gradle-wrapper.properties"
+      - "gradle/libs.versions.toml"
 
 concurrency:
   group: ${{ github.workflow }}-default
