@@ -10,7 +10,7 @@ android {
 
   defaultConfig {
     applicationId = "com.growse.android.io.github.hidroh.materialistic"
-    minSdk = 21
+    minSdk = 23
     targetSdk = 35
     versionCode = 79
     versionName = "3.3"
