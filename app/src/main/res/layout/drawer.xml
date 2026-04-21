@@ -25,7 +25,7 @@
     android:clickable="true"
     android:focusable="true"
     tools:context="com.growse.android.io.github.hidroh.materialistic.DrawerActivity"
-    tools:targetApi="honeycomb">
+>
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -14,6 +14,7 @@ android {
     targetSdk = 35
     versionCode = 79
     versionName = "3.3"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
     buildConfigField("String", "MERCURY_TOKEN", "\"\"")
@@ -77,4 +78,9 @@ dependencies {
   kapt(libs.dagger.compiler)
   kaptTest(libs.androidx.room.compiler)
   kaptTest(libs.dagger.compiler)
+
+  androidTestImplementation(libs.kaspresso)
+  androidTestImplementation(libs.junit)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.test.ext.junit)
 }
