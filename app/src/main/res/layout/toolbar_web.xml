@@ -26,7 +26,7 @@
     android:elevation="@dimen/cardview_elevation"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    tools:targetApi="lollipop">
+    tools:ignore="Overdraw">
 
     <LinearLayout
         android:id="@+id/toolbar_web"

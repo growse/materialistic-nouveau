@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import com.growse.android.io.github.hidroh.materialistic.ActivityModule;
 import com.growse.android.io.github.hidroh.materialistic.Injectable;
 
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+@SuppressWarnings("deprecation")
 public class ItemSyncJobService extends JobService {
     @Inject RestServiceFactory mFactory;
     @Inject ReadabilityClient mReadabilityClient;
