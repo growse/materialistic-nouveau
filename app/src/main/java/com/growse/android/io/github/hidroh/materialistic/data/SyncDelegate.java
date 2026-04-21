@@ -431,7 +431,6 @@ public class SyncDelegate {
             this.id = id;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         Job(PersistableBundle bundle) {
             id = bundle.getString(EXTRA_ID);
             connectionEnabled = bundle.getInt(EXTRA_CONNECTION_ENABLED) == 1;
@@ -450,7 +449,6 @@ public class SyncDelegate {
             notificationEnabled = bundle.getBoolean(EXTRA_NOTIFICATION_ENABLED);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Synthetic PersistableBundle toPersistableBundle() {
             PersistableBundle bundle = new PersistableBundle();
             bundle.putString(EXTRA_ID, id);
