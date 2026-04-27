@@ -40,7 +40,8 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
-import okio.Okio
+import okio.buffer
+import okio.sink
 import rx.Observable
 import rx.Scheduler
 import rx.android.schedulers.AndroidSchedulers
@@ -217,7 +218,7 @@ constructor(
     if (!dir.exists() && !dir.mkdir()) return null
     val file = File(dir, FILENAME_EXPORT)
     if (!file.exists() && !file.createNewFile()) return null
-    val bufferedSink = Okio.buffer(Okio.sink(file))
+    val bufferedSink = file.sink().buffer()
     with(bufferedSink) {
       do {
         val item = cursor.favorite
