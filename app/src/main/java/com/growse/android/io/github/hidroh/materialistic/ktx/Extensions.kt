@@ -26,9 +26,12 @@ import androidx.core.content.FileProvider
 import com.growse.android.io.github.hidroh.materialistic.AppUtils
 import java.io.Closeable
 import java.io.File
-import okhttp3.internal.Util
 
-inline fun Closeable.closeQuietly() = Util.closeQuietly(this)
+fun Closeable.closeQuietly() {
+  try {
+    close()
+  } catch (_: Exception) {}
+}
 
 inline fun File.getUri(context: Context, authority: String) =
     FileProvider.getUriForFile(context, authority, this)!!
