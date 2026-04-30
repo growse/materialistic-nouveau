@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
     applicationId = "com.growse.android.io.github.hidroh.materialistic"
     minSdk = 23
-    targetSdk = 35
+    targetSdk = 36
     versionCode = 79
     versionName = "3.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
