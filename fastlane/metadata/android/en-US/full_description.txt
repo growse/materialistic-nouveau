@@ -1,0 +1,13 @@
+Materialistic is a material design Hacker News client for Android.
+
+Features:
+- Browse the top, new, best, ask, show and jobs stories on Hacker News
+- Read and post comments
+- Search stories using Algolia Hacker News Search
+- Save stories and comments for offline reading
+- Multiple themes including light, dark, and AMOLED dark
+- Read article content via built-in web view or Mercury Web Parser
+- Share stories and comments
+- Supports Android custom tabs for opening links
+
+Uses the official Hacker News API. User actions such as voting, commenting, and submitting stories require a Hacker News account.
