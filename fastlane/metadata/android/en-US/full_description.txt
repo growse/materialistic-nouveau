@@ -1,4 +1,4 @@
-Materialistic is a material design Hacker News client for Android.
+Materialistic Nouveau is a material design Hacker News client for Android. It's a fork of https://github.com/hidroh/materialistic
 
 Features:
 - Browse the top, new, best, ask, show and jobs stories on Hacker News
