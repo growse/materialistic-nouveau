@@ -22,6 +22,10 @@ build:
     {{gradlec}} assembleDebug
 
 [group('build')]
+release:
+    {{gradlec}} assembleRelease
+
+[group('build')]
 build-all:
     {{gradlec}} assembleDebug app:assembleAndroidTest app:assembleDebugUnitTest assembleRelease
 
