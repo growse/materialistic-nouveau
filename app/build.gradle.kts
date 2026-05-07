@@ -8,6 +8,11 @@ plugins {
 android {
   compileSdk = 36
 
+  dependenciesInfo {
+    includeInApk = false
+    includeInBundle = false
+  }
+
   defaultConfig {
     applicationId = "com.growse.android.io.github.hidroh.materialistic"
     minSdk = 23
