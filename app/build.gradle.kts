@@ -18,7 +18,7 @@ android {
     minSdk = 23
     targetSdk = 36
     versionCode = 4000
-    versionName = "v4.0.1"
+    versionName = "v4.0.2"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
