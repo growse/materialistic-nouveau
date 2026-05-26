@@ -89,7 +89,7 @@ class StoryRecyclerViewAdapter(context: Context) :
         }
       }
 
-  @JvmField @Inject @Named(ActivityModule.HN) var mItemManager: ItemManager? = null
+  @JvmField @Inject @field:Named(ActivityModule.HN) var mItemManager: ItemManager? = null
 
   @JvmField @Inject var mSessionManager: SessionManager? = null
 
@@ -274,10 +274,12 @@ class StoryRecyclerViewAdapter(context: Context) :
     mUpdateListener = updateListener
   }
 
-  fun setItems(items: MutableList<Item>) {
-    setUpdated(items)
+  fun setItems(newItems: List<Item>) {
+    setUpdated(newItems)
+    items.beginBatchedUpdates()
     items.clear()
-    items.addAll(items)
+    newItems.forEach { items.add(it) }
+    items.endBatchedUpdates()
   }
 
   fun setHighlightUpdated(highlightUpdated: Boolean) {

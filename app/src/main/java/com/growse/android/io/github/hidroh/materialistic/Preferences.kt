@@ -217,7 +217,7 @@ object Preferences {
 
   @JvmStatic
   fun getCommentMaxLines(context: Context): Int {
-    val maxLinesString = get(context, R.string.pref_max_lines, 10)
+    val maxLinesString = get(context, R.string.pref_max_lines, "10")
     var maxLines = maxLinesString.toInt()
     if (maxLines < 0) {
       maxLines = Int.MAX_VALUE
