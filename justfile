@@ -29,6 +29,10 @@ release:
 build-all:
     {{gradlec}} assembleDebug app:assembleAndroidTest app:assembleDebugUnitTest assembleRelease
 
+[group('build')]
+install: build
+    adb install -r app/build/outputs/apk/debug/app-debug.apk
+
 [group('format')]
 format:
     {{gradlec}} ktfmtFormat
