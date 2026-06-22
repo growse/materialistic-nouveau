@@ -33,10 +33,10 @@ fun Closeable.closeQuietly() {
   } catch (_: Exception) {}
 }
 
-inline fun File.getUri(context: Context, authority: String) =
+fun File.getUri(context: Context, authority: String) =
     FileProvider.getUriForFile(context, authority, this)!!
 
-inline fun Uri.toSendIntentChooser(context: Context) =
+ fun Uri.toSendIntentChooser(context: Context) =
     AppUtils.makeSendIntentChooser(context, this)!!
 
 fun NotificationCompat.Builder.setChannel(

@@ -1,21 +1,27 @@
-## Materialistic for Hacker News
-Material design [Hacker News] client for Android, uses official [HackerNews/API], [Dagger] for dependency injection.
+## Materialistic Nouveau for Hacker News
+Material design [Hacker News] client for Android, uses official [HackerNews/API].
 
-[![Get it on Google Play][Play Store Badge]][Play Store]
+Forked from [Materialistic](https://github.com/hidroh/materialistic).
+
+[<img src="https://f-droid.org/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/com.growse.android.io.github.hidroh.materialistic)
 
 ### Setup
 **Requirements**
-- JDK 11
+- JDK 21
 - Latest Android SDK tools
 - Latest Android platform tools
 - AndroidX
+- Kotlin
 
 **Dependencies**
 - [Official Hacker News API][HackerNews/API], user services (e.g. login/create account/vote/comment) rely on redirect requests to Hacker News website
 - [Algolia Hacker News Search API]
 - [Mercury Web Parser API]
-- [Android Jetpack]: appcompat-v7 / recyclerview-v7 / design / cardview-v7 / preference-v7 / customtabs
-- Square [Retrofit] / [OkHttp] / [AssertJ] / [Dagger] / [LeakCanary]
+- [AndroidX]: appcompat / recyclerview / cardview / preference / browser (custom tabs) / room / lifecycle (ViewModel & LiveData)
+- [Material Components]
+- Square [Retrofit] / [OkHttp] / [Dagger]
 - [RxJava] & [RxAndroid]
 - [PDF.js]
 
@@ -23,9 +29,9 @@ Material design [Hacker News] client for Android, uses official [HackerNews/API]
 
     ./gradlew assembleDebug
 
-Build with LeakCanary on
+or, using [just]:
 
-    ./gradlew assembleDebug -Pleak
+    just build
 
 Grab your Mercury Web Parser API key [here][mercury] if you want to connect to Mercury.
 
@@ -62,18 +68,16 @@ Contributions are always welcome. Please make sure you read [Contributing notes]
 
 [Hacker News]: https://news.ycombinator.com/
 [HackerNews/API]: https://github.com/HackerNews/API
-[Play Store]: https://play.google.com/store/apps/details?id=io.github.hidroh.materialistic&referrer=utm_source%3Dgithub
-[Play Store Badge]: https://play.google.com/intl/en_us/badges/images/badge_new.png
 [Algolia Hacker News Search API]: https://github.com/algolia/hn-search
 [Mercury Web Parser API]: https://mercury.postlight.com/web-parser/
-[AOSP support library]: https://developer.android.com/tools/support-library/features.html
+[AndroidX]: https://developer.android.com/jetpack/androidx
+[Material Components]: https://github.com/material-components/material-components-android
 [Retrofit]: https://github.com/square/retrofit
 [OkHttp]: https://github.com/square/okhttp
-[AssertJ]: https://github.com/square/assertj-android
 [Dagger]: https://github.com/square/dagger
-[LeakCanary]: https://github.com/square/leakcanary
 [RxJava]: https://github.com/ReactiveX/RxJava
 [RxAndroid]: https://github.com/ReactiveX/RxAndroid
+[just]: https://github.com/casey/just
 [mercury]: https://mercury.postlight.com/web-parser/
 [article-theme1]: http://www.hidroh.com/2015/02/16/support-multiple-themes-android-app/
 [article-theme2]: http://www.hidroh.com/2015/02/25/support-multiple-themes-android-app-part-2/

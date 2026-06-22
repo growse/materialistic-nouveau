@@ -119,7 +119,7 @@ class StoryRecyclerViewAdapter(context: Context) :
       return@Observer
     }
     var position = RecyclerView.NO_POSITION
-    for (i in 0..<items!!.size()) {
+    for (i in 0..<items.size()) {
       if (TextUtils.equals(items.get(i).getId(), uri.lastPathSegment)) {
         position = i
         break
@@ -668,7 +668,7 @@ class StoryRecyclerViewAdapter(context: Context) :
       get() = swipePreferences[1]
 
     fun hasAction(action: SwipeAction): Boolean {
-      return swipePreferences!![0] == action || swipePreferences!![1] == action
+      return swipePreferences[0] == action || swipePreferences[1] == action
     }
 
     private val saveText: String?
