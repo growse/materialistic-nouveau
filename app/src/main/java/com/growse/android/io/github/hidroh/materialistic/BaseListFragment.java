@@ -20,6 +20,9 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +62,14 @@ abstract class BaseListFragment extends BaseFragment implements Scrollable {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView.setLayoutManager(new SnappyLinearLayoutManager(getActivity(), false));
+        final int initialPaddingBottom = mRecyclerView.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(mRecyclerView, (v, windowInsets) -> {
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                    initialPaddingBottom + systemBars.bottom);
+            return windowInsets;
+        });
+        ViewCompat.requestApplyInsets(mRecyclerView);
         final int verticalMargin = getResources()
                 .getDimensionPixelSize(R.dimen.cardview_vertical_margin);
         final int horizontalMargin = getResources()

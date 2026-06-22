@@ -1,0 +1,1 @@
+Fixed edge-to-edge display: the toolbar no longer overlaps the status bar, and content now draws properly behind the gesture navigation bar.
