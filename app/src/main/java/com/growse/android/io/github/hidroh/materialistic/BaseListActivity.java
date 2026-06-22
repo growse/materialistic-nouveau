@@ -55,9 +55,12 @@ import com.growse.android.io.github.hidroh.materialistic.widget.NavFloatingActio
 import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu;
 import com.growse.android.io.github.hidroh.materialistic.widget.ViewPager;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * List activity that renders alternative layouts for portrait/landscape
  */
+@AndroidEntryPoint
 public abstract class BaseListActivity extends DrawerActivity implements MultiPaneListener {
 
     protected static final String LIST_FRAGMENT_TAG = BaseListActivity.class.getName() +

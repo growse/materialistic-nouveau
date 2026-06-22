@@ -29,6 +29,7 @@ import androidx.annotation.WorkerThread
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.growse.android.io.github.hidroh.materialistic.FavoriteActivity
 import com.growse.android.io.github.hidroh.materialistic.R
 import com.growse.android.io.github.hidroh.materialistic.ktx.closeQuietly
@@ -54,6 +55,7 @@ constructor(
     private val cache: LocalCache,
     @Named("io") private val ioScheduler: Scheduler,
     private val dao: MaterialisticDatabase.SavedStoriesDao,
+    private val openHelper: SupportSQLiteOpenHelper,
 ) : LocalItemManager<Favorite> {
 
   companion object {
@@ -316,9 +318,12 @@ constructor(
   @WorkerThread
   private fun query(filter: String?): android.database.Cursor =
       if (filter.isNullOrEmpty()) {
-        dao.selectAllToCursor()
+        openHelper.readableDatabase.query("SELECT * FROM saved ORDER BY time DESC")
       } else {
-        dao.searchToCursor(filter)
+        openHelper.readableDatabase.query(
+            "SELECT * FROM saved WHERE title LIKE '%' || ? || '%' ORDER BY time DESC",
+            arrayOf<Any?>(filter),
+        )
       }
 
   @WorkerThread

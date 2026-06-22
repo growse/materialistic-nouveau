@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-package com.growse.android.io.github.hidroh.materialistic;
+package com.growse.android.io.github.hidroh.materialistic.data;
 
-import dagger.ObjectGraph;
+public final class ItemManagerQualifiers {
+    public static final String ALGOLIA = "algolia";
+    public static final String POPULAR = "popular";
+    public static final String HN = "hn";
 
-/**
- * Interface for context that can be injected with dependencies
- */
-public interface Injectable {
-    /**
-     * Injects the members of given object, including injectable members
-     * inherited from its supertypes.
-     * @param object object with members to be injected
-     */
-    void inject(Object object);
-
-    ObjectGraph getApplicationGraph();
+    private ItemManagerQualifiers() {
+    }
 }

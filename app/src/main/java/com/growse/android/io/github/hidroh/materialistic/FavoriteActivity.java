@@ -29,6 +29,9 @@ import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatabase;
 import com.growse.android.io.github.hidroh.materialistic.data.WebItem;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class FavoriteActivity extends BaseListActivity {
 
     static final String EMPTY_QUERY = MaterialisticDatabase.class.getName();

@@ -34,19 +34,26 @@ import android.widget.Toast;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaClient;
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClient;
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatabase;
+import com.growse.android.io.github.hidroh.materialistic.data.SessionManager;
+import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu;
 import com.growse.android.io.github.hidroh.materialistic.widget.StoryRecyclerViewAdapter;
 
 import java.util.List;
 
 import rx.Scheduler;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ListFragment extends BaseListFragment {
 
     public static final String EXTRA_ITEM_MANAGER = ListFragment.class.getName() + ".EXTRA_ITEM_MANAGER";
@@ -73,10 +80,15 @@ public class ListFragment extends BaseListFragment {
     };
     private StoryRecyclerViewAdapter mAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    @Inject @Named(ActivityModule.HN) ItemManager mHnItemManager;
-    @Inject @Named(ActivityModule.ALGOLIA) ItemManager mAlgoliaItemManager;
-    @Inject @Named(ActivityModule.POPULAR) ItemManager mPopularItemManager;
+    @Inject @Named(ItemManagerQualifiers.HN) ItemManager mHnItemManager;
+    @Inject @Named(ItemManagerQualifiers.ALGOLIA) ItemManager mAlgoliaItemManager;
+    @Inject @Named(ItemManagerQualifiers.POPULAR) ItemManager mPopularItemManager;
     @Inject @Named(DataModule.IO_THREAD) Scheduler mIoThreadScheduler;
+    @Inject SessionManager mSessionManager;
+    @Inject PopupMenu mPopupMenu;
+    @Inject AlertDialogBuilder mAlertDialogBuilder;
+    @Inject UserServices mUserServices;
+    @Inject FavoriteManager mFavoriteManager;
     private StoryListViewModel mStoryListViewModel;
     private View mErrorView;
     private View mEmptyView;
@@ -217,7 +229,9 @@ public class ListFragment extends BaseListFragment {
     @Override
     protected StoryRecyclerViewAdapter getAdapter() {
         if (mAdapter == null) {
-            mAdapter = new StoryRecyclerViewAdapter(requireContext());
+            mAdapter = new StoryRecyclerViewAdapter(requireActivity(), mHnItemManager,
+                    mSessionManager, mPopupMenu, mAlertDialogBuilder, mUserServices,
+                    mFavoriteManager);
         }
         return mAdapter;
     }

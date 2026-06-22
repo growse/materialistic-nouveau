@@ -30,7 +30,10 @@ import android.widget.ProgressBar;
 import com.growse.android.io.github.hidroh.materialistic.widget.AdBlockWebViewClient;
 import com.growse.android.io.github.hidroh.materialistic.widget.CacheableWebView;
 
-public class OfflineWebActivity extends InjectableActivity {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class OfflineWebActivity extends ThemedActivity {
     static final String EXTRA_URL = OfflineWebActivity.class.getName() + ".EXTRA_URL";
 
     @SuppressWarnings("ConstantConditions")

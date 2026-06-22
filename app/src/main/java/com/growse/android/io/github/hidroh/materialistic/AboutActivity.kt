@@ -21,8 +21,10 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBar
+import dagger.hilt.android.AndroidEntryPoint
 
-class AboutActivity : InjectableActivity() {
+@AndroidEntryPoint
+class AboutActivity : ThemedActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_about)

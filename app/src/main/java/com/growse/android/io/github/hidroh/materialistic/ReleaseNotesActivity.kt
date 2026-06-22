@@ -23,8 +23,10 @@ import android.view.Window
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import dagger.hilt.android.AndroidEntryPoint
 
-class ReleaseNotesActivity : InjectableActivity() {
+@AndroidEntryPoint
+class ReleaseNotesActivity : ThemedActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

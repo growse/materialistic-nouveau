@@ -62,6 +62,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.FileDownloader;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.ReadabilityClient;
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener;
@@ -75,6 +76,9 @@ import okhttp3.Call;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class WebFragment extends LazyLoadFragment
         implements Scrollable, KeyDelegate.BackInterceptor {
     public static final String EXTRA_ITEM = WebFragment.class.getName() +".EXTRA_ITEM";
@@ -90,7 +94,7 @@ public class WebFragment extends LazyLoadFragment
     @Synthetic WebView mWebView;
     private NestedScrollView mScrollView;
     @Synthetic boolean mExternalRequired = false;
-    @Inject @Named(ActivityModule.HN) ItemManager mItemManager;
+    @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManager;
     @Inject PopupMenu mPopupMenu;
     private KeyDelegate.NestedScrollViewHelper mScrollableHelper;
     private final Preferences.Observable mPreferenceObservable = new Preferences.Observable();

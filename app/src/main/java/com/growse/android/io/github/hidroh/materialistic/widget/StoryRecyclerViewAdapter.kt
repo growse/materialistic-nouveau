@@ -37,7 +37,7 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SortedList
 import androidx.recyclerview.widget.SortedListAdapterCallback
-import com.growse.android.io.github.hidroh.materialistic.ActivityModule
+import com.growse.android.io.github.hidroh.materialistic.AlertDialogBuilder
 import com.growse.android.io.github.hidroh.materialistic.AppUtils
 import com.growse.android.io.github.hidroh.materialistic.ComposeActivity
 import com.growse.android.io.github.hidroh.materialistic.Preferences
@@ -46,6 +46,7 @@ import com.growse.android.io.github.hidroh.materialistic.R
 import com.growse.android.io.github.hidroh.materialistic.UserActivity
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
+import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager.Companion.isAdded
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager.Companion.isCleared
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager.Companion.isRemoved
@@ -55,11 +56,23 @@ import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatab
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener
 import com.growse.android.io.github.hidroh.materialistic.data.SessionManager
 import java.lang.ref.WeakReference
-import javax.inject.Inject
-import javax.inject.Named
 
-class StoryRecyclerViewAdapter(context: Context) :
-    ListRecyclerViewAdapter<ListRecyclerViewAdapter.ItemViewHolder?, Item?>(context) {
+class StoryRecyclerViewAdapter(
+    context: Context,
+    private val mItemManager: ItemManager,
+    private val mSessionManager: SessionManager,
+    popupMenu: PopupMenu,
+    alertDialogBuilder: AlertDialogBuilder<*>,
+    userServices: UserServices,
+    favoriteManager: FavoriteManager,
+) :
+    ListRecyclerViewAdapter<ListRecyclerViewAdapter.ItemViewHolder?, Item?>(
+        context,
+        popupMenu,
+        alertDialogBuilder,
+        userServices,
+        favoriteManager,
+    ) {
   private val VOTED = Any()
   private val mAutoViewScrollListener: RecyclerView.OnScrollListener =
       object : RecyclerView.OnScrollListener() {
@@ -88,10 +101,6 @@ class StoryRecyclerViewAdapter(context: Context) :
           return item1.getLongId() == item2.getLongId()
         }
       }
-
-  @JvmField @Inject @field:Named(ActivityModule.HN) var mItemManager: ItemManager? = null
-
-  @JvmField @Inject var mSessionManager: SessionManager? = null
 
   @Synthetic val items: SortedList<Item> = SortedList<Item>(Item::class.java, mSortedListCallback)
 
@@ -320,7 +329,7 @@ class StoryRecyclerViewAdapter(context: Context) :
       return
     }
     item.setLocalRevision(0)
-    mItemManager!!.getItem(item.getId(), itemCacheMode, ItemResponseListener(this, item))
+    mItemManager.getItem(item.getId(), itemCacheMode, ItemResponseListener(this, item))
   }
 
   override fun bindItem(holder: ItemViewHolder?, position: Int) {
@@ -535,7 +544,7 @@ class StoryRecyclerViewAdapter(context: Context) :
     if (item == null || !isItemAvailable(item) || item.isViewed()) {
       return
     }
-    mSessionManager!!.view(item.getId())
+    mSessionManager.view(item.getId())
   }
 
   private fun toggleAutoMarkAsViewed(recyclerView: RecyclerView) {

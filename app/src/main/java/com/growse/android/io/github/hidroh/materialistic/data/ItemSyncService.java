@@ -22,9 +22,9 @@ import android.os.IBinder;
 
 import javax.inject.Inject;
 
-import com.growse.android.io.github.hidroh.materialistic.ActivityModule;
-import com.growse.android.io.github.hidroh.materialistic.Injectable;
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class ItemSyncService extends Service {
 
     private static ItemSyncAdapter sItemSyncAdapter = null;
@@ -35,10 +35,6 @@ public class ItemSyncService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((Injectable) getApplication())
-                .getApplicationGraph()
-                .plus(new ActivityModule(this))
-                .inject(this);
         synchronized (sItemSyncAdapterLock) {
             if (sItemSyncAdapter == null) {
                 sItemSyncAdapter = new ItemSyncAdapter(getApplicationContext(),

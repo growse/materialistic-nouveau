@@ -43,7 +43,10 @@ import javax.inject.Inject;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
-public class SubmitActivity extends InjectableActivity {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class SubmitActivity extends ThemedActivity {
     private static final String HN_GUIDELINES_URL = "https://news.ycombinator.com/newsguidelines.html";
     private static final String STATE_SUBJECT = "state:subject";
     private static final String STATE_TEXT = "state:text";

@@ -36,12 +36,9 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import com.growse.android.io.github.hidroh.materialistic.AlertDialogBuilder;
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
 import com.growse.android.io.github.hidroh.materialistic.ComposeActivity;
-import com.growse.android.io.github.hidroh.materialistic.Injectable;
 import com.growse.android.io.github.hidroh.materialistic.Navigable;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
@@ -57,9 +54,9 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     private static final int DURATION_PER_LINE_MILLIS = 20;
     LayoutInflater mLayoutInflater;
     private ItemManager mItemManager;
-    @Inject UserServices mUserServices;
-    @Inject PopupMenu mPopupMenu;
-    @Inject AlertDialogBuilder mAlertDialogBuilder;
+    final UserServices mUserServices;
+    final PopupMenu mPopupMenu;
+    final AlertDialogBuilder mAlertDialogBuilder;
     private int mTertiaryTextColorResId;
     private int mSecondaryTextColorResId;
     private int mCardBackgroundColorResId;
@@ -74,16 +71,17 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         void onPosition(int position);
     }
 
-    ItemRecyclerViewAdapter(ItemManager itemManager) {
+    ItemRecyclerViewAdapter(ItemManager itemManager, UserServices userServices,
+                             PopupMenu popupMenu, AlertDialogBuilder alertDialogBuilder) {
         mItemManager = itemManager;
+        mUserServices = userServices;
+        mPopupMenu = popupMenu;
+        mAlertDialogBuilder = alertDialogBuilder;
     }
 
     @Override
     public void attach(Context context, RecyclerView recyclerView) {
         super.attach(context, recyclerView);
-        if (context instanceof Injectable) {
-            ((Injectable) context).inject(this);
-        }
         mLayoutInflater = AppUtils.createLayoutInflater(context);
         TypedArray ta = context.obtainStyledAttributes(new int[]{
                 android.R.attr.textColorTertiary,

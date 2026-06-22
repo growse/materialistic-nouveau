@@ -31,6 +31,9 @@ import javax.inject.Inject;
 
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class LoginActivity extends AccountAuthenticatorActivity {
     public static final String EXTRA_ADD_ACCOUNT = LoginActivity.class.getName() + ".EXTRA_ADD_ACCOUNT";
     @Inject UserServices mUserServices;

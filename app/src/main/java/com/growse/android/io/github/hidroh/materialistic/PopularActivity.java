@@ -23,6 +23,9 @@ import android.view.MenuItem;
 
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClient;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class PopularActivity extends BaseListActivity {
     private static final String STATE_RANGE = "state:range";
 

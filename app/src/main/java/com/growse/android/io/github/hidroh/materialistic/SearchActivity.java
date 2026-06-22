@@ -28,6 +28,9 @@ import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaClient;
 import com.growse.android.io.github.hidroh.materialistic.data.HackerNewsClient;
 import com.growse.android.io.github.hidroh.materialistic.data.SearchRecentSuggestionsProvider;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SearchActivity extends BaseListActivity {
 
     private static final int MAX_RECENT_SUGGESTIONS = 10;

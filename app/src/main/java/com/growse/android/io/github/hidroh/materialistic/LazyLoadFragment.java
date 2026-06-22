@@ -19,9 +19,12 @@ package com.growse.android.io.github.hidroh.materialistic;
 import android.content.Context;
 import android.os.Bundle;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * Base fragment that controls load timing depends on WIFI and visibility
  */
+@AndroidEntryPoint
 public abstract class LazyLoadFragment extends BaseFragment {
     public static final String EXTRA_EAGER_LOAD = LazyLoadFragment.class.getName() + ".EXTRA_EAGER_LOAD";
     public static final String EXTRA_RETAIN_INSTANCE = WebFragment.class.getName() + ".EXTRA_RETAIN_INSTANCE";

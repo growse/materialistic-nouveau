@@ -60,6 +60,7 @@ import com.growse.android.io.github.hidroh.materialistic.R;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.widget.AdBlockWebViewClient;
 import com.growse.android.io.github.hidroh.materialistic.widget.CacheableWebView;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -83,7 +84,7 @@ public class SyncDelegate {
     @VisibleForTesting CacheableWebView mWebView;
 
     @Inject
-    SyncDelegate(Context context, RestServiceFactory factory,
+    SyncDelegate(@ApplicationContext Context context, RestServiceFactory factory,
                  ReadabilityClient readabilityClient) {
         mContext = context;
         mSharedPreferences = context.getSharedPreferences(

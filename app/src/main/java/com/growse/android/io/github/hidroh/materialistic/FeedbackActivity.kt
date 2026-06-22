@@ -24,10 +24,12 @@ import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import com.growse.android.io.github.hidroh.materialistic.data.FeedbackClient
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-class FeedbackActivity : InjectableActivity() {
+@AndroidEntryPoint
+class FeedbackActivity : ThemedActivity() {
   @JvmField @Inject var mFeedbackClient: FeedbackClient? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {

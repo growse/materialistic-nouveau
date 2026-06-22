@@ -20,6 +20,9 @@ import androidx.annotation.NonNull;
 
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ListActivity extends BaseStoriesActivity {
 
     @Override

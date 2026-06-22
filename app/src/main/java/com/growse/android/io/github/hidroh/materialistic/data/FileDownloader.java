@@ -9,8 +9,10 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Request;
@@ -18,13 +20,14 @@ import okhttp3.Response;
 import okio.BufferedSink;
 import okio.Okio;
 
+@Singleton
 public class FileDownloader {
     private Call.Factory mCallFactory;
     private final String mCacheDir;
     @Synthetic final Handler mMainHandler;
 
     @Inject
-    public FileDownloader(Context context, Call.Factory callFactory) {
+    public FileDownloader(@ApplicationContext Context context, Call.Factory callFactory) {
         mCacheDir = context.getCacheDir().getPath(); // don't need to keep a reference to context after this
         mCallFactory = callFactory;
         mMainHandler = new Handler(Looper.getMainLooper());

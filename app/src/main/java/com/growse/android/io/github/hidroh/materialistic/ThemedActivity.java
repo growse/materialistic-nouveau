@@ -34,6 +34,7 @@ public abstract class ThemedActivity extends AppCompatActivity {
     private final Preferences.Observable mThemeObservable = new Preferences.Observable();
     private boolean mResumed = true;
     private boolean mPendingThemeChanged;
+    private boolean mDestroyed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +78,27 @@ public abstract class ThemedActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mThemeObservable.unsubscribe(this);
+        mDestroyed = true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        // TODO http://b.android.com/176265
+        try {
+            super.onBackPressed();
+        } catch (IllegalStateException e) {
+            supportFinishAfterTransition();
+        }
     }
 
     @Override
     public void setTitle(CharSequence title) {
         super.setTitle(title);
         setTaskTitle(title);
+    }
+
+    public boolean isActivityDestroyed() {
+        return mDestroyed;
     }
 
     protected boolean isDialogTheme() {

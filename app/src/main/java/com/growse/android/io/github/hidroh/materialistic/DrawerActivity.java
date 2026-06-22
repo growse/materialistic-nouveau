@@ -39,7 +39,10 @@ import javax.inject.Inject;
 
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
-public abstract class DrawerActivity extends InjectableActivity {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public abstract class DrawerActivity extends ThemedActivity {
 
     @Inject AlertDialogBuilder mAlertDialogBuilder;
     private ActionBarDrawerToggle mDrawerToggle;

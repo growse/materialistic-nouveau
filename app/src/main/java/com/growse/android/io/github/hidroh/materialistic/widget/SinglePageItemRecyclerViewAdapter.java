@@ -34,13 +34,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Inject;
-
+import com.growse.android.io.github.hidroh.materialistic.AlertDialogBuilder;
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
 import com.growse.android.io.github.hidroh.materialistic.Navigable;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
 import com.growse.android.io.github.hidroh.materialistic.ResourcesProvider;
+import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
@@ -57,7 +57,7 @@ public class SinglePageItemRecyclerViewAdapter
             }
         }
     };
-    @Inject ResourcesProvider mResourcesProvider;
+    private final ResourcesProvider mResourcesProvider;
     private int mLevelIndicatorWidth = 0;
     private final boolean mAutoExpand;
     private boolean mColorCoded = true;
@@ -67,10 +67,13 @@ public class SinglePageItemRecyclerViewAdapter
     private int[] mLock;
     private int mColorOpacity = 100;
 
-    public SinglePageItemRecyclerViewAdapter(ItemManager itemManager,
+    public SinglePageItemRecyclerViewAdapter(ItemManager itemManager, UserServices userServices,
+                                             PopupMenu popupMenu, AlertDialogBuilder alertDialogBuilder,
+                                             ResourcesProvider resourcesProvider,
                                              @NonNull SavedState state,
                                              boolean autoExpand) {
-        super(itemManager);
+        super(itemManager, userServices, popupMenu, alertDialogBuilder);
+        mResourcesProvider = resourcesProvider;
         this.mState = state;
         mAutoExpand = autoExpand;
     }

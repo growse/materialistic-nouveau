@@ -16,6 +16,7 @@
 
 package com.growse.android.io.github.hidroh.materialistic;
 
+import android.accounts.AccountManager;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 import android.content.Context;
 
@@ -24,6 +25,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
+import dagger.hilt.components.SingletonComponent;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServicesClient;
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaClient;
@@ -31,6 +35,7 @@ import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClie
 import com.growse.android.io.github.hidroh.materialistic.data.FeedbackClient;
 import com.growse.android.io.github.hidroh.materialistic.data.HackerNewsClient;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.LocalCache;
 import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatabase;
 import com.growse.android.io.github.hidroh.materialistic.data.ReadabilityClient;
@@ -42,28 +47,30 @@ import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.growse.android.io.github.hidroh.materialistic.ActivityModule.ALGOLIA;
-import static com.growse.android.io.github.hidroh.materialistic.ActivityModule.HN;
-import static com.growse.android.io.github.hidroh.materialistic.ActivityModule.POPULAR;
-
-@Module(library = true, complete = false, includes = NetworkModule.class)
+@Module
+@InstallIn(SingletonComponent.class)
 public class DataModule {
     public static final String MAIN_THREAD = "main";
     public static final String IO_THREAD = "io";
 
-    @Provides @Singleton @Named(HN)
+    @Provides @Singleton @Named(ItemManagerQualifiers.HN)
     public ItemManager provideHackerNewsClient(HackerNewsClient client) {
         return client;
     }
 
-    @Provides @Singleton @Named(ALGOLIA)
+    @Provides @Singleton @Named(ItemManagerQualifiers.ALGOLIA)
     public ItemManager provideAlgoliaClient(AlgoliaClient client) {
         return client;
     }
 
-    @Provides @Singleton @Named(POPULAR)
+    @Provides @Singleton @Named(ItemManagerQualifiers.POPULAR)
     public ItemManager provideAlgoliaPopularClient(AlgoliaPopularClient client) {
         return client;
+    }
+
+    @Provides @Singleton
+    public AccountManager provideAccountManager(@ApplicationContext Context context) {
+        return AccountManager.get(context);
     }
 
     @Provides @Singleton
@@ -108,7 +115,7 @@ public class DataModule {
     }
 
     @Provides @Singleton
-    public MaterialisticDatabase provideDatabase(Context context) {
+    public MaterialisticDatabase provideDatabase(@ApplicationContext Context context) {
         return MaterialisticDatabase.getInstance(context);
     }
 

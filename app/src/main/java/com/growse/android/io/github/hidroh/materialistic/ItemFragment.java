@@ -40,17 +40,23 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener;
 import com.growse.android.io.github.hidroh.materialistic.data.WebItem;
 import com.growse.android.io.github.hidroh.materialistic.widget.CommentItemDecoration;
 import com.growse.android.io.github.hidroh.materialistic.widget.ItemRecyclerViewAdapter;
 import com.growse.android.io.github.hidroh.materialistic.widget.MultiPageItemRecyclerViewAdapter;
+import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu;
 import com.growse.android.io.github.hidroh.materialistic.widget.SinglePageItemRecyclerViewAdapter;
 import com.growse.android.io.github.hidroh.materialistic.widget.SnappyLinearLayoutManager;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ItemFragment extends LazyLoadFragment implements Scrollable, Navigable {
 
     public static final String EXTRA_ITEM = ItemFragment.class.getName() + ".EXTRA_ITEM";
@@ -63,7 +69,11 @@ public class ItemFragment extends LazyLoadFragment implements Scrollable, Naviga
     private View mEmptyView;
     private Item mItem;
     private String mItemId;
-    @Inject @Named(ActivityModule.HN) ItemManager mItemManager;
+    @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManager;
+    @Inject UserServices mUserServices;
+    @Inject PopupMenu mPopupMenu;
+    @Inject AlertDialogBuilder mAlertDialogBuilder;
+    @Inject ResourcesProvider mResourcesProvider;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private SinglePageItemRecyclerViewAdapter.SavedState mAdapterItems;
     private ItemRecyclerViewAdapter mAdapter;
@@ -244,9 +254,11 @@ public class ItemFragment extends LazyLoadFragment implements Scrollable, Naviga
                 mAdapterItems = new SinglePageItemRecyclerViewAdapter.SavedState(
                         new ArrayList<>(Arrays.asList(mItem.getKidItems())));
             }
-            mAdapter = new SinglePageItemRecyclerViewAdapter(mItemManager, mAdapterItems, autoExpand);
+            mAdapter = new SinglePageItemRecyclerViewAdapter(mItemManager, mUserServices,
+                    mPopupMenu, mAlertDialogBuilder, mResourcesProvider, mAdapterItems, autoExpand);
         } else {
-            mAdapter = new MultiPageItemRecyclerViewAdapter(mItemManager, mItem.getKidItems());
+            mAdapter = new MultiPageItemRecyclerViewAdapter(mItemManager, mUserServices,
+                    mPopupMenu, mAlertDialogBuilder, mItem.getKidItems());
         }
         mAdapter.setCacheMode(mCacheMode);
         mAdapter.initDisplayOptions(getActivity());

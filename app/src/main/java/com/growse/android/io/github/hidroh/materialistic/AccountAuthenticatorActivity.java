@@ -20,10 +20,13 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.os.Bundle;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * Simple copy of {@link android.accounts.AccountAuthenticatorActivity} that swaps base class
  */
-public abstract class AccountAuthenticatorActivity extends InjectableActivity {
+@AndroidEntryPoint
+public abstract class AccountAuthenticatorActivity extends ThemedActivity {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 

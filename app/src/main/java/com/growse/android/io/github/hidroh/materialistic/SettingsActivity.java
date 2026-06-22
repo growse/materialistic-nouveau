@@ -28,6 +28,9 @@ import javax.inject.Inject;
 
 import com.growse.android.io.github.hidroh.materialistic.data.SearchRecentSuggestionsProvider;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SettingsActivity extends DrawerActivity {
     @Inject AlertDialogBuilder mAlertDialogBuilder;
 

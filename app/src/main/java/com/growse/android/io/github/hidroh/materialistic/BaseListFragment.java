@@ -36,6 +36,9 @@ import javax.inject.Inject;
 import com.growse.android.io.github.hidroh.materialistic.widget.ListRecyclerViewAdapter;
 import com.growse.android.io.github.hidroh.materialistic.widget.SnappyLinearLayoutManager;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 abstract class BaseListFragment extends BaseFragment implements Scrollable {
     private static final String STATE_ADAPTER = "state:adapter";
     @Inject CustomTabsDelegate mCustomTabsDelegate;

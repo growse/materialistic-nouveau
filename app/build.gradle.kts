@@ -1,7 +1,7 @@
 plugins {
   alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.android)
-  alias(libs.plugins.kotlin.kapt)
+  alias(libs.plugins.ksp)
+  alias(libs.plugins.hilt)
   alias(libs.plugins.ktfmt)
 }
 
@@ -23,8 +23,9 @@ android {
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
     buildConfigField("String", "MERCURY_TOKEN", "\"\"")
-    resourceConfigurations += setOf("en", "zh-rCN", "es")
   }
+
+  androidResources { localeFilters += setOf("en", "zh-rCN", "es") }
 
   buildFeatures { buildConfig = true }
 
@@ -76,7 +77,7 @@ dependencies {
   implementation(libs.material)
   implementation(libs.androidx.preference)
   implementation(libs.androidx.browser)
-  implementation(libs.dagger)
+  implementation(libs.hilt.android)
   implementation(libs.retrofit)
   implementation(libs.retrofit.converter.gson)
   implementation(libs.retrofit.adapter.rxjava)
@@ -89,10 +90,8 @@ dependencies {
   implementation(libs.androidx.lifecycle.livedata.ktx)
   implementation(libs.androidx.lifecycle.compiler)
 
-  kapt(libs.androidx.room.compiler)
-  kapt(libs.dagger.compiler)
-  kaptTest(libs.androidx.room.compiler)
-  kaptTest(libs.dagger.compiler)
+  ksp(libs.androidx.room.compiler)
+  ksp(libs.hilt.android.compiler)
 
   androidTestImplementation(libs.kaspresso)
   androidTestImplementation(libs.junit)

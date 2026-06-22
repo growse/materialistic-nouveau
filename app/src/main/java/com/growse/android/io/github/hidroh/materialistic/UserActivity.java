@@ -40,21 +40,30 @@ import javax.inject.Named;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener;
 import com.growse.android.io.github.hidroh.materialistic.data.UserManager;
 import com.growse.android.io.github.hidroh.materialistic.widget.CommentItemDecoration;
+import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu;
 import com.growse.android.io.github.hidroh.materialistic.widget.SnappyLinearLayoutManager;
 import com.growse.android.io.github.hidroh.materialistic.widget.SubmissionRecyclerViewAdapter;
 
-public class UserActivity extends InjectableActivity implements Scrollable {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class UserActivity extends ThemedActivity implements Scrollable {
     public static final String EXTRA_USERNAME = UserActivity.class.getName() + ".EXTRA_USERNAME";
     private static final String STATE_USER = "state:user";
     private static final String PARAM_ID = "id";
     private static final String KARMA = " (%1$s)";
     @Inject UserManager mUserManager;
-    @Inject @Named(ActivityModule.HN) ItemManager mItemManger;
+    @Inject UserServices mUserServices;
+    @Inject PopupMenu mPopupMenu;
+    @Inject AlertDialogBuilder mAlertDialogBuilder;
+    @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManger;
     @Inject KeyDelegate mKeyDelegate;
     private KeyDelegate.RecyclerViewHelper mScrollableHelper;
     private String mUsername;
@@ -245,7 +254,8 @@ public class UserActivity extends InjectableActivity implements Scrollable {
         int count = mUser.getItems().length;
         mTabLayout.addTab(mTabLayout.newTab()
                 .setText(getResources().getQuantityString(R.plurals.submissions_count, count, count)));
-        mRecyclerView.setAdapter(new SubmissionRecyclerViewAdapter(mItemManger, mUser.getItems()));
+        mRecyclerView.setAdapter(new SubmissionRecyclerViewAdapter(mItemManger, mUserServices,
+                mPopupMenu, mAlertDialogBuilder, mUser.getItems()));
         mRecyclerView.setLayoutFrozen(mBottomSheetBehavior.getState() !=
                 BottomSheetBehavior.STATE_EXPANDED);
     }

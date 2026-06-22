@@ -15,7 +15,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import androidx.annotation.NonNull;
@@ -270,12 +269,6 @@ public abstract class MaterialisticDatabase extends RoomDatabase {
     public interface SavedStoriesDao {
         @Query("SELECT * FROM saved ORDER BY time DESC")
         LiveData<List<SavedStory>> selectAll();
-
-        @Query("SELECT * FROM saved ORDER BY time DESC")
-        Cursor selectAllToCursor();
-
-        @Query("SELECT * FROM saved WHERE title LIKE '%' || :query || '%' ORDER BY time DESC")
-        Cursor searchToCursor(String query);
 
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         void insert(SavedStory... savedStories);

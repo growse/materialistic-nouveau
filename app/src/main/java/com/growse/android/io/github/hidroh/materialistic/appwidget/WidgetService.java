@@ -32,29 +32,21 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.growse.android.io.github.hidroh.materialistic.ActivityModule;
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
-import com.growse.android.io.github.hidroh.materialistic.Application;
-import com.growse.android.io.github.hidroh.materialistic.Injectable;
 import com.growse.android.io.github.hidroh.materialistic.R;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class WidgetService extends RemoteViewsService {
     static final String EXTRA_SECTION = "extra:section";
     static final String EXTRA_LIGHT_THEME = "extra:lightTheme";
     static final String EXTRA_CUSTOM_QUERY = "extra:customQuery";
-    @Inject @Named(ActivityModule.HN) ItemManager mItemManager;
-    @Inject @Named(ActivityModule.ALGOLIA) ItemManager mSearchManager;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        ((Injectable) getApplication())
-                .getApplicationGraph()
-                .plus(new ActivityModule(this))
-                .inject(this);
-    }
+    @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManager;
+    @Inject @Named(ItemManagerQualifiers.ALGOLIA) ItemManager mSearchManager;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {

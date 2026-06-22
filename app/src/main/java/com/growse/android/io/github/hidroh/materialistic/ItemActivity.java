@@ -57,6 +57,7 @@ import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatabase;
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener;
@@ -67,7 +68,10 @@ import com.growse.android.io.github.hidroh.materialistic.widget.NavFloatingActio
 import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu;
 import com.growse.android.io.github.hidroh.materialistic.widget.ViewPager;
 
-public class ItemActivity extends InjectableActivity implements ItemFragment.ItemChangedListener {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class ItemActivity extends ThemedActivity implements ItemFragment.ItemChangedListener {
 
     public static final String EXTRA_ITEM = ItemActivity.class.getName() + ".EXTRA_ITEM";
     public static final String EXTRA_CACHE_MODE = ItemActivity.class.getName() + ".EXTRA_CACHE_MODE";
@@ -81,7 +85,7 @@ public class ItemActivity extends InjectableActivity implements ItemFragment.Ite
     @Synthetic ImageView mBookmark;
     private boolean mExternalBrowser;
     private Preferences.StoryViewMode mStoryViewMode;
-    @Inject @Named(ActivityModule.HN) ItemManager mItemManager;
+    @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManager;
     @Inject FavoriteManager mFavoriteManager;
     @Inject AlertDialogBuilder mAlertDialogBuilder;
     @Inject PopupMenu mPopupMenu;

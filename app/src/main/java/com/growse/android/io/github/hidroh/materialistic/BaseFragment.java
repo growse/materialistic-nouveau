@@ -22,9 +22,9 @@ import androidx.fragment.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-/**
- * Base fragment which performs injection using parent's activity object graphs if any
- */
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public abstract class BaseFragment extends Fragment {
     protected final MenuTintDelegate mMenuTintDelegate = new MenuTintDelegate();
     private boolean mAttached;
@@ -38,9 +38,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (getActivity() instanceof Injectable) {
-            ((Injectable) getActivity()).inject(this);
-        }
         mMenuTintDelegate.onActivityCreated(getActivity());
     }
 

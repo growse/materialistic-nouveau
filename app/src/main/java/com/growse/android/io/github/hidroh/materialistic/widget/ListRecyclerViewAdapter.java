@@ -26,13 +26,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import javax.inject.Inject;
-
 import androidx.recyclerview.widget.RecyclerView;
 import com.growse.android.io.github.hidroh.materialistic.AlertDialogBuilder;
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
 import com.growse.android.io.github.hidroh.materialistic.CustomTabsDelegate;
-import com.growse.android.io.github.hidroh.materialistic.Injectable;
 import com.growse.android.io.github.hidroh.materialistic.ItemActivity;
 import com.growse.android.io.github.hidroh.materialistic.MultiPaneListener;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
@@ -59,20 +56,25 @@ public abstract class ListRecyclerViewAdapter
     protected Context context;
     private MultiPaneListener mMultiPaneListener;
     LayoutInflater mInflater;
-    @Inject PopupMenu mPopupMenu;
-    @Inject AlertDialogBuilder mAlertDialogBuilder;
-    @Inject UserServices mUserServices;
-    @Inject FavoriteManager mFavoriteManager;
+    final PopupMenu mPopupMenu;
+    final AlertDialogBuilder mAlertDialogBuilder;
+    final UserServices mUserServices;
+    final FavoriteManager mFavoriteManager;
     private int mLastSelectedPosition = -1;
     private boolean mCardViewEnabled = true;
     private int mHotThreshold = Integer.MAX_VALUE;
     private final Preferences.Observable mPreferenceObservable = new Preferences.Observable();
     private boolean mMultiWindowEnabled;
 
-    public ListRecyclerViewAdapter(Context context) {
+    public ListRecyclerViewAdapter(Context context, PopupMenu popupMenu,
+                                    AlertDialogBuilder alertDialogBuilder,
+                                    UserServices userServices, FavoriteManager favoriteManager) {
         this.context = context;
         mInflater = AppUtils.createLayoutInflater(this.context);
-        ((Injectable) this.context).inject(this);
+        mPopupMenu = popupMenu;
+        mAlertDialogBuilder = alertDialogBuilder;
+        mUserServices = userServices;
+        mFavoriteManager = favoriteManager;
         mMultiPaneListener = (MultiPaneListener) this.context;
         mMultiWindowEnabled = Preferences.multiWindowEnabled(this.context);
     }

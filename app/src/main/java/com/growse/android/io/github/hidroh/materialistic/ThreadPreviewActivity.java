@@ -27,17 +27,26 @@ import android.view.Window;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
+import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.widget.CommentItemDecoration;
+import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu;
 import com.growse.android.io.github.hidroh.materialistic.widget.SnappyLinearLayoutManager;
 import com.growse.android.io.github.hidroh.materialistic.widget.ThreadPreviewRecyclerViewAdapter;
 
-public class ThreadPreviewActivity extends InjectableActivity {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class ThreadPreviewActivity extends ThemedActivity {
     public static final String EXTRA_ITEM = ThreadPreviewActivity.class.getName() + ".EXTRA_ITEM";
 
-    @Inject @Named(ActivityModule.HN) ItemManager mItemManager;
+    @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManager;
     @Inject KeyDelegate mKeyDelegate;
+    @Inject UserServices mUserServices;
+    @Inject PopupMenu mPopupMenu;
+    @Inject AlertDialogBuilder mAlertDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +65,8 @@ public class ThreadPreviewActivity extends InjectableActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new SnappyLinearLayoutManager(this, false));
         recyclerView.addItemDecoration(new CommentItemDecoration(this));
-        recyclerView.setAdapter(new ThreadPreviewRecyclerViewAdapter(mItemManager, item));
+        recyclerView.setAdapter(new ThreadPreviewRecyclerViewAdapter(mItemManager, mUserServices,
+                mPopupMenu, mAlertDialogBuilder, item));
         mKeyDelegate.setScrollable(
                 new KeyDelegate.RecyclerViewHelper(recyclerView,
                         KeyDelegate.RecyclerViewHelper.SCROLL_ITEM), null);

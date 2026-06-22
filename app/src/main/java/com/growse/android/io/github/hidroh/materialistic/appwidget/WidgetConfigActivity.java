@@ -25,10 +25,13 @@ import androidx.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;
 import android.view.Window;
 
-import com.growse.android.io.github.hidroh.materialistic.InjectableActivity;
 import com.growse.android.io.github.hidroh.materialistic.R;
+import com.growse.android.io.github.hidroh.materialistic.ThemedActivity;
 
-public class WidgetConfigActivity extends InjectableActivity {
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
+public class WidgetConfigActivity extends ThemedActivity {
     private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     @Override
