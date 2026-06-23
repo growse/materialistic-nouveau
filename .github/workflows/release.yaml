@@ -17,6 +17,16 @@ jobs:
     steps:
       - name: "Checkout"
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Resolve changelog
+        id: changelog
+        run: |
+          VERSION_CODE=$(grep -oP 'versionCode\s*=\s*\K[0-9]+' app/build.gradle.kts)
+          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
+          if [ ! -f "$CHANGELOG_FILE" ]; then
+            echo "::error::No changelog found at $CHANGELOG_FILE for versionCode $VERSION_CODE. Add one before tagging a release."
+            exit 1
+          fi
+          echo "file=$CHANGELOG_FILE" >> "$GITHUB_OUTPUT"
       - name: Decode keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -43,5 +53,6 @@ jobs:
           gh release create "${{ github.ref_name }}" \
             --title "${{ github.ref_name }}" \
             --draft \
+            --notes-file "${{ steps.changelog.outputs.file }}" \
             --generate-notes \
             "app/build/outputs/apk/release/materialistic-nouveau-${{ github.ref_name }}.apk"
