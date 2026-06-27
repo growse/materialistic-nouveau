@@ -19,9 +19,13 @@ package com.growse.android.io.github.hidroh.materialistic;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
@@ -69,6 +73,14 @@ public class SubmitActivity extends ThemedActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP);
+        LinearLayout contentLayout = findViewById(R.id.content);
+        final int initialPaddingBottom = contentLayout.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(contentLayout, (v, windowInsets) -> {
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                    initialPaddingBottom + systemBars.bottom);
+            return windowInsets;
+        });
         mTitleLayout = (TextInputLayout) findViewById(R.id.textinput_title);
         mContentLayout = (TextInputLayout) findViewById(R.id.textinput_content);
         mTitleEditText = (TextView) findViewById(R.id.edittext_title);

@@ -27,6 +27,7 @@
         android:layout_gravity="start"
         android:background="?attr/colorCardHighlight"
         android:scrollbars="none"
+        android:fitsSystemWindows="true"
         android:layout_height="match_parent">
         <include layout="@layout/drawer"
             android:layout_width="match_parent"

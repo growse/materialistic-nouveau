@@ -18,7 +18,11 @@ package com.growse.android.io.github.hidroh.materialistic;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.ScrollView;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
@@ -69,6 +73,14 @@ public class ComposeActivity extends ThemedActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP);
+        ScrollView scrollView = findViewById(R.id.content);
+        final int initialPaddingBottom = scrollView.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(scrollView, (v, windowInsets) -> {
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                    initialPaddingBottom + systemBars.bottom);
+            return windowInsets;
+        });
         mEditText = (EditText) findViewById(R.id.edittext_body);
         if (savedInstanceState == null) {
             mEditText.setText(Preferences.getDraft(this, mParentId));

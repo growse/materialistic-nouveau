@@ -17,9 +17,15 @@
 package com.growse.android.io.github.hidroh.materialistic;
 
 import android.os.Bundle;
+import android.view.View;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -68,6 +74,20 @@ public class PreferencesActivity extends ThemedActivity {
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
             addPreferencesFromResource(getArguments().getInt(EXTRA_PREFERENCES));
+        }
+
+        @Override
+        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            RecyclerView recyclerView = getListView();
+            final int initialPaddingBottom = recyclerView.getPaddingBottom();
+            ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (v, windowInsets) -> {
+                Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                        initialPaddingBottom + systemBars.bottom);
+                return windowInsets;
+            });
+            ViewCompat.requestApplyInsets(recyclerView);
         }
     }
 }

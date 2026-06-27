@@ -19,8 +19,12 @@ package com.growse.android.io.github.hidroh.materialistic
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ScrollView
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBar
+import androidx.core.graphics.Insets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +33,13 @@ class AboutActivity : ThemedActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_about)
     setSupportActionBar(findViewById(R.id.toolbar))
+    val scrollView = findViewById<ScrollView>(R.id.content)
+    val initialPaddingBottom = scrollView.paddingBottom
+    ViewCompat.setOnApplyWindowInsetsListener(scrollView) { v, windowInsets ->
+      val systemBars: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+      v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, initialPaddingBottom + systemBars.bottom)
+      windowInsets
+    }
 
     supportActionBar!!.displayOptions =
         ActionBar.DISPLAY_SHOW_HOME or ActionBar.DISPLAY_HOME_AS_UP or ActionBar.DISPLAY_SHOW_TITLE

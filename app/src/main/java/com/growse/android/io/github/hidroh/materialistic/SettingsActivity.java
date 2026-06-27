@@ -19,8 +19,12 @@ package com.growse.android.io.github.hidroh.materialistic;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
+import android.widget.ScrollView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -42,6 +46,14 @@ public class SettingsActivity extends DrawerActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
+        ScrollView scrollView = findViewById(R.id.content);
+        final int initialPaddingBottom = scrollView.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(scrollView, (v, windowInsets) -> {
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                    initialPaddingBottom + systemBars.bottom);
+            return windowInsets;
+        });
         findViewById(R.id.drawer_display).setOnClickListener(v ->
                 startActivity(new Intent(SettingsActivity.this, PreferencesActivity.class)
                         .putExtra(PreferencesActivity.EXTRA_TITLE, R.string.display)
