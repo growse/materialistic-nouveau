@@ -17,8 +17,8 @@ android {
     applicationId = "com.growse.android.io.github.hidroh.materialistic"
     minSdk = 23
     targetSdk = 36
-    versionCode = 4004
-    versionName = "v4.0.4"
+    versionCode = 4005
+    versionName = "v4.0.5"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
