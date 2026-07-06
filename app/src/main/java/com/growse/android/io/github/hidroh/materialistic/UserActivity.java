@@ -39,6 +39,9 @@ import javax.inject.Named;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
@@ -144,6 +147,8 @@ public class UserActivity extends ThemedActivity implements Scrollable {
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new SnappyLinearLayoutManager(this, true));
         mRecyclerView.addItemDecoration(new CommentItemDecoration(this));
+        applyBottomInset(mRecyclerView);
+        applyBottomInset(mEmpty);
         mScrollableHelper = new KeyDelegate.RecyclerViewHelper(mRecyclerView,
                 KeyDelegate.RecyclerViewHelper.SCROLL_ITEM);
         if (savedInstanceState != null) {
@@ -216,6 +221,16 @@ public class UserActivity extends ThemedActivity implements Scrollable {
     @Override
     protected boolean isTranslucent() {
         return true;
+    }
+
+    private void applyBottomInset(View view) {
+        final int initialPaddingBottom = view.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(),
+                    initialPaddingBottom + systemBars.bottom);
+            return windowInsets;
+        });
     }
 
     private void load() {
