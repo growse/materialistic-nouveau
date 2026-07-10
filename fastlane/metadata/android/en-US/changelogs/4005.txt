@@ -1,0 +1,1 @@
+Fixed edge-to-edge on additional views, fixed missing night mode files, restored orange highlight colours for better contrast, and migrated from Dagger to Hilt internally.

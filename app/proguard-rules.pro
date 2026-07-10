@@ -19,3 +19,5 @@
 -dontobfuscate
 -keep class com.growse.android.io.github.hidroh.materialistic.** { *; }
 -keep interface com.growse.android.io.github.hidroh.materialistic.** { *; }
+
+-dontwarn com.google.j2objc.annotations.**
