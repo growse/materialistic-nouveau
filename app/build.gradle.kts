@@ -77,6 +77,7 @@ dependencies {
   implementation(libs.material)
   implementation(libs.androidx.preference)
   implementation(libs.androidx.browser)
+  implementation(libs.androidx.localbroadcastmanager)
   implementation(libs.hilt.android)
   implementation(libs.retrofit)
   implementation(libs.retrofit.converter.gson)

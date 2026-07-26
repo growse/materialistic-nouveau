@@ -10,6 +10,7 @@ cardview = "1.0.0"
 hilt = "2.60.1"
 ksp = "2.3.10"
 lifecycle = "2.11.0"
+localbroadcastmanager = "1.1.0"
 ktfmt = "0.26.0"
 material = "1.14.0"
 okhttp = "5.4.0"
@@ -28,6 +29,7 @@ androidx-cardview = { group = "androidx.cardview", name = "cardview", version.re
 androidx-lifecycle-compiler = { group = "androidx.lifecycle", name = "lifecycle-compiler", version.ref = "lifecycle" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-localbroadcastmanager = { group = "androidx.localbroadcastmanager", name = "localbroadcastmanager", version.ref = "localbroadcastmanager" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
