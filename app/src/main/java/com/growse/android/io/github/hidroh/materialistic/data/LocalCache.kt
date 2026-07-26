@@ -29,4 +29,8 @@ interface LocalCache {
   fun setViewed(itemId: String?)
 
   fun isFavorite(itemId: String?): Boolean
+
+  fun getCachedItem(itemId: String?): MaterialisticDatabase.CachedItem?
+
+  fun putCachedItem(item: MaterialisticDatabase.CachedItem)
 }

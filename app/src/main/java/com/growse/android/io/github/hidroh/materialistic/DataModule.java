@@ -135,6 +135,11 @@ public class DataModule {
     }
 
     @Provides
+    public MaterialisticDatabase.ItemCacheDao provideItemCacheDao(MaterialisticDatabase database) {
+        return database.getItemCacheDao();
+    }
+
+    @Provides
     public SupportSQLiteOpenHelper provideOpenHelper(MaterialisticDatabase database) {
         return database.getOpenHelper();
     }

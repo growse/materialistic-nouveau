@@ -32,12 +32,14 @@ import androidx.annotation.VisibleForTesting;
 class ItemSyncAdapter extends AbstractThreadedSyncAdapter {
     private final RestServiceFactory mFactory;
     private final ReadabilityClient mReadabilityClient;
+    private final LocalCache mLocalCache;
 
     ItemSyncAdapter(Context context, RestServiceFactory factory,
-                           ReadabilityClient readabilityClient) {
+                           ReadabilityClient readabilityClient, LocalCache localCache) {
         super(context, true);
         mFactory = factory;
         mReadabilityClient = readabilityClient;
+        mLocalCache = localCache;
     }
 
     @Override
@@ -49,6 +51,6 @@ class ItemSyncAdapter extends AbstractThreadedSyncAdapter {
     @VisibleForTesting
     @NonNull
     SyncDelegate createSyncDelegate() {
-        return new SyncDelegate(getContext(), mFactory, mReadabilityClient);
+        return new SyncDelegate(getContext(), mFactory, mReadabilityClient, mLocalCache);
     }
 }

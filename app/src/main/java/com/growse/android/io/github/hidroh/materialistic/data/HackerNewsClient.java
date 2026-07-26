@@ -39,19 +39,23 @@ public class HackerNewsClient implements ItemManager, UserManager {
     public static final String BASE_WEB_URL = "https://news.ycombinator.com";
     public static final String WEB_ITEM_PATH = BASE_WEB_URL + "/item?id=%s";
     static final String BASE_API_URL = "https://" + HOST + "/v0/";
+    private static final long MUTABLE_FIELD_TTL_MILLIS = 30 * 60 * 1000L;
     @Inject @Named(DataModule.IO_THREAD) Scheduler mIoScheduler;
     @Inject @Named(DataModule.MAIN_THREAD) Scheduler mMainThreadScheduler;
     private final RestService mRestService;
     private final SessionManager mSessionManager;
     private final FavoriteManager mFavoriteManager;
+    private final LocalCache mLocalCache;
 
     @Inject
     public HackerNewsClient(RestServiceFactory factory,
                             SessionManager sessionManager,
-                            FavoriteManager favoriteManager) {
+                            FavoriteManager favoriteManager,
+                            LocalCache localCache) {
         mRestService = factory.rxEnabled(true).create(BASE_API_URL, RestService.class);
         mSessionManager = sessionManager;
         mFavoriteManager = favoriteManager;
+        mLocalCache = localCache;
     }
 
     @Override
@@ -76,14 +80,27 @@ public class HackerNewsClient implements ItemManager, UserManager {
         switch (cacheMode) {
             case MODE_DEFAULT:
             default:
-                itemObservable = mRestService.itemRx(itemId);
+                itemObservable = Observable.defer(() -> {
+                    MaterialisticDatabase.CachedItem cached = mLocalCache.getCachedItem(itemId);
+                    if (cached != null && !isStale(cached)) {
+                        return Observable.just(HackerNewsItem.fromCachedItem(cached));
+                    }
+                    return mRestService.itemRx(itemId).doOnNext(this::cacheItem);
+                });
                 break;
             case MODE_NETWORK:
-                itemObservable = mRestService.networkItemRx(itemId);
+                itemObservable = mRestService.networkItemRx(itemId).doOnNext(this::cacheItem);
                 break;
             case MODE_CACHE:
-                itemObservable = mRestService.cachedItemRx(itemId)
-                        .onErrorResumeNext(mRestService.itemRx(itemId));
+                itemObservable = Observable.defer(() -> {
+                    MaterialisticDatabase.CachedItem cached = mLocalCache.getCachedItem(itemId);
+                    if (cached != null) {
+                        return Observable.just(HackerNewsItem.fromCachedItem(cached));
+                    }
+                    return mRestService.cachedItemRx(itemId)
+                            .onErrorResumeNext(mRestService.itemRx(itemId))
+                            .doOnNext(this::cacheItem);
+                });
                 break;
         }
         Observable.defer(() -> Observable.zip(
@@ -116,6 +133,12 @@ public class HackerNewsClient implements ItemManager, UserManager {
 
     @Override
     public Item getItem(String itemId, @CacheMode int cacheMode) {
+        if (cacheMode != MODE_NETWORK) {
+            MaterialisticDatabase.CachedItem cached = mLocalCache.getCachedItem(itemId);
+            if (cached != null && (cacheMode == MODE_CACHE || !isStale(cached))) {
+                return HackerNewsItem.fromCachedItem(cached);
+            }
+        }
         Call<HackerNewsItem> call;
         switch (cacheMode) {
             case MODE_DEFAULT:
@@ -128,9 +151,21 @@ public class HackerNewsClient implements ItemManager, UserManager {
                 break;
         }
         try {
-            return call.execute().body();
+            HackerNewsItem item = call.execute().body();
+            cacheItem(item);
+            return item;
         } catch (IOException e) {
             return null;
+        }
+    }
+
+    private boolean isStale(MaterialisticDatabase.CachedItem cached) {
+        return System.currentTimeMillis() - cached.getFetchedAt() > MUTABLE_FIELD_TTL_MILLIS;
+    }
+
+    private void cacheItem(HackerNewsItem item) {
+        if (item != null) {
+            mLocalCache.putCachedItem(HackerNewsItem.toCachedItem(item));
         }
     }
 

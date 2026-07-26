@@ -36,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ItemSyncJobService extends JobService {
     @Inject RestServiceFactory mFactory;
     @Inject ReadabilityClient mReadabilityClient;
+    @Inject LocalCache mLocalCache;
     private final Map<String, SyncDelegate> mSyncDelegates = new HashMap<>();
 
     @Override
@@ -65,6 +66,6 @@ public class ItemSyncJobService extends JobService {
     @VisibleForTesting
     @NonNull
     SyncDelegate createSyncDelegate() {
-        return new SyncDelegate(this, mFactory, mReadabilityClient);
+        return new SyncDelegate(this, mFactory, mReadabilityClient, mLocalCache);
     }
 }

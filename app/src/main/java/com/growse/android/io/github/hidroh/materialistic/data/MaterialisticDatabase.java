@@ -27,9 +27,10 @@ import java.util.List;
         entities = {
                 MaterialisticDatabase.SavedStory.class,
                 MaterialisticDatabase.ReadStory.class,
-                MaterialisticDatabase.Readable.class
+                MaterialisticDatabase.Readable.class,
+                MaterialisticDatabase.CachedItem.class
         },
-        version = 4)
+        version = 5)
 public abstract class MaterialisticDatabase extends RoomDatabase {
 
     private static final String BASE_URI = "content://io.github.hidroh.materialistic";
@@ -64,6 +65,11 @@ public abstract class MaterialisticDatabase extends RoomDatabase {
                 database.execSQL(DbConstants.SQL_INSERT_READABILITY_READABLE);
                 database.execSQL(DbConstants.SQL_DROP_READABILITY_TABLE);
             }
+        }, new Migration(4, 5) {
+            @Override
+            public void migrate(@NonNull SupportSQLiteDatabase database) {
+                database.execSQL(DbConstants.SQL_CREATE_ITEM_CACHE_TABLE);
+            }
         });
     }
 
@@ -80,6 +86,8 @@ public abstract class MaterialisticDatabase extends RoomDatabase {
     public abstract ReadStoriesDao getReadStoriesDao();
 
     public abstract ReadableDao getReadableDao();
+
+    public abstract ItemCacheDao getItemCacheDao();
 
     public LiveData<Uri> getLiveData() {
         return mLiveData;
@@ -265,6 +273,157 @@ public abstract class MaterialisticDatabase extends RoomDatabase {
         }
     }
 
+    @Entity(tableName = "item_cache")
+    public static class CachedItem {
+        @PrimaryKey
+        @NonNull
+        @ColumnInfo(name = "itemid")
+        private String itemId = "";
+        @Nullable
+        private String type;
+        @Nullable
+        private String by;
+        private long time;
+        @Nullable
+        private String text;
+        private long parent;
+        @Nullable
+        private String url;
+        @Nullable
+        private String title;
+        @Nullable
+        private String kids;
+        private int score;
+        private int descendants;
+        private boolean dead;
+        private boolean deleted;
+        @ColumnInfo(name = "fetched_at")
+        private long fetchedAt;
+
+        public CachedItem(@NonNull String itemId) {
+            this.itemId = itemId;
+        }
+
+        @NonNull
+        public String getItemId() {
+            return itemId;
+        }
+
+        public void setItemId(@NonNull String itemId) {
+            this.itemId = itemId;
+        }
+
+        @Nullable
+        public String getType() {
+            return type;
+        }
+
+        public void setType(@Nullable String type) {
+            this.type = type;
+        }
+
+        @Nullable
+        public String getBy() {
+            return by;
+        }
+
+        public void setBy(@Nullable String by) {
+            this.by = by;
+        }
+
+        public long getTime() {
+            return time;
+        }
+
+        public void setTime(long time) {
+            this.time = time;
+        }
+
+        @Nullable
+        public String getText() {
+            return text;
+        }
+
+        public void setText(@Nullable String text) {
+            this.text = text;
+        }
+
+        public long getParent() {
+            return parent;
+        }
+
+        public void setParent(long parent) {
+            this.parent = parent;
+        }
+
+        @Nullable
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(@Nullable String url) {
+            this.url = url;
+        }
+
+        @Nullable
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(@Nullable String title) {
+            this.title = title;
+        }
+
+        @Nullable
+        public String getKids() {
+            return kids;
+        }
+
+        public void setKids(@Nullable String kids) {
+            this.kids = kids;
+        }
+
+        public int getScore() {
+            return score;
+        }
+
+        public void setScore(int score) {
+            this.score = score;
+        }
+
+        public int getDescendants() {
+            return descendants;
+        }
+
+        public void setDescendants(int descendants) {
+            this.descendants = descendants;
+        }
+
+        public boolean isDead() {
+            return dead;
+        }
+
+        public void setDead(boolean dead) {
+            this.dead = dead;
+        }
+
+        public boolean isDeleted() {
+            return deleted;
+        }
+
+        public void setDeleted(boolean deleted) {
+            this.deleted = deleted;
+        }
+
+        public long getFetchedAt() {
+            return fetchedAt;
+        }
+
+        public void setFetchedAt(long fetchedAt) {
+            this.fetchedAt = fetchedAt;
+        }
+    }
+
     @Dao
     public interface SavedStoriesDao {
         @Query("SELECT * FROM saved ORDER BY time DESC")
@@ -305,6 +464,16 @@ public abstract class MaterialisticDatabase extends RoomDatabase {
         Readable selectByItemId(String itemId);
     }
 
+    @Dao
+    public interface ItemCacheDao {
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        void insert(CachedItem item);
+
+        @Query("SELECT * FROM item_cache WHERE itemid = :itemId LIMIT 1")
+        @Nullable
+        CachedItem selectByItemId(String itemId);
+    }
+
     static class DbConstants {
         static final String DB_NAME = "Materialistic.db";
         static final String SQL_CREATE_READ_TABLE =
@@ -319,6 +488,22 @@ public abstract class MaterialisticDatabase extends RoomDatabase {
         static final String SQL_DROP_FAVORITE_TABLE = "DROP TABLE IF EXISTS favorite";
         static final String SQL_DROP_VIEWED_TABLE = "DROP TABLE IF EXISTS viewed";
         static final String SQL_DROP_READABILITY_TABLE = "DROP TABLE IF EXISTS readability";
+        static final String SQL_CREATE_ITEM_CACHE_TABLE =
+                "CREATE TABLE IF NOT EXISTS item_cache (" +
+                        "itemid TEXT NOT NULL PRIMARY KEY, " +
+                        "type TEXT, " +
+                        "by TEXT, " +
+                        "time INTEGER NOT NULL, " +
+                        "text TEXT, " +
+                        "parent INTEGER NOT NULL, " +
+                        "url TEXT, " +
+                        "title TEXT, " +
+                        "kids TEXT, " +
+                        "score INTEGER NOT NULL, " +
+                        "descendants INTEGER NOT NULL, " +
+                        "dead INTEGER NOT NULL, " +
+                        "deleted INTEGER NOT NULL, " +
+                        "fetched_at INTEGER NOT NULL)";
     }
 
     public interface FavoriteEntry extends BaseColumns {

@@ -73,6 +73,7 @@ public class SyncDelegate {
 
     private final HackerNewsClient.RestService mHnRestService;
     private final ReadabilityClient mReadabilityClient;
+    private final LocalCache mLocalCache;
     private final SharedPreferences mSharedPreferences;
     private final NotificationManager mNotificationManager;
     private final NotificationCompat.Builder mNotificationBuilder;
@@ -85,13 +86,14 @@ public class SyncDelegate {
 
     @Inject
     SyncDelegate(@ApplicationContext Context context, RestServiceFactory factory,
-                 ReadabilityClient readabilityClient) {
+                 ReadabilityClient readabilityClient, LocalCache localCache) {
         mContext = context;
         mSharedPreferences = context.getSharedPreferences(
                 context.getPackageName() + SYNC_PREFERENCES_FILE, Context.MODE_PRIVATE);
         mHnRestService = factory.create(HackerNewsClient.BASE_API_URL,
                 HackerNewsClient.RestService.class, new BackgroundThreadExecutor());
         mReadabilityClient = readabilityClient;
+        mLocalCache = localCache;
         mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -205,6 +207,7 @@ public class SyncDelegate {
     @Synthetic
     void sync(@NonNull HackerNewsItem item) {
         mSharedPreferences.edit().remove(item.getId()).apply();
+        mLocalCache.putCachedItem(HackerNewsItem.toCachedItem(item));
         notifyItem(item.getId(), item);
         syncReadability(item);
         syncArticle(item);
@@ -257,6 +260,10 @@ public class SyncDelegate {
     }
 
     private HackerNewsItem getFromCache(String itemId) {
+        MaterialisticDatabase.CachedItem cached = mLocalCache.getCachedItem(itemId);
+        if (cached != null) {
+            return HackerNewsItem.fromCachedItem(cached);
+        }
         try {
             return mHnRestService.cachedItem(itemId).execute().body();
         } catch (IOException e) {

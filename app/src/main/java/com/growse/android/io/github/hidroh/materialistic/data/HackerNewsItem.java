@@ -149,6 +149,69 @@ class HackerNewsItem implements Item {
         previous = source.readLong();
     }
 
+    static MaterialisticDatabase.CachedItem toCachedItem(Item item) {
+        MaterialisticDatabase.CachedItem cached = new MaterialisticDatabase.CachedItem(item.getId());
+        cached.setType(item.getRawType());
+        cached.setBy(item.getBy());
+        cached.setTime(item.getTime());
+        cached.setText(item.getText());
+        cached.setParent(Long.parseLong(item.getParent()));
+        cached.setUrl(item.getRawUrl());
+        cached.setTitle(item.getTitle());
+        cached.setKids(joinKids(item.getKids()));
+        cached.setScore(item.getScore());
+        cached.setDescendants(item.getDescendants());
+        cached.setDead(item.isDead());
+        cached.setDeleted(item.isDeleted());
+        cached.setFetchedAt(System.currentTimeMillis());
+        return cached;
+    }
+
+    static HackerNewsItem fromCachedItem(MaterialisticDatabase.CachedItem cached) {
+        HackerNewsItem item = new HackerNewsItem(Long.parseLong(cached.getItemId()));
+        item.type = cached.getType();
+        item.by = cached.getBy();
+        item.time = cached.getTime();
+        item.text = cached.getText();
+        item.parent = cached.getParent();
+        item.url = cached.getUrl();
+        item.title = cached.getTitle();
+        item.kids = splitKids(cached.getKids());
+        item.score = cached.getScore();
+        item.descendants = cached.getDescendants();
+        item.lastKidCount = cached.getDescendants();
+        item.dead = cached.isDead();
+        item.deleted = cached.isDeleted();
+        item.localRevision = 1;
+        return item;
+    }
+
+    private static String joinKids(long[] kids) {
+        if (kids == null) {
+            return null;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < kids.length; i++) {
+            if (i > 0) {
+                builder.append(',');
+            }
+            builder.append(kids[i]);
+        }
+        return builder.toString();
+    }
+
+    private static long[] splitKids(String kids) {
+        if (TextUtils.isEmpty(kids)) {
+            return null;
+        }
+        String[] parts = kids.split(",");
+        long[] result = new long[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            result[i] = Long.parseLong(parts[i]);
+        }
+        return result;
+    }
+
     @Override
     public void populate(Item info) {
         title = info.getTitle();

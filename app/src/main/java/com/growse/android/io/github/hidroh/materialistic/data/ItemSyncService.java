@@ -31,6 +31,7 @@ public class ItemSyncService extends Service {
     private static final Object sItemSyncAdapterLock = new Object();
     @Inject RestServiceFactory mFactory;
     @Inject ReadabilityClient mReadabilityClient;
+    @Inject LocalCache mLocalCache;
 
     @Override
     public void onCreate() {
@@ -38,7 +39,7 @@ public class ItemSyncService extends Service {
         synchronized (sItemSyncAdapterLock) {
             if (sItemSyncAdapter == null) {
                 sItemSyncAdapter = new ItemSyncAdapter(getApplicationContext(),
-                        mFactory, mReadabilityClient);
+                        mFactory, mReadabilityClient, mLocalCache);
             }
         }
     }

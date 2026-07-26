@@ -30,6 +30,7 @@ constructor(
     private val savedStoriesDao: MaterialisticDatabase.SavedStoriesDao,
     private val readStoriesDao: MaterialisticDatabase.ReadStoriesDao,
     private val readableDao: MaterialisticDatabase.ReadableDao,
+    private val itemCacheDao: MaterialisticDatabase.ItemCacheDao,
     @Named("main") private val mainScheduler: Scheduler,
 ) : LocalCache {
 
@@ -50,4 +51,10 @@ constructor(
   }
 
   override fun isFavorite(itemId: String?) = savedStoriesDao.selectByItemId(itemId) != null
+
+  override fun getCachedItem(itemId: String?) = itemCacheDao.selectByItemId(itemId)
+
+  override fun putCachedItem(item: MaterialisticDatabase.CachedItem) {
+    itemCacheDao.insert(item)
+  }
 }
