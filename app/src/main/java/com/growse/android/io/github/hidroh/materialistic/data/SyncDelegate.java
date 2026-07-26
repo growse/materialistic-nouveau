@@ -43,6 +43,10 @@ import android.webkit.WebView;
 import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -68,8 +72,17 @@ public class SyncDelegate {
     static final String SYNC_PREFERENCES_FILE = "_syncpreferences";
     private static final String NOTIFICATION_GROUP_KEY = "group";
     private static final String SYNC_ACCOUNT_NAME = "Materialistic";
+    /**
+     * Idle timeout: the sync is abandoned only after this long with no unit of work completing,
+     * rather than after a fixed budget for the whole comment tree.
+     */
     private static final long TIMEOUT_MILLIS = DateUtils.MINUTE_IN_MILLIS;
     private static final String DOWNLOADS_CHANNEL_ID = "downloads";
+    /**
+     * Sync walks the comment tree with blocking cache reads, so it must never run on the main
+     * thread - Room refuses main thread access outright.
+     */
+    private static final ExecutorService SYNC_EXECUTOR = Executors.newCachedThreadPool();
 
     private final HackerNewsClient.RestService mHnRestService;
     private final ReadabilityClient mReadabilityClient;
@@ -78,6 +91,13 @@ public class SyncDelegate {
     private final NotificationManager mNotificationManager;
     private final NotificationCompat.Builder mNotificationBuilder;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
+    /**
+     * Number of fetches started but not yet completed. The sync is done when this hits zero, which
+     * is the only reliable completion signal - the notification progress bar cannot be one, as its
+     * maximum grows as the tree is discovered.
+     */
+    private final AtomicInteger mOutstanding = new AtomicInteger();
+    private final AtomicBoolean mFinished = new AtomicBoolean();
     private SyncProgress mSyncProgress;
     private final Context mContext;
     private ProgressListener mListener;
@@ -158,13 +178,35 @@ public class SyncDelegate {
         // assume that connection wouldn't change until we finish syncing
         mJob = job;
         if (!TextUtils.isEmpty(mJob.id)) {
-            Message message = Message.obtain(mHandler, this::stopSync);
-            message.what = Integer.valueOf(mJob.id);
-            mHandler.sendMessageDelayed(message, TIMEOUT_MILLIS);
             mSyncProgress = new SyncProgress(mJob);
-            sync(mJob.id);
+            resetTimeout();
+            mOutstanding.set(1); // the story itself
+            SYNC_EXECUTOR.execute(() -> sync(mJob.id));
         } else {
             syncDeferredItems();
+        }
+    }
+
+    /**
+     * Abandons the sync if nothing completes for {@link #TIMEOUT_MILLIS}. Rescheduled on every
+     * completion so that a large but healthy comment tree is allowed to finish.
+     */
+    private void resetTimeout() {
+        int id = Integer.valueOf(mJob.id);
+        mHandler.removeMessages(id);
+        Message message = Message.obtain(mHandler, this::finish);
+        message.what = id;
+        mHandler.sendMessageDelayed(message, TIMEOUT_MILLIS);
+    }
+
+    /**
+     * Marks one fetch as complete, finishing the sync once none remain outstanding.
+     */
+    private void completeUnit() {
+        if (mOutstanding.decrementAndGet() <= 0) {
+            finish();
+        } else {
+            resetTimeout();
         }
     }
 
@@ -175,9 +217,14 @@ public class SyncDelegate {
         }
     }
 
+    /**
+     * Syncs a single item. Every exit path must account for exactly one unit of work, either by
+     * completing it here or by handing it to {@link #sync(HackerNewsItem)}.
+     */
     private void sync(String itemId) {
         if (!mJob.connectionEnabled) {
             defer(itemId);
+            completeUnit();
             return;
         }
         HackerNewsItem cachedItem;
@@ -193,12 +240,16 @@ public class SyncDelegate {
                     HackerNewsItem item;
                     if ((item = response.body()) != null) {
                         sync(item);
+                    } else {
+                        notifyItem(itemId, null);
+                        completeUnit();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<HackerNewsItem> call, Throwable t) {
                     notifyItem(itemId, null);
+                    completeUnit();
                 }
             });
         }
@@ -211,13 +262,20 @@ public class SyncDelegate {
         notifyItem(item.getId(), item);
         syncReadability(item);
         syncArticle(item);
+        // children are counted before this item completes, so the outstanding count cannot reach
+        // zero while there is still tree left to walk
         syncChildren(item);
+        completeUnit();
     }
 
     private void syncReadability(@NonNull HackerNewsItem item) {
         if (mJob.readabilityEnabled && item.isStoryType()) {
             final String itemId = item.getId();
-            mReadabilityClient.parse(itemId, item.getRawUrl(), content -> notifyReadability());
+            mOutstanding.incrementAndGet();
+            mReadabilityClient.parse(itemId, item.getRawUrl(), content -> {
+                notifyReadability();
+                completeUnit();
+            });
         }
     }
 
@@ -249,7 +307,10 @@ public class SyncDelegate {
 
     private void syncChildren(@NonNull HackerNewsItem item) {
         if (mJob.commentsEnabled && item.getKids() != null) {
-            for (long id : item.getKids()) {
+            long[] kids = item.getKids();
+            mSyncProgress.addKids(kids.length);
+            mOutstanding.addAndGet(kids.length);
+            for (long id : kids) {
                 sync(String.valueOf(id));
             }
         }
@@ -274,7 +335,6 @@ public class SyncDelegate {
     @Synthetic
     void notifyItem(@NonNull String id, @Nullable HackerNewsItem item) {
         mSyncProgress.finishItem(id, item,
-                mJob.commentsEnabled && mJob.connectionEnabled,
                 mJob.readabilityEnabled && mJob.connectionEnabled);
         updateProgress();
     }
@@ -290,10 +350,12 @@ public class SyncDelegate {
         updateProgress();
     }
 
+    /**
+     * Updates the notification only. Completion is decided by {@link #completeUnit()}, since the
+     * progress bar maximum keeps growing as more of the comment tree is discovered.
+     */
     private void updateProgress() {
-        if (mSyncProgress.getProgress() >= mSyncProgress.getMax()) { // TODO may never done
-            finish(); // TODO finish once only
-        } else if (mJob.notificationEnabled) {
+        if (mJob.notificationEnabled && !mFinished.get()) {
             showProgress();
         }
     }
@@ -309,7 +371,11 @@ public class SyncDelegate {
                 .build());
     }
 
-    private void finish() {
+    @Synthetic
+    void finish() {
+        if (!mFinished.compareAndSet(false, true)) {
+            return; // already finished, or timed out
+        }
         if (mListener != null) {
             mListener.onDone(mJob.id);
             mListener = null;
@@ -318,7 +384,6 @@ public class SyncDelegate {
     }
 
     void stopSync() {
-        // TODO
         mJob.connectionEnabled = false;
         int id = Integer.valueOf(mJob.id);
         mNotificationManager.cancel(id);
@@ -346,9 +411,6 @@ public class SyncDelegate {
         @Synthetic
         SyncProgress(Job job) {
             this.id = job.id;
-            if (job.commentsEnabled) {
-                totalKids = 1;
-            }
             if (job.articleEnabled) {
                 maxWebProgress = 100;
             }
@@ -357,45 +419,47 @@ public class SyncDelegate {
             }
         }
 
-        int getMax() {
+        synchronized int getMax() {
             return 1 + totalKids + (readability != null ? 1 : 0) + maxWebProgress;
         }
 
-        int getProgress() {
+        synchronized int getProgress() {
             return (self != null ? 1 : 0) + finishedKids + (readability != null && readability ? 1 :0) + webProgress;
         }
 
+        /**
+         * Counts descendants as they are discovered. Every comment in the tree is counted, at every
+         * depth, to match {@link #finishKid()} - counting only immediate children made the progress
+         * overtake the maximum as soon as nested replies started completing.
+         */
+        synchronized void addKids(int count) {
+            totalKids += count;
+        }
+
         @Synthetic
-        void finishItem(@NonNull String id, @Nullable HackerNewsItem item,
-                        boolean kidsEnabled, boolean readabilityEnabled) {
+        synchronized void finishItem(@NonNull String id, @Nullable HackerNewsItem item,
+                        boolean readabilityEnabled) {
             if (TextUtils.equals(id, this.id)) {
-                finishSelf(item, kidsEnabled, readabilityEnabled);
+                finishSelf(item, readabilityEnabled);
             } else {
                 finishKid();
             }
         }
 
         @Synthetic
-        void finishReadability() {
+        synchronized void finishReadability() {
             readability = true;
         }
 
         @Synthetic
-        void updateArticle(int webProgress, int maxWebProgress) {
+        synchronized void updateArticle(int webProgress, int maxWebProgress) {
             this.webProgress = webProgress;
             this.maxWebProgress = maxWebProgress;
         }
 
-        private void finishSelf(@Nullable HackerNewsItem item, boolean kidsEnabled,
-                                boolean readabilityEnabled) {
+        private void finishSelf(@Nullable HackerNewsItem item, boolean readabilityEnabled) {
             self = item != null;
             title = item != null ? item.getTitle() : null;
-            if (kidsEnabled && item != null && item.getKids() != null) {
-                // fetch recursively but only notify for immediate children
-                totalKids = item.getKids().length;
-            } else {
-                totalKids = 0;
-            }
             if (readabilityEnabled) {
                 readability = false;
             }
@@ -429,7 +493,8 @@ public class SyncDelegate {
         private static final String EXTRA_COMMENTS_ENABLED = "extra:commentsEnabled";
         private static final String EXTRA_NOTIFICATION_ENABLED = "extra:notificationEnabled";
         final String id;
-        boolean connectionEnabled;
+        // written on the main thread when the sync is stopped, read on sync worker threads
+        volatile boolean connectionEnabled;
         boolean readabilityEnabled;
         boolean articleEnabled;
         boolean commentsEnabled;
