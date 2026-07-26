@@ -52,6 +52,14 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         extends RecyclerViewAdapter<VH> {
     private static final String PROPERTY_MAX_LINES = "maxLines";
     private static final int DURATION_PER_LINE_MILLIS = 20;
+    /**
+     * Local revision states of an {@link Item}. Anything above {@link #REVISION_LOADING} has been
+     * populated and can be bound; {@link #REVISION_FAILED} is distinct from {@link #REVISION_NONE}
+     * so that a failed row renders an error instead of immediately refetching on every rebind.
+     */
+    private static final int REVISION_FAILED = -2;
+    private static final int REVISION_NONE = -1;
+    private static final int REVISION_LOADING = 0;
     LayoutInflater mLayoutInflater;
     private ItemManager mItemManager;
     final UserServices mUserServices;
@@ -103,11 +111,30 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
             return;
         }
         clear(holder);
-        if (item.getLocalRevision() < 0) {
+        int revision = item.getLocalRevision();
+        if (revision == REVISION_FAILED) {
+            bindError(holder, item);
+        } else if (revision < REVISION_LOADING) {
             load(holder.getAdapterPosition(), item);
-        } else if (item.getLocalRevision() > 0) {
+        } else if (revision > REVISION_LOADING) {
             bind(holder, item);
         }
+    }
+
+    /**
+     * Renders a failed item as a tappable error, so a comment lost to a transient network failure
+     * can be recovered without scrolling it out of view and back.
+     */
+    private void bindError(final VH holder, final Item item) {
+        holder.mPostedTextView.setText("");
+        holder.mContentTextView.setText(R.string.connection_error);
+        holder.mContentView.setOnClickListener(v -> {
+            item.setLocalRevision(REVISION_NONE);
+            int position = holder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                notifyItemChanged(position);
+            }
+        });
     }
 
     @Override
@@ -170,9 +197,13 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     protected void clear(VH holder) {
         holder.mCommentButton.setVisibility(View.GONE);
         holder.mPostedTextView.setOnClickListener(null);
+        holder.mContentView.setOnClickListener(null); // drop any retry listener from a recycled row
         holder.mPostedTextView.setText(R.string.loading_text);
         holder.mContentTextView.setText(R.string.loading_text);
         holder.mReadMoreTextView.setVisibility(View.GONE);
+        // an unbound row has no item to act on, and a recycled holder would otherwise keep the
+        // previous item's menu until bindActions() runs
+        holder.mMoreButton.setVisibility(View.INVISIBLE);
     }
 
     @Synthetic
@@ -181,9 +212,17 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     }
 
     private void load(int adapterPosition, Item item) {
-        item.setLocalRevision(0);
+        item.setLocalRevision(REVISION_LOADING);
         mItemManager.getItem(item.getId(), mCacheMode,
                 new ItemResponseListener(this, adapterPosition, item));
+    }
+
+    @Synthetic
+    void onItemLoadFailed(int position, Item item) {
+        item.setLocalRevision(REVISION_FAILED);
+        if (position < getItemCount()) {
+            notifyItemChanged(position);
+        }
     }
 
     protected void onItemLoaded(int position, Item item) {
@@ -316,15 +355,29 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
 
         @Override
         public void onResponse(@Nullable Item response) {
-            if (mAdapter.get() != null && mAdapter.get().isAttached() && response != null) {
-                mPartialItem.populate(response);
-                mAdapter.get().onItemLoaded(mPosition, mPartialItem);
+            if (response == null) {
+                // a missing body leaves the item unpopulated, so treat it as a failure rather
+                // than stranding the row on the loading placeholder forever
+                onError(null);
+                return;
+            }
+            // populate regardless of whether the adapter is still attached, otherwise a detached
+            // adapter leaves the item stuck mid-load and it is never rebound or retried
+            mPartialItem.populate(response);
+            ItemRecyclerViewAdapter adapter = mAdapter.get();
+            if (adapter != null && adapter.isAttached()) {
+                adapter.onItemLoaded(mPosition, mPartialItem);
             }
         }
 
         @Override
         public void onError(String errorMessage) {
-            // do nothing
+            ItemRecyclerViewAdapter adapter = mAdapter.get();
+            if (adapter != null && adapter.isAttached()) {
+                adapter.onItemLoadFailed(mPosition, mPartialItem);
+            } else {
+                mPartialItem.setLocalRevision(REVISION_FAILED);
+            }
         }
     }
 
