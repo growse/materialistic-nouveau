@@ -128,13 +128,19 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     private void bindError(final VH holder, final Item item) {
         holder.mPostedTextView.setText("");
         holder.mContentTextView.setText(R.string.connection_error);
-        holder.mContentView.setOnClickListener(v -> {
+        // a selectable text view consumes the tap without ever performing a click, and posted stays
+        // clickable once a previous bind gave it a listener - so drop selection and wire all three
+        holder.mContentTextView.setTextIsSelectable(false);
+        View.OnClickListener retry = v -> {
             item.setLocalRevision(REVISION_NONE);
             int position = holder.getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 notifyItemChanged(position);
             }
-        });
+        };
+        holder.mContentView.setOnClickListener(retry);
+        holder.mPostedTextView.setOnClickListener(retry);
+        holder.mContentTextView.setOnClickListener(retry);
     }
 
     @Override
@@ -197,7 +203,10 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     protected void clear(VH holder) {
         holder.mCommentButton.setVisibility(View.GONE);
         holder.mPostedTextView.setOnClickListener(null);
-        holder.mContentView.setOnClickListener(null); // drop any retry listener from a recycled row
+        // drop any retry listener from a recycled row, and undo bindError()'s selection change
+        holder.mContentView.setOnClickListener(null);
+        holder.mContentTextView.setOnClickListener(null);
+        holder.mContentTextView.setTextIsSelectable(true);
         holder.mPostedTextView.setText(R.string.loading_text);
         holder.mContentTextView.setText(R.string.loading_text);
         holder.mReadMoreTextView.setVisibility(View.GONE);
