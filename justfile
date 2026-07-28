@@ -19,6 +19,7 @@ clean:
 
 [group('build')]
 build:
+    @just format
     {{gradlec}} assembleDebug
 
 [group('build')]
