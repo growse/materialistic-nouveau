@@ -57,3 +57,12 @@ espresso:
 [group('test')]
 small-espresso:
     {{gradlec}} clean createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=androidx.test.filters.SmallTest
+
+[group('test')]
+run:
+    @just build
+    adb install ./app/build/outputs/apk/debug/app-debug.apk
+
+[group('test')]
+wipe-device:
+    adb uninstall com.growse.android.io.github.hidroh.materialistic
