@@ -31,7 +31,7 @@ constructor(
     private val readStoriesDao: MaterialisticDatabase.ReadStoriesDao,
     private val readableDao: MaterialisticDatabase.ReadableDao,
     private val itemCacheDao: MaterialisticDatabase.ItemCacheDao,
-    @Named("main") private val mainScheduler: Scheduler,
+    @param:Named("main") private val mainScheduler: Scheduler,
 ) : LocalCache {
 
   override fun getReadability(itemId: String?) = readableDao.selectByItemId(itemId)?.content

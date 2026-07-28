@@ -19,7 +19,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
@@ -37,7 +36,7 @@ class FeedbackActivity : ThemedActivity() {
     supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
     setContentView(R.layout.activity_feedback)
     AppUtils.setTextWithLinks(
-        findViewById<TextView?>(R.id.feedback_note),
+        findViewById(R.id.feedback_note),
         AppUtils.fromHtml(getString(R.string.feedback_note)),
     )
     val titleLayout = findViewById<TextInputLayout>(R.id.textinput_title)
@@ -45,26 +44,26 @@ class FeedbackActivity : ThemedActivity() {
     val title = findViewById<EditText>(R.id.edittext_title)
     val body = findViewById<EditText>(R.id.edittext_body)
     val sendButton = findViewById<View>(R.id.feedback_button)
-    findViewById<View?>(R.id.button_rate).setOnClickListener { v: View? ->
+    findViewById<View>(R.id.button_rate).setOnClickListener { _: View? ->
       AppUtils.openPlayStore(this@FeedbackActivity)
       finish()
     }
-    sendButton.setOnClickListener { v: View? ->
+    sendButton.setOnClickListener { _: View? ->
       titleLayout.isErrorEnabled = false
       bodyLayout.isErrorEnabled = false
       if (title.length() == 0) {
-        titleLayout.setError(getString(R.string.title_required))
+          titleLayout.error = getString(R.string.title_required)
       }
       if (body.length() == 0) {
-        bodyLayout.setError(getString(R.string.comment_required))
+          bodyLayout.error = getString(R.string.comment_required)
       }
       if (title.length() == 0 || body.length() == 0) {
         return@setOnClickListener
       }
-      sendButton.setEnabled(false)
+        sendButton.isEnabled = false
       mFeedbackClient!!.send(
-          title.getText().toString(),
-          body.getText().toString(),
+          title.text.toString(),
+          body.text.toString(),
           FeedbackCallback(this),
       )
     }
@@ -85,7 +84,7 @@ class FeedbackActivity : ThemedActivity() {
     if (success) {
       finish()
     } else {
-      findViewById<View?>(R.id.feedback_button).isEnabled = true
+      findViewById<View>(R.id.feedback_button).isEnabled = true
     }
   }
 
