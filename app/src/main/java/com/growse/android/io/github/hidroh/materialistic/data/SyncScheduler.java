@@ -22,4 +22,14 @@ public class SyncScheduler {
     public void scheduleSync(Context context, String itemId) {
         SyncDelegate.scheduleSync(context, new SyncDelegate.JobBuilder(context, itemId).build());
     }
+
+    /**
+     * Re-syncs a story that is already saved, going to the network for every item rather than
+     * reusing the stored copy, so that comments posted since the last sync are downloaded.
+     */
+    public void scheduleRefresh(Context context, String itemId) {
+        SyncDelegate.scheduleSync(context, new SyncDelegate.JobBuilder(context, itemId)
+                .setRefresh(true)
+                .build());
+    }
 }

@@ -79,6 +79,12 @@ public class SyncDelegate {
     private static final long TIMEOUT_MILLIS = DateUtils.MINUTE_IN_MILLIS;
     private static final String DOWNLOADS_CHANNEL_ID = "downloads";
     /**
+     * How long a cached item is trusted while syncing. An item's own fields are effectively
+     * immutable, but its kid list grows as replies arrive, so the tree has to be re-walked against
+     * the network to discover them. A refreshing job ignores this and always goes to the network.
+     */
+    private static final long CACHE_TTL_MILLIS = 30 * DateUtils.MINUTE_IN_MILLIS;
+    /**
      * Sync walks the comment tree with blocking cache reads, so it must never run on the main
      * thread - Room refuses main thread access outright.
      */
@@ -219,7 +225,7 @@ public class SyncDelegate {
 
     /**
      * Syncs a single item. Every exit path must account for exactly one unit of work, either by
-     * completing it here or by handing it to {@link #sync(HackerNewsItem)}.
+     * completing it here or by handing it to {@link #sync(HackerNewsItem, boolean)}.
      */
     private void sync(String itemId) {
         if (!mJob.connectionEnabled) {
@@ -227,38 +233,57 @@ public class SyncDelegate {
             completeUnit();
             return;
         }
-        HackerNewsItem cachedItem;
-        if ((cachedItem = getFromCache(itemId)) != null) {
-            sync(cachedItem);
-        } else {
-            updateProgress();
-            // TODO defer on low battery as well?
-            mHnRestService.networkItem(itemId).enqueue(new Callback<HackerNewsItem>() {
-                @Override
-                public void onResponse(Call<HackerNewsItem> call,
-                                       retrofit2.Response<HackerNewsItem> response) {
-                    HackerNewsItem item;
-                    if ((item = response.body()) != null) {
-                        sync(item);
-                    } else {
-                        notifyItem(itemId, null);
-                        completeUnit();
-                    }
+        if (!mJob.refresh) {
+            MaterialisticDatabase.CachedItem stored = mLocalCache.getCachedItem(itemId);
+            if (stored != null) {
+                if (System.currentTimeMillis() - stored.getFetchedAt() < CACHE_TTL_MILLIS) {
+                    sync(HackerNewsItem.fromCachedItem(stored), false);
+                    return;
                 }
-
-                @Override
-                public void onFailure(Call<HackerNewsItem> call, Throwable t) {
+                // stale, so fall through to the network - the HTTP cache is written from the same
+                // responses and so is no fresher
+            } else {
+                HackerNewsItem httpCached = getHttpCached(itemId);
+                if (httpCached != null) {
+                    sync(httpCached, true);
+                    return;
+                }
+            }
+        }
+        updateProgress();
+        // TODO defer on low battery as well?
+        mHnRestService.networkItem(itemId).enqueue(new Callback<HackerNewsItem>() {
+            @Override
+            public void onResponse(Call<HackerNewsItem> call,
+                                   retrofit2.Response<HackerNewsItem> response) {
+                HackerNewsItem item;
+                if ((item = response.body()) != null) {
+                    sync(item, true);
+                } else {
                     notifyItem(itemId, null);
                     completeUnit();
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(Call<HackerNewsItem> call, Throwable t) {
+                notifyItem(itemId, null);
+                completeUnit();
+            }
+        });
     }
 
+    /**
+     * @param store whether to write the item to the cache. Never set for an item that was read
+     *              back out of it - that would refresh the row's timestamp without refreshing its
+     *              content, and {@link #CACHE_TTL_MILLIS} would never elapse.
+     */
     @Synthetic
-    void sync(@NonNull HackerNewsItem item) {
+    void sync(@NonNull HackerNewsItem item, boolean store) {
         mSharedPreferences.edit().remove(item.getId()).apply();
-        mLocalCache.putCachedItem(HackerNewsItem.toCachedItem(item));
+        if (store) {
+            mLocalCache.putCachedItem(HackerNewsItem.toCachedItem(item));
+        }
         notifyItem(item.getId(), item);
         syncReadability(item);
         syncArticle(item);
@@ -320,11 +345,11 @@ public class SyncDelegate {
         mSharedPreferences.edit().putBoolean(itemId, true).apply();
     }
 
-    private HackerNewsItem getFromCache(String itemId) {
-        MaterialisticDatabase.CachedItem cached = mLocalCache.getCachedItem(itemId);
-        if (cached != null) {
-            return HackerNewsItem.fromCachedItem(cached);
-        }
+    /**
+     * @return whatever the HTTP cache still holds for an item with no stored copy, so that items
+     * predating the dedicated cache are not all re-downloaded, or null if it holds nothing.
+     */
+    private HackerNewsItem getHttpCached(String itemId) {
         try {
             return mHnRestService.cachedItem(itemId).execute().body();
         } catch (IOException e) {
@@ -492,6 +517,7 @@ public class SyncDelegate {
         private static final String EXTRA_ARTICLE_ENABLED = "extra:articleEnabled";
         private static final String EXTRA_COMMENTS_ENABLED = "extra:commentsEnabled";
         private static final String EXTRA_NOTIFICATION_ENABLED = "extra:notificationEnabled";
+        private static final String EXTRA_REFRESH = "extra:refresh";
         final String id;
         // written on the main thread when the sync is stopped, read on sync worker threads
         volatile boolean connectionEnabled;
@@ -499,6 +525,11 @@ public class SyncDelegate {
         boolean articleEnabled;
         boolean commentsEnabled;
         boolean notificationEnabled;
+        /**
+         * Re-walk the tree against the network instead of reusing stored items, so that replies
+         * posted since the last sync are picked up.
+         */
+        boolean refresh;
 
         Job(String id) {
             this.id = id;
@@ -511,6 +542,7 @@ public class SyncDelegate {
             articleEnabled = bundle.getInt(EXTRA_ARTICLE_ENABLED) == 1;
             commentsEnabled = bundle.getInt(EXTRA_COMMENTS_ENABLED) == 1;
             notificationEnabled = bundle.getInt(EXTRA_NOTIFICATION_ENABLED) == 1;
+            refresh = bundle.getInt(EXTRA_REFRESH) == 1;
         }
 
         Job(Bundle bundle) {
@@ -520,6 +552,7 @@ public class SyncDelegate {
             articleEnabled = bundle.getBoolean(EXTRA_ARTICLE_ENABLED);
             commentsEnabled = bundle.getBoolean(EXTRA_COMMENTS_ENABLED);
             notificationEnabled = bundle.getBoolean(EXTRA_NOTIFICATION_ENABLED);
+            refresh = bundle.getBoolean(EXTRA_REFRESH);
         }
 
         @Synthetic PersistableBundle toPersistableBundle() {
@@ -530,6 +563,7 @@ public class SyncDelegate {
             bundle.putInt(EXTRA_ARTICLE_ENABLED, articleEnabled ? 1 : 0);
             bundle.putInt(EXTRA_COMMENTS_ENABLED, commentsEnabled ? 1 : 0);
             bundle.putInt(EXTRA_NOTIFICATION_ENABLED, notificationEnabled ? 1 : 0);
+            bundle.putInt(EXTRA_REFRESH, refresh ? 1 : 0);
             return bundle;
         }
 
@@ -541,6 +575,7 @@ public class SyncDelegate {
             bundle.putBoolean(EXTRA_ARTICLE_ENABLED, articleEnabled);
             bundle.putBoolean(EXTRA_COMMENTS_ENABLED, commentsEnabled);
             bundle.putBoolean(EXTRA_NOTIFICATION_ENABLED, notificationEnabled);
+            bundle.putBoolean(EXTRA_REFRESH, refresh);
             return bundle;
         }
     }
@@ -579,6 +614,11 @@ public class SyncDelegate {
 
         public JobBuilder setNotificationEnabled(boolean notificationEnabled) {
             job.notificationEnabled = notificationEnabled;
+            return this;
+        }
+
+        JobBuilder setRefresh(boolean refresh) {
+            job.refresh = refresh;
             return this;
         }
 

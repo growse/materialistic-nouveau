@@ -46,6 +46,7 @@ import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener;
+import com.growse.android.io.github.hidroh.materialistic.data.SyncScheduler;
 import com.growse.android.io.github.hidroh.materialistic.data.WebItem;
 import com.growse.android.io.github.hidroh.materialistic.widget.CommentItemDecoration;
 import com.growse.android.io.github.hidroh.materialistic.widget.ItemRecyclerViewAdapter;
@@ -74,7 +75,10 @@ public class ItemFragment extends LazyLoadFragment implements Scrollable, Naviga
     @Inject PopupMenu mPopupMenu;
     @Inject AlertDialogBuilder mAlertDialogBuilder;
     @Inject ResourcesProvider mResourcesProvider;
+    @Inject SyncScheduler mSyncScheduler;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    /** Set for the duration of a user-initiated refresh, so a saved story can be re-synced. */
+    private boolean mRefreshing;
     private SinglePageItemRecyclerViewAdapter.SavedState mAdapterItems;
     private ItemRecyclerViewAdapter mAdapter;
     private KeyDelegate.RecyclerViewHelper mScrollableHelper;
@@ -135,6 +139,7 @@ public class ItemFragment extends LazyLoadFragment implements Scrollable, Naviga
                     return;
                 }
                 mCacheMode = ItemManager.MODE_NETWORK;
+                mRefreshing = true;
                 if (mAdapter != null) {
                     mAdapter.setCacheMode(mCacheMode);
                 }
@@ -231,11 +236,18 @@ public class ItemFragment extends LazyLoadFragment implements Scrollable, Naviga
 
     void onItemLoaded(@Nullable Item item) {
         mSwipeRefreshLayout.setRefreshing(false);
+        boolean refreshed = mRefreshing;
+        mRefreshing = false;
         if (item != null) {
             mAdapterItems = null;
             mItem = item;
             notifyItemLoaded(item);
             bindKidData();
+            if (refreshed && item.isFavorite() && isAdded()) {
+                // the story came back from the network, so we are online and its kid list is
+                // current - bring the offline copy of the thread up to date with it
+                mSyncScheduler.scheduleRefresh(getActivity(), item.getId());
+            }
         }
     }
 
