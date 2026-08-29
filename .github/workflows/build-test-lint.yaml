@@ -50,6 +50,7 @@ jobs:
     permissions:
       contents: read
       checks: write
+      pull-requests: write
     steps:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -58,7 +59,7 @@ jobs:
       - name: Test
         uses: ./.github/actions/gradle-task
         with:
-          task: app:testDebugUnitTest
+          task: app:createDebugUnitTestCoverageReport
           gradle-cache-encryption-key: ${{ secrets.GradleEncryptionKey }}
       - name: JUnit Report Action
         uses: mikepenz/action-junit-report@v6
@@ -66,12 +67,17 @@ jobs:
           report_paths: "**/TEST-*.xml"
           detailed_summary: true
           include_passed: false # Lots of test, much output.
-      - name: Upload coverage
-        uses: codecov/codecov-action@v7
+      - name: Report coverage
+        uses: madrapps/jacoco-report@v1.8.0
         with:
-          files: ./app/build/reports/coverage/test/debug/report.xml
-          flags: unittests
-          token: ${{ secrets.CODECOV_TOKEN }}
+          paths: app/build/reports/coverage/test/debug/report.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Unit test coverage
+          update-comment: true # One comment per PR, edited in place.
+          # Overall sits near zero while the Java -> Kotlin migration is in flight,
+          # so only newly touched lines are held to a bar.
+          min-coverage-overall: 0
+          min-coverage-changed-lines: 60
   lint:
     name: Lint
     needs: build
