@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.core.content.ContextCompat;
@@ -63,10 +64,26 @@ public class SubmitActivity extends ThemedActivity {
     private TextInputLayout mTitleLayout;
     private TextInputLayout mContentLayout;
     private boolean mSending;
+    private final OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            mAlertDialogBuilder
+                    .init(SubmitActivity.this)
+                    .setMessage(mSending ? R.string.confirm_no_waiting : R.string.confirm_no_submit)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        setEnabled(false);
+                        getOnBackPressedDispatcher().onBackPressed();
+                        setEnabled(true);
+                    })
+                    .show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
         AppUtils.setStatusBarColor(getWindow(), ContextCompat.getColor(this, R.color.blackT12));
         setContentView(R.layout.activity_submit);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -128,7 +145,7 @@ public class SubmitActivity extends ThemedActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            getOnBackPressedDispatcher().onBackPressed();
             return true;
         }
         if (item.getItemId() == R.id.menu_send) {
@@ -164,16 +181,6 @@ public class SubmitActivity extends ThemedActivity {
         super.onSaveInstanceState(outState);
         outState.putString(STATE_SUBJECT, mTitleEditText.getText().toString());
         outState.putString(STATE_TEXT, mContentEditText.getText().toString());
-    }
-
-    @Override
-    public void onBackPressed() {
-        mAlertDialogBuilder
-                .init(this)
-                .setMessage(mSending ? R.string.confirm_no_waiting : R.string.confirm_no_submit)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> SubmitActivity.super.onBackPressed())
-                .show();
     }
 
     private boolean validate() {

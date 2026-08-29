@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -53,6 +54,20 @@ public abstract class DrawerActivity extends ThemedActivity {
     private TextView mDrawerAccount;
     private View mDrawerLogout;
     private View mDrawerUser;
+    private final OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            if (mDrawerLayout.isDrawerOpen(mDrawer)) {
+                closeDrawers();
+            } else if (isTaskRoot() && Preferences.isLaunchScreenLast(DrawerActivity.this)) {
+                moveTaskToBack(true);
+            } else {
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            }
+        }
+    };
     private final SharedPreferences.OnSharedPreferenceChangeListener mLoginListener
             = (sharedPreferences, key) -> {
         if (TextUtils.equals(key, getString(R.string.pref_username))) {
@@ -63,6 +78,7 @@ public abstract class DrawerActivity extends ThemedActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
         super.setContentView(R.layout.activity_drawer);
         mDrawer = findViewById(R.id.drawer);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -109,17 +125,6 @@ public abstract class DrawerActivity extends ThemedActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return mDrawerToggle.onOptionsItemSelected(item)|| super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(mDrawer)) {
-            closeDrawers();
-        } else if (isTaskRoot() && Preferences.isLaunchScreenLast(this)) {
-            moveTaskToBack(true);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override

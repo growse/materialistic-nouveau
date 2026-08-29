@@ -37,6 +37,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import javax.inject.Inject;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -93,11 +94,25 @@ public abstract class BaseListActivity extends DrawerActivity implements MultiPa
         }
     };
     private ItemPagerAdapter mAdapter;
+    private final OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            if (!mIsMultiPane || !mFullscreen) {
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            } else {
+                LocalBroadcastManager.getInstance(BaseListActivity.this).sendBroadcast(new Intent(
+                        WebFragment.ACTION_FULLSCREEN).putExtra(WebFragment.EXTRA_FULLSCREEN, false));
+            }
+        }
+    };
 
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
         setContentView(R.layout.activity_list);
         setTitle(getDefaultTitle());
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -250,16 +265,6 @@ public abstract class BaseListActivity extends DrawerActivity implements MultiPa
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
         }
     }
-    @Override
-    public void onBackPressed() {
-        if (!mIsMultiPane || !mFullscreen) {
-            super.onBackPressed();
-        } else {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(
-                    WebFragment.ACTION_FULLSCREEN).putExtra(WebFragment.EXTRA_FULLSCREEN, false));
-        }
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         mKeyDelegate.setScrollable(getScrollableList(), mAppBar);

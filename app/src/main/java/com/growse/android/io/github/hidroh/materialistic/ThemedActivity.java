@@ -20,6 +20,7 @@ import android.app.ActivityManager;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -32,6 +33,17 @@ import android.view.Menu;
 public abstract class ThemedActivity extends AppCompatActivity {
     private final MenuTintDelegate mMenuTintDelegate = new MenuTintDelegate();
     private final Preferences.Observable mThemeObservable = new Preferences.Observable();
+    private final OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            // TODO http://b.android.com/176265
+            try {
+                supportFinishAfterTransition();
+            } catch (IllegalStateException e) {
+                finish();
+            }
+        }
+    };
     private boolean mResumed = true;
     private boolean mPendingThemeChanged;
     private boolean mDestroyed;
@@ -41,6 +53,7 @@ public abstract class ThemedActivity extends AppCompatActivity {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         Preferences.Theme.apply(this, isDialogTheme(), isTranslucent());
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
         setTaskTitle(getTitle());
         mMenuTintDelegate.onActivityCreated(this);
     }
@@ -79,16 +92,6 @@ public abstract class ThemedActivity extends AppCompatActivity {
         super.onDestroy();
         mThemeObservable.unsubscribe(this);
         mDestroyed = true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        // TODO http://b.android.com/176265
-        try {
-            super.onBackPressed();
-        } catch (IllegalStateException e) {
-            supportFinishAfterTransition();
-        }
     }
 
     @Override

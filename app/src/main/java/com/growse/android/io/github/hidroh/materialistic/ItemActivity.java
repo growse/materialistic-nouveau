@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.AppBarLayout;
@@ -131,10 +132,24 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
     };
     private final Preferences.Observable mPreferenceObservable = new Preferences.Observable();
     private AppUtils.SystemUiHelper mSystemUiHelper;
+    private final OnBackPressedCallback mBackPressedCallback = new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+            if (!mFullscreen) {
+                setEnabled(false);
+                getOnBackPressedDispatcher().onBackPressed();
+                setEnabled(true);
+            } else {
+                LocalBroadcastManager.getInstance(ItemActivity.this).sendBroadcast(new Intent(
+                        WebFragment.ACTION_FULLSCREEN).putExtra(WebFragment.EXTRA_FULLSCREEN, false));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getOnBackPressedDispatcher().addCallback(this, mBackPressedCallback);
         mExternalBrowser = Preferences.externalBrowserEnabled(this);
         if (getIntent().getBooleanExtra(EXTRA_OPEN_COMMENTS, false)) {
             mStoryViewMode = Preferences.StoryViewMode.Comment;
@@ -252,16 +267,6 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
         mPreferenceObservable.unsubscribe(this);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!mFullscreen) {
-            super.onBackPressed();
-        } else {
-            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(
-                    WebFragment.ACTION_FULLSCREEN).putExtra(WebFragment.EXTRA_FULLSCREEN, false));
-        }
     }
 
     @Override
