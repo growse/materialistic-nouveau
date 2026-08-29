@@ -1,5 +1,6 @@
 package com.growse.android.io.github.hidroh.materialistic
 
+import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.growse.android.io.github.hidroh.materialistic.screens.FeedbackScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
@@ -45,6 +46,7 @@ class FeedbackActivityTest : TestCase() {
   @Test
   fun typingInFieldsEnablesSubmission() = run {
     step("Enter a title") { FeedbackScreen { titleEditText.typeText("Test title") } }
+    step("Dismiss the keyboard so it doesn't intercept the next tap") { closeSoftKeyboard() }
     step("Enter a body") { FeedbackScreen { bodyEditText.typeText("Test body text") } }
     step("Send button remains enabled after filling both fields") {
       FeedbackScreen { sendButton.isEnabled() }
