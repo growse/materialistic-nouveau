@@ -46,9 +46,10 @@ lint:
 unit-test:
     {{gradlec}} app:testDebugUnitTest
 
+# Unit tests + JaCoCo report at app/build/reports/coverage/test/debug/
 [group('test')]
-instrumented-test:
-    {{gradlec}} connectedDebugAndroidTest
+unit-test-coverage:
+    {{gradlec}} app:createDebugUnitTestCoverageReport
 
 [group('test')]
 espresso:
@@ -57,6 +58,30 @@ espresso:
 [group('test')]
 small-espresso:
     {{gradlec}} clean createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=androidx.test.filters.SmallTest
+
+# Espresso tests on a connected device + JaCoCo report at app/build/reports/coverage/androidTest/debug/connected/
+[group('test')]
+espresso-coverage:
+    {{gradlec}} app:createDebugAndroidTestCoverageReport
+
+# Kaspresso tests on the ATD gradle-managed device (no attached device needed)
+[group('test')]
+atd:
+    {{gradlec}} app:atdApi33DebugAndroidTest
+
+# ATD tests + JaCoCo report at app/build/reports/coverage/androidTest/debug/managedDevice/
+[group('test')]
+atd-coverage:
+    {{gradlec}} app:createManagedDeviceDebugAndroidTestCoverageReport
+
+# Drop the managed AVDs when an image or device definition changes
+[group('test')]
+clean-managed-devices:
+    {{gradlec}} cleanManagedDevices
+
+# Unit + espresso coverage (needs an attached device; see atd-coverage for device-free)
+[group('test')]
+coverage: unit-test-coverage espresso-coverage
 
 [group('test')]
 run:

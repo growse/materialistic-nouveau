@@ -39,7 +39,11 @@ android {
   }
 
   buildTypes {
-    debug { isMinifyEnabled = false }
+    debug {
+      isMinifyEnabled = false
+      enableUnitTestCoverage = true
+      enableAndroidTestCoverage = true
+    }
     release {
       signingConfig = signingConfigs.getByName("release")
       isMinifyEnabled = true
@@ -51,6 +55,35 @@ android {
           "proguard-support.pro",
           "proguard-rx.pro",
       )
+    }
+  }
+
+  testOptions {
+    unitTests {
+      isReturnDefaultValues = true
+      all { it.useJUnitPlatform() } // Kotest runs on the JUnit 5 platform.
+    }
+
+    managedDevices {
+      localDevices {
+        // ATD (Automated Test Device) images are stripped of the UI apps an
+        // instrumentation run never touches, so they boot faster and use less memory
+        // than a stock emulator. Only available from API 30 up.
+        create("atdApi33") {
+          device = "Pixel 2"
+          sdkVersion = 33
+          systemImageSource = "aosp-atd"
+          require64Bit = true
+        }
+        // Guards minSdk. No ATD image exists this far back, so this is a stock
+        // AOSP image and is correspondingly slower to boot.
+        create("aospApi23") {
+          device = "Nexus 5"
+          sdkVersion = 23
+          systemImageSource = "aosp"
+          require64Bit = true
+        }
+      }
     }
   }
 
@@ -93,6 +126,13 @@ dependencies {
 
   ksp(libs.androidx.room.compiler)
   ksp(libs.hilt.android.compiler)
+
+  testImplementation(libs.kotest.runner.junit5)
+  testImplementation(libs.kotest.assertions.core)
+  testImplementation(libs.kotest.property)
+  testImplementation(libs.mockito.core)
+  testImplementation(libs.mockito.kotlin)
+  testImplementation(libs.rxjava)
 
   androidTestImplementation(libs.kaspresso)
   androidTestImplementation(libs.junit)
