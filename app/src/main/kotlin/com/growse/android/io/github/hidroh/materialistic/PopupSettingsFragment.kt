@@ -28,78 +28,76 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
 class PopupSettingsFragment : AppCompatDialogFragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_popup_settings, container, false)
-    }
+  override fun onCreateView(
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?,
+  ): View? {
+    return inflater.inflate(R.layout.fragment_popup_settings, container, false)
+  }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return BottomSheetDialog(requireActivity(), theme)
-    }
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    return BottomSheetDialog(requireActivity(), theme)
+  }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (savedInstanceState == null) {
-            @Suppress("DEPRECATION")
-            val fragment = Fragment.instantiate(
-                requireActivity(),
-                PreferenceFragment::class.java.name, arguments
-            )
-            childFragmentManager
-                .beginTransaction()
-                .add(R.id.content, fragment)
-                .commit()
+  @Deprecated("Deprecated in Java")
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    super.onActivityCreated(savedInstanceState)
+    if (savedInstanceState == null) {
+      @Suppress("DEPRECATION")
+      val fragment =
+          Fragment.instantiate(
+              requireActivity(),
+              PreferenceFragment::class.java.name,
+              arguments,
+          )
+      childFragmentManager.beginTransaction().add(R.id.content, fragment).commit()
+    }
+  }
+
+  class PreferenceFragment : PreferenceFragmentCompat() {
+    override fun onCreatePreferences(bundle: Bundle?, s: String?) {
+      addPreferencesFromResource(R.xml.preferences_category)
+      val category = findPreference<Preference>(getString(R.string.pref_category))
+      val title = requireArguments().getInt(EXTRA_TITLE, 0)
+      if (title != 0) {
+        category?.setTitle(title)
+      }
+      val summary = requireArguments().getInt(EXTRA_SUMMARY, 0)
+      if (summary != 0) {
+        category?.setSummary(summary)
+      }
+      val preferences = requireArguments().getIntArray(EXTRA_XML_PREFERENCES)
+      if (preferences != null) {
+        for (preference in preferences) {
+          addPreferencesFromResource(preference)
         }
+      }
     }
+  }
 
-    class PreferenceFragment : PreferenceFragmentCompat() {
-        override fun onCreatePreferences(bundle: Bundle?, s: String?) {
-            addPreferencesFromResource(R.xml.preferences_category)
-            val category = findPreference<Preference>(getString(R.string.pref_category))
-            val title = requireArguments().getInt(EXTRA_TITLE, 0)
-            if (title != 0) {
-                category?.setTitle(title)
-            }
-            val summary = requireArguments().getInt(EXTRA_SUMMARY, 0)
-            if (summary != 0) {
-                category?.setSummary(summary)
-            }
-            val preferences = requireArguments().getIntArray(EXTRA_XML_PREFERENCES)
-            if (preferences != null) {
-                for (preference in preferences) {
-                    addPreferencesFromResource(preference)
-                }
-            }
-        }
+  // the supertype is spelled out in full because this class shadows the imported name, exactly
+  // as the Java version did
+  class BottomSheetDialog(context: Context, @StyleRes theme: Int) :
+      com.google.android.material.bottomsheet.BottomSheetDialog(context, theme) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+      super.onCreate(savedInstanceState)
+      val width = context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_width)
+      window?.setLayout(
+          if (width > 0) width else ViewGroup.LayoutParams.MATCH_PARENT,
+          ViewGroup.LayoutParams.MATCH_PARENT,
+      )
     }
+  }
 
-    // the supertype is spelled out in full because this class shadows the imported name, exactly
-    // as the Java version did
-    class BottomSheetDialog(context: Context, @StyleRes theme: Int) :
-        com.google.android.material.bottomsheet.BottomSheetDialog(context, theme) {
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            val width = context.resources.getDimensionPixelSize(R.dimen.bottom_sheet_width)
-            window?.setLayout(
-                if (width > 0) width else ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-        }
-    }
+  companion object {
+    // @JvmField so the Java callers keep seeing static fields rather than getters
+    @JvmField val EXTRA_TITLE: String = PopupSettingsFragment::class.java.name + ".EXTRA_TITLE"
 
-    companion object {
-        // @JvmField so the Java callers keep seeing static fields rather than getters
-        @JvmField val EXTRA_TITLE: String = PopupSettingsFragment::class.java.name + ".EXTRA_TITLE"
+    @JvmField val EXTRA_SUMMARY: String = PopupSettingsFragment::class.java.name + ".EXTRA_SUMMARY"
 
-        @JvmField
-        val EXTRA_SUMMARY: String = PopupSettingsFragment::class.java.name + ".EXTRA_SUMMARY"
-
-        @JvmField
-        val EXTRA_XML_PREFERENCES: String = PopupSettingsFragment::class.java.name +
-                ".EXTRA_XML_PREFERENCES"
-    }
+    @JvmField
+    val EXTRA_XML_PREFERENCES: String =
+        PopupSettingsFragment::class.java.name + ".EXTRA_XML_PREFERENCES"
+  }
 }

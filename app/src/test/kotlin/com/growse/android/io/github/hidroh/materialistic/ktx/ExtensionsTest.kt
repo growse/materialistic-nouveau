@@ -19,9 +19,9 @@ class ExtensionsTest :
         var attempted = false
 
         Closeable {
-              attempted = true
-              throw IOException("boom")
-            }
+          attempted = true
+          throw IOException("boom")
+        }
             .closeQuietly()
 
         attempted shouldBe true
