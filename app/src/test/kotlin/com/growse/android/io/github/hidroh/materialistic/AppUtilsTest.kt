@@ -14,7 +14,8 @@ private const val YEAR = 52L * WEEK
 
 class AppUtilsTimeSpanTest :
     StringSpec({
-      fun spanAgo(millis: Long) = AppUtils.getAbbreviatedTimeSpan(System.currentTimeMillis() - millis)
+      fun spanAgo(millis: Long) =
+          AppUtils.getAbbreviatedTimeSpan(System.currentTimeMillis() - millis)
 
       "a fresh timestamp reads as zero minutes" { spanAgo(0) shouldBe "0m" }
 

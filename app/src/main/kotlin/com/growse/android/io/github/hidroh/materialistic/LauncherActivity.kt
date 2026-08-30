@@ -23,16 +23,16 @@ class LauncherActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val launchScreens: Map<String, Class<out Activity>> =
-      mapOf(
-        getString(R.string.pref_launch_screen_value_top) to ListActivity::class.java,
-        getString(R.string.pref_launch_screen_value_best) to BestActivity::class.java,
-        getString(R.string.pref_launch_screen_value_hot) to PopularActivity::class.java,
-        getString(R.string.pref_launch_screen_value_new) to NewActivity::class.java,
-        getString(R.string.pref_launch_screen_value_ask) to AskActivity::class.java,
-        getString(R.string.pref_launch_screen_value_show) to ShowActivity::class.java,
-        getString(R.string.pref_launch_screen_value_jobs) to JobsActivity::class.java,
-        getString(R.string.pref_launch_screen_value_saved) to FavoriteActivity::class.java,
-      )
+        mapOf(
+            getString(R.string.pref_launch_screen_value_top) to ListActivity::class.java,
+            getString(R.string.pref_launch_screen_value_best) to BestActivity::class.java,
+            getString(R.string.pref_launch_screen_value_hot) to PopularActivity::class.java,
+            getString(R.string.pref_launch_screen_value_new) to NewActivity::class.java,
+            getString(R.string.pref_launch_screen_value_ask) to AskActivity::class.java,
+            getString(R.string.pref_launch_screen_value_show) to ShowActivity::class.java,
+            getString(R.string.pref_launch_screen_value_jobs) to JobsActivity::class.java,
+            getString(R.string.pref_launch_screen_value_saved) to FavoriteActivity::class.java,
+        )
     val launchScreen = Preferences.getLaunchScreen(this)
     startActivity(Intent(this, launchScreens[launchScreen] ?: ListActivity::class.java))
     finish()

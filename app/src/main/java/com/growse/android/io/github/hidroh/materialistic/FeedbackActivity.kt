@@ -52,15 +52,15 @@ class FeedbackActivity : ThemedActivity() {
       titleLayout.isErrorEnabled = false
       bodyLayout.isErrorEnabled = false
       if (title.length() == 0) {
-          titleLayout.error = getString(R.string.title_required)
+        titleLayout.error = getString(R.string.title_required)
       }
       if (body.length() == 0) {
-          bodyLayout.error = getString(R.string.comment_required)
+        bodyLayout.error = getString(R.string.comment_required)
       }
       if (title.length() == 0 || body.length() == 0) {
         return@setOnClickListener
       }
-        sendButton.isEnabled = false
+      sendButton.isEnabled = false
       mFeedbackClient!!.send(
           title.text.toString(),
           body.text.toString(),

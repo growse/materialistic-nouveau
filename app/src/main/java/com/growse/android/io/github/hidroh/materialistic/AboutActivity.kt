@@ -37,7 +37,12 @@ class AboutActivity : ThemedActivity() {
     val initialPaddingBottom = scrollView.paddingBottom
     ViewCompat.setOnApplyWindowInsetsListener(scrollView) { v, windowInsets ->
       val systemBars: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-      v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, initialPaddingBottom + systemBars.bottom)
+      v.setPadding(
+          v.paddingLeft,
+          v.paddingTop,
+          v.paddingRight,
+          initialPaddingBottom + systemBars.bottom,
+      )
       windowInsets
     }
 
