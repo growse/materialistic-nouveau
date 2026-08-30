@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-  compileSdk = 36
+  compileSdk = 37
 
   dependenciesInfo {
     includeInApk = false
@@ -16,9 +16,9 @@ android {
   defaultConfig {
     applicationId = "com.growse.android.io.github.hidroh.materialistic"
     minSdk = 23
-    targetSdk = 36
-    versionCode = 4005
-    versionName = "v4.0.5"
+    targetSdk = 37
+    versionCode = 4006
+    versionName = "v4.0.6"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
