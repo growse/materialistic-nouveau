@@ -1,0 +1,1 @@
+Predictive back gestures now properly close the drawer, exit fullscreen video, and prompt to save drafts instead of being silently ignored. Saved stories refresh their comments on pull-to-refresh, offline saves now download the whole comment tree, and failed comments are easier to retry. Bumped target SDK to 37.
