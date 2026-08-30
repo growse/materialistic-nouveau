@@ -77,6 +77,7 @@
     <string name="color_blue">Blue</string>
     <string name="color_teal">Teal</string>
     <string name="color_brown">Brown</string>
+    <string name="color_system">System</string>
     <string name="pref_search_sort_title">Sort by</string>
     <string name="pref_search_sort_value_recent">recent</string>
     <string name="pref_search_sort_value_default">default</string>

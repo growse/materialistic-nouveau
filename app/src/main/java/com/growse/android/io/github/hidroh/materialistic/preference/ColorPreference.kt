@@ -24,32 +24,38 @@ import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
+import com.google.android.material.color.DynamicColors
 import com.growse.android.io.github.hidroh.materialistic.R
+
+private data class Swatch(val name: String, val label: CharSequence, @ColorInt val color: Int)
 
 /**
  * A swatch-grid preference for picking one of a fixed set of accent colors (see
  * [R.array.accent_color_names] / [R.array.accent_color_values]), shared by the toolbar and accent
- * color pickers.
+ * color pickers. On a device with Material You dynamic color available, a "System" swatch derived
+ * from the wallpaper is appended after the fixed set.
  */
 class ColorPreference
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
     Preference(context, attrs, defStyleAttr) {
 
-  private val names = context.resources.getStringArray(R.array.accent_color_names)
-  private val labels = context.resources.getTextArray(R.array.accent_color_labels)
-  private var selected: String = names[0]
+  private val swatches = buildSwatches(context)
+  private var selected: String = swatches[0].name
 
   init {
     layoutResource = R.layout.preference_color
   }
 
-  override fun onGetDefaultValue(a: TypedArray, index: Int): Any = a.getString(index) ?: names[0]
+  override fun onGetDefaultValue(a: TypedArray, index: Int): Any =
+      a.getString(index) ?: swatches[0].name
 
   override fun onSetInitialValue(defaultValue: Any?) {
-    selected = getPersistedString((defaultValue as? String) ?: names[0])
+    selected = getPersistedString((defaultValue as? String) ?: swatches[0].name)
     updateSummary()
   }
 
@@ -61,63 +67,74 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
     val swatchSize = context.resources.getDimensionPixelSize(R.dimen.color_swatch_size)
     val checkSize = context.resources.getDimensionPixelSize(R.dimen.color_swatch_check_size)
     val margin = context.resources.getDimensionPixelSize(R.dimen.margin)
-    val colors = context.resources.obtainTypedArray(R.array.accent_color_values)
-    try {
-      for (i in names.indices) {
-        val name = names[i]
-        val color = colors.getColor(i, 0)
-        val swatch =
-            FrameLayout(context).apply {
-              layoutParams =
-                  LinearLayout.LayoutParams(swatchSize, swatchSize).apply {
-                    marginStart = margin
-                    marginEnd = margin
-                  }
-              background =
-                  GradientDrawable().apply {
-                    shape = GradientDrawable.OVAL
-                    setColor(color)
-                  }
-              // Prefixed with the preference's own title so a screen reader (and Espresso, in
-              // tests) can tell the toolbar and accent swatches apart.
-              contentDescription = "$title ${labels[i]}"
-              isClickable = true
-              foreground =
-                  context
-                      .obtainStyledAttributes(
-                          intArrayOf(android.R.attr.selectableItemBackgroundBorderless)
-                      )
-                      .let {
-                        val drawable = it.getDrawable(0)
-                        it.recycle()
-                        drawable
-                      }
-              setOnClickListener {
-                if (selected != name) {
-                  selected = name
-                  persistString(name)
-                  updateSummary()
-                  notifyChanged()
+    for (entry in swatches) {
+      val swatch =
+          FrameLayout(context).apply {
+            layoutParams =
+                LinearLayout.LayoutParams(swatchSize, swatchSize).apply {
+                  marginStart = margin
+                  marginEnd = margin
                 }
+            background =
+                GradientDrawable().apply {
+                  shape = GradientDrawable.OVAL
+                  setColor(entry.color)
+                }
+            // Prefixed with the preference's own title so a screen reader (and Espresso, in
+            // tests) can tell the toolbar and accent swatches apart.
+            contentDescription = "$title ${entry.label}"
+            isClickable = true
+            foreground =
+                context
+                    .obtainStyledAttributes(
+                        intArrayOf(android.R.attr.selectableItemBackgroundBorderless)
+                    )
+                    .let {
+                      val drawable = it.getDrawable(0)
+                      it.recycle()
+                      drawable
+                    }
+            setOnClickListener {
+              if (selected != entry.name) {
+                selected = entry.name
+                persistString(entry.name)
+                updateSummary()
+                notifyChanged()
               }
             }
-        if (name == selected) {
-          swatch.addView(
-              ImageView(context).apply {
-                setImageResource(R.drawable.ic_check_white_24dp)
-                layoutParams = FrameLayout.LayoutParams(checkSize, checkSize, Gravity.CENTER)
-              }
-          )
-        }
-        container.addView(swatch)
+          }
+      if (entry.name == selected) {
+        swatch.addView(
+            ImageView(context).apply {
+              setImageResource(R.drawable.ic_check_white_24dp)
+              layoutParams = FrameLayout.LayoutParams(checkSize, checkSize, Gravity.CENTER)
+            }
+        )
       }
-    } finally {
-      colors.recycle()
+      container.addView(swatch)
     }
   }
 
   private fun updateSummary() {
-    val index = names.indexOf(selected).coerceAtLeast(0)
-    summary = labels[index]
+    summary = swatches.firstOrNull { it.name == selected }?.label ?: swatches[0].label
+  }
+
+  companion object {
+    private fun buildSwatches(context: Context): List<Swatch> {
+      val names = context.resources.getStringArray(R.array.accent_color_names)
+      val labels = context.resources.getTextArray(R.array.accent_color_labels)
+      val colors = context.resources.obtainTypedArray(R.array.accent_color_values)
+      val fixed =
+          try {
+            names.indices.map { i -> Swatch(names[i], labels[i], colors.getColor(i, 0)) }
+          } finally {
+            colors.recycle()
+          }
+      if (!DynamicColors.isDynamicColorAvailable()) {
+        return fixed
+      }
+      val systemColor = ContextCompat.getColor(context, android.R.color.system_accent1_600)
+      return fixed + Swatch("system", context.getString(R.string.color_system), systemColor)
+    }
   }
 }

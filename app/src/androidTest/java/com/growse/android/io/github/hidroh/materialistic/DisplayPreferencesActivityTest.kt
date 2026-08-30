@@ -6,8 +6,10 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.google.android.material.color.DynamicColors
 import com.growse.android.io.github.hidroh.materialistic.screens.DisplayPreferencesScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import org.junit.Assume.assumeTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExternalResource
@@ -92,6 +94,29 @@ class DisplayPreferencesActivityTest : TestCase() {
           PreferenceManager.getDefaultSharedPreferences(context)
               .getString(context.getString(R.string.pref_primary_color), null)
       assert(persisted == null) { "Expected pref_primary_color to remain unset, was '$persisted'" }
+    }
+  }
+
+  @Test
+  fun systemSwatchIsOfferedOnlyWhenDynamicColorIsAvailable() = run {
+    // Skips cleanly (not a failure) on a device/emulator without Material You dynamic color,
+    // e.g. anything pre-Android 12 - see ColorPreference.buildSwatches.
+    assumeTrue(DynamicColors.isDynamicColorAvailable())
+    val systemSwatchDescription =
+        "${context.getString(R.string.pref_primary_color_title)} ${context.getString(R.string.color_system)}"
+    step("Tap the toolbar color picker's System swatch") {
+      DisplayPreferencesScreen { swatch(systemSwatchDescription).click() }
+    }
+    step("Verify the summary now reads System") {
+      DisplayPreferencesScreen {
+        summaryWithText(context.getString(R.string.color_system)).isVisible()
+      }
+    }
+    step("Verify the choice was persisted") {
+      val persisted =
+          PreferenceManager.getDefaultSharedPreferences(context)
+              .getString(context.getString(R.string.pref_primary_color), null)
+      assert(persisted == "system") { "Expected pref_primary_color to be persisted as 'system'" }
     }
   }
 }

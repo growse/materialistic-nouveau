@@ -30,6 +30,7 @@ import androidx.core.content.edit
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import com.google.android.material.color.DynamicColors
 import com.growse.android.io.github.hidroh.materialistic.annotation.PublicApi
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClient
@@ -469,6 +470,9 @@ object Preferences {
     @StyleRes
     private fun getPrimaryColorOverlay(name: String): Int? =
         when (name) {
+          "system" ->
+              if (DynamicColors.isDynamicColorAvailable()) R.style.PrimaryColorOverlay_System
+              else R.style.PrimaryColorOverlay_Purple
           "purple" -> R.style.PrimaryColorOverlay_Purple
           "red" -> R.style.PrimaryColorOverlay_Red
           "indigo" -> R.style.PrimaryColorOverlay_Indigo
@@ -481,6 +485,9 @@ object Preferences {
     @StyleRes
     private fun getAccentColorOverlay(name: String): Int? =
         when (name) {
+          "system" ->
+              if (DynamicColors.isDynamicColorAvailable()) R.style.AccentColorOverlay_System
+              else R.style.AccentColorOverlay_Red
           "purple" -> R.style.AccentColorOverlay_Purple
           "red" -> R.style.AccentColorOverlay_Red
           "indigo" -> R.style.AccentColorOverlay_Indigo
