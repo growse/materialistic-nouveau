@@ -65,6 +65,7 @@
                 </style>
             </head>
             <body>
+            %3$s
             </body>
         </html>
         ]]>

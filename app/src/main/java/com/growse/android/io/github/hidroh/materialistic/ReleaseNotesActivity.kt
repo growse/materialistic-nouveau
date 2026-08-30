@@ -37,6 +37,11 @@ class ReleaseNotesActivity : ThemedActivity() {
       AppUtils.openPlayStore(this)
       finish()
     }
+    val notesBody =
+        BuildConfig.RELEASE_NOTES_HTML.split("\n")
+            .filter { it.isNotBlank() }
+            .joinToString(separator = "") { "<p>$it</p>" }
+            .ifEmpty { "<p>${getString(R.string.release_notes_unavailable)}</p>" }
     with(findViewById<WebView>(R.id.web_view)) {
       webViewClient = WebViewClient()
       webChromeClient = WebChromeClient()
@@ -47,6 +52,7 @@ class ReleaseNotesActivity : ThemedActivity() {
               R.string.release_notes,
               AppUtils.toHtmlColor(this@ReleaseNotesActivity, android.R.attr.textColorPrimary),
               AppUtils.toHtmlColor(this@ReleaseNotesActivity, android.R.attr.textColorLink),
+              notesBody,
           ),
           "text/html",
           "UTF-8",

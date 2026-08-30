@@ -5,6 +5,22 @@ plugins {
   alias(libs.plugins.ktfmt)
 }
 
+val appVersionCode = 4006
+val appVersionName = "v4.0.6"
+
+// Feeds the in-app "What's new" screen from the same file the release workflow requires,
+// so there's a single place to update per release instead of two.
+val releaseNotesFile = file("../fastlane/metadata/android/en-US/changelogs/$appVersionCode.txt")
+val releaseNotesEscaped =
+    releaseNotesFile
+        .takeIf { it.exists() }
+        ?.readText()
+        ?.trim()
+        ?.replace("\\", "\\\\")
+        ?.replace("\"", "\\\"")
+        ?.replace("\n", "\\n")
+        .orEmpty()
+
 android {
   compileSdk = 37
 
@@ -17,12 +33,13 @@ android {
     applicationId = "com.growse.android.io.github.hidroh.materialistic"
     minSdk = 23
     targetSdk = 37
-    versionCode = 4006
-    versionName = "v4.0.6"
+    versionCode = appVersionCode
+    versionName = appVersionName
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
     buildConfigField("String", "MERCURY_TOKEN", "\"\"")
+    buildConfigField("String", "RELEASE_NOTES_HTML", "\"$releaseNotesEscaped\"")
   }
 
   androidResources { localeFilters += setOf("en", "zh-rCN", "es") }

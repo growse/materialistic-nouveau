@@ -20,7 +20,7 @@ jobs:
       - name: Resolve changelog
         id: changelog
         run: |
-          VERSION_CODE=$(grep -oP 'versionCode\s*=\s*\K[0-9]+' app/build.gradle.kts)
+          VERSION_CODE=$(grep -oP 'appVersionCode\s*=\s*\K[0-9]+' app/build.gradle.kts)
           CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/${VERSION_CODE}.txt"
           if [ ! -f "$CHANGELOG_FILE" ]; then
             echo "::error::No changelog found at $CHANGELOG_FILE for versionCode $VERSION_CODE. Add one before tagging a release."
