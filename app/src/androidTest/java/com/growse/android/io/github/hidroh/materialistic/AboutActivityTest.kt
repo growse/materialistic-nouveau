@@ -33,4 +33,11 @@ class AboutActivityTest : TestCase() {
   fun upButtonFinishesActivity() = run {
     step("Verify toolbar with navigation is shown") { AboutScreen { toolbar.isVisible() } }
   }
+
+  @Test
+  fun applicationInfoLinksToTheCurrentFork() = run {
+    step("Verify the application info text links to this fork's repository") {
+      AboutScreen { applicationInfoText.containsText("github.com/growse/materialistic-nouveau") }
+    }
+  }
 }

@@ -78,7 +78,9 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
                     shape = GradientDrawable.OVAL
                     setColor(color)
                   }
-              contentDescription = labels[i]
+              // Prefixed with the preference's own title so a screen reader (and Espresso, in
+              // tests) can tell the toolbar and accent swatches apart.
+              contentDescription = "$title ${labels[i]}"
               isClickable = true
               foreground =
                   context

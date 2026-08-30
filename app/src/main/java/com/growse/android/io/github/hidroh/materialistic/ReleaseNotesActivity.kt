@@ -23,6 +23,7 @@ import android.view.Window
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.VisibleForTesting
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,10 +39,10 @@ class ReleaseNotesActivity : ThemedActivity() {
       finish()
     }
     val notesBody =
-        BuildConfig.RELEASE_NOTES_HTML.split("\n")
-            .filter { it.isNotBlank() }
-            .joinToString(separator = "") { "<p>$it</p>" }
-            .ifEmpty { "<p>${getString(R.string.release_notes_unavailable)}</p>" }
+        buildNotesBody(
+            BuildConfig.RELEASE_NOTES_HTML,
+            getString(R.string.release_notes_unavailable),
+        )
     with(findViewById<WebView>(R.id.web_view)) {
       webViewClient = WebViewClient()
       webChromeClient = WebChromeClient()
@@ -68,4 +69,14 @@ class ReleaseNotesActivity : ThemedActivity() {
   }
 
   override fun isDialogTheme() = true
+
+  companion object {
+    @VisibleForTesting
+    fun buildNotesBody(rawNotes: String, unavailableMessage: String): String =
+        rawNotes
+            .split("\n")
+            .filter { it.isNotBlank() }
+            .joinToString(separator = "") { "<p>$it</p>" }
+            .ifEmpty { "<p>$unavailableMessage</p>" }
+  }
 }
