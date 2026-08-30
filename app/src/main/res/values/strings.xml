@@ -23,6 +23,7 @@
     <string name="title_activity_best">Best Stories</string>
     <string name="title_activity_item">Comments</string>
     <string name="title_activity_release">What\'s New</string>
+    <string name="release_notes_unavailable">No release notes available for this version.</string>
     <string name="filter_title_item">Materialistic</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
@@ -36,7 +37,7 @@
     <string name="application_info_text">
         <![CDATA[
             <p>Version: %1$s (%2$d)</p>
-            <p>This application is open source at <a href="https://github.com/hidroh/materialistic">github.com/hidroh/materialistic</a></p>
+            <p>This application is open source at <a href="https://github.com/growse/materialistic-nouveau">github.com/growse/materialistic-nouveau</a>, forked from <a href="https://github.com/hidroh/materialistic">hidroh/materialistic</a></p>
         ]]>
     </string>
     <string name="libraries_title">Libraries &amp; Resources</string>
