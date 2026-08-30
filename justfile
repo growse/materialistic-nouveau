@@ -34,6 +34,19 @@ build-all:
 install: build
     adb install -r app/build/outputs/apk/debug/app-debug.apk
 
+# Checks a fastlane changelog exists for the current versionCode (mirrors release.yaml's check)
+[group('build')]
+check-changelog:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    version_code=$(grep -oP 'versionCode\s*=\s*\K[0-9]+' app/build.gradle.kts)
+    changelog_file="fastlane/metadata/android/en-US/changelogs/${version_code}.txt"
+    if [ ! -f "$changelog_file" ]; then
+        echo "No changelog found at $changelog_file for versionCode $version_code. Add one before tagging a release." >&2
+        exit 1
+    fi
+    echo "Found $changelog_file"
+
 [group('format')]
 format:
     {{gradlec}} ktfmtFormat

@@ -52,3 +52,10 @@ repos:
         pass_filenames: false
         language: system
         files: ^fastlane/Fastfile$
+      - id: check-changelog
+        name: Check changelog exists
+        description: Ensures a fastlane changelog exists for the current versionCode
+        entry: just check-changelog
+        pass_filenames: false
+        language: system
+        files: ^app/build\.gradle\.kts$
