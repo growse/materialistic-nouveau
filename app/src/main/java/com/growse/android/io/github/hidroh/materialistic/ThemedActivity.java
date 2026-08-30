@@ -62,7 +62,8 @@ public abstract class ThemedActivity extends AppCompatActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mThemeObservable.subscribe(this, (key, contextChanged) ->  onThemeChanged(key),
-                R.string.pref_theme, R.string.pref_daynight_auto);
+                R.string.pref_theme, R.string.pref_daynight_auto,
+                R.string.pref_primary_color, R.string.pref_accent_color);
     }
 
     @CallSuper

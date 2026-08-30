@@ -28,7 +28,9 @@
 
     <color name="red500">#F44336</color>
     <color name="redA100">#FF8A80</color>
-    <color name="redA200">#FF5252</color>
+    <!-- Was #FF5252 (Material Red A200); too low-contrast as text/icons on light
+         backgrounds, see https://github.com/growse/materialistic-nouveau/issues/58 -->
+    <color name="redA200">#D32F2F</color>
     <color name="purpleA400">#D500F9</color>
     <color name="indigoA700">#304FFE</color>
     <color name="lightBlue700">#0288D1</color>
@@ -43,8 +45,11 @@
     <color name="greenA700">#00C853</color>
     <color name="orange50">#F3E5F5</color>
     <color name="orange100">#E1BEE7</color>
-    <color name="orange300">#BA68C8</color>
-    <color name="orange400">#AB47BC</color>
+    <!-- These two are actually Material Purple, not orange; kept the misleading
+         names historically but bumped to a darker weight for contrast, see
+         https://github.com/growse/materialistic-nouveau/issues/58 -->
+    <color name="purple300">#9C27B0</color>
+    <color name="purple400">#7B1FA2</color>
     <color name="brown400">#8D6E63</color>
     <color name="brown800">#4E342E</color>
     <color name="lightGreen700">#689F38</color>

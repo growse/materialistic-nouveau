@@ -22,8 +22,8 @@
     <!-- =================== -->
     <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- color palette -->
-        <item name="colorPrimary">@color/orange300</item>
-        <item name="colorPrimaryDark">@color/orange400</item>
+        <item name="colorPrimary">@color/purple300</item>
+        <item name="colorPrimaryDark">@color/purple400</item>
         <item name="colorAccent">@color/redA200</item>
         <item name="colorCardBackground">@color/grey100</item>
         <item name="colorCardHighlight">@color/orange100</item>
@@ -97,8 +97,8 @@
 
     <style name="BaseAppTheme.DayNight" parent="BaseAppTheme.DayNight.NoActionBar">
         <!-- color palette -->
-        <item name="colorPrimary">@color/orange300</item>
-        <item name="colorPrimaryDark">@color/orange400</item>
+        <item name="colorPrimary">@color/purple300</item>
+        <item name="colorPrimaryDark">@color/purple400</item>
         <item name="colorAccent">@color/redA200</item>
         <item name="colorCardBackground">@color/grey100</item>
         <item name="colorCardHighlight">@color/orange100</item>
@@ -147,8 +147,8 @@
     </style>
 
     <style name="Sepia">
-        <item name="colorPrimary">@color/orange300</item>
-        <item name="colorPrimaryDark">@color/orange400</item>
+        <item name="colorPrimary">@color/purple300</item>
+        <item name="colorPrimaryDark">@color/purple400</item>
         <item name="colorCardBackground">@color/orange50</item>
         <item name="android:textColorPrimary">@color/brown800</item>
         <item name="android:textColorSecondary">@color/brown400</item>
@@ -168,8 +168,8 @@
     </style>
 
     <style name="Solarized">
-        <item name="colorPrimary">@color/orange300</item>
-        <item name="colorPrimaryDark">@color/orange400</item>
+        <item name="colorPrimary">@color/purple300</item>
+        <item name="colorPrimaryDark">@color/purple400</item>
         <item name="colorAccent">@color/solarizedOrange</item>
         <item name="colorCardBackground">@color/solarizedBase3</item>
         <item name="colorCardHighlight">@color/solarizedBase2</item>
@@ -194,11 +194,60 @@
     <style name="Solarized.Dark" parent="BaseDarkSolarized">
     </style>
 
+    <!-- ============================================================= -->
+    <!-- User-chosen toolbar/accent color overlays (see arrays.xml's   -->
+    <!-- accent_color_names/accent_color_values, applied by            -->
+    <!-- Preferences.Theme.apply() on top of the selected theme)       -->
+    <!-- ============================================================= -->
+    <style name="PrimaryColorOverlay.Purple" parent="">
+        <item name="colorPrimary">@color/purple300</item>
+        <item name="colorPrimaryDark">@color/purple400</item>
+    </style>
+    <style name="PrimaryColorOverlay.Red" parent="">
+        <item name="colorPrimary">@color/redA200</item>
+        <item name="colorPrimaryDark">@color/redA200</item>
+    </style>
+    <style name="PrimaryColorOverlay.Indigo" parent="">
+        <item name="colorPrimary">@color/indigoA700</item>
+        <item name="colorPrimaryDark">@color/indigoA700</item>
+    </style>
+    <style name="PrimaryColorOverlay.Blue" parent="">
+        <item name="colorPrimary">@color/lightBlue700</item>
+        <item name="colorPrimaryDark">@color/lightBlue700</item>
+    </style>
+    <style name="PrimaryColorOverlay.Teal" parent="">
+        <item name="colorPrimary">@color/teal500</item>
+        <item name="colorPrimaryDark">@color/teal600</item>
+    </style>
+    <style name="PrimaryColorOverlay.Brown" parent="">
+        <item name="colorPrimary">@color/brown500</item>
+        <item name="colorPrimaryDark">@color/brown800</item>
+    </style>
+
+    <style name="AccentColorOverlay.Purple" parent="">
+        <item name="colorAccent">@color/purple400</item>
+    </style>
+    <style name="AccentColorOverlay.Red" parent="">
+        <item name="colorAccent">@color/redA200</item>
+    </style>
+    <style name="AccentColorOverlay.Indigo" parent="">
+        <item name="colorAccent">@color/indigoA700</item>
+    </style>
+    <style name="AccentColorOverlay.Blue" parent="">
+        <item name="colorAccent">@color/lightBlue700</item>
+    </style>
+    <style name="AccentColorOverlay.Teal" parent="">
+        <item name="colorAccent">@color/teal500</item>
+    </style>
+    <style name="AccentColorOverlay.Brown" parent="">
+        <item name="colorAccent">@color/brown500</item>
+    </style>
+
     <!-- =================== -->
     <!-- Alert dialog themes -->
     <!-- =================== -->
     <style name="AppAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorPrimary">@color/orange400</item>
+        <item name="colorPrimary">@color/purple400</item>
         <item name="colorAccent">@color/redA200</item>
         <item name="android:textColorPrimary">@color/blackT87</item>
         <item name="android:textColorSecondary">@color/blackT50</item>
@@ -221,7 +270,7 @@
     </style>
 
     <style name="AppAlertDialog.Sepia">
-        <item name="colorPrimary">@color/orange300</item>
+        <item name="colorPrimary">@color/purple300</item>
         <item name="android:textColorPrimary">@color/brown800</item>
         <item name="android:textColorSecondary">@color/brown400</item>
         <item name="colorCardBackground">@color/orange50</item>
@@ -236,7 +285,7 @@
     </style>
 
     <style name="AppAlertDialog.Solarized">
-        <item name="colorPrimary">@color/orange300</item>
+        <item name="colorPrimary">@color/purple300</item>
         <item name="android:textColorPrimary">@color/solarizedBase01</item>
         <item name="android:textColorSecondary">@color/solarizedBase1</item>
         <item name="colorCardBackground">@color/solarizedBase3</item>
@@ -268,7 +317,7 @@
     </style>
 
     <style name="AppBottomSheetDialog.Sepia">
-        <item name="colorPrimary">@color/orange300</item>
+        <item name="colorPrimary">@color/purple300</item>
         <item name="android:textColorPrimary">@color/brown800</item>
         <item name="android:textColorSecondary">@color/brown400</item>
         <item name="android:colorBackground">@color/orange50</item>
@@ -282,7 +331,7 @@
     </style>
 
     <style name="AppBottomSheetDialog.Solarized">
-        <item name="colorPrimary">@color/orange300</item>
+        <item name="colorPrimary">@color/purple300</item>
         <item name="android:textColorPrimary">@color/solarizedBase01</item>
         <item name="android:textColorSecondary">@color/solarizedBase1</item>
         <item name="android:colorBackground">@color/solarizedBase3</item>

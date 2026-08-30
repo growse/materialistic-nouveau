@@ -455,10 +455,40 @@ object Preferences {
       if (themeSpec.themeOverrides >= 0) {
         context.getTheme().applyStyle(themeSpec.themeOverrides, true)
       }
+      getPrimaryColorOverlay(get(context, R.string.pref_primary_color, "purple"))?.let {
+        context.getTheme().applyStyle(it, true)
+      }
+      getAccentColorOverlay(get(context, R.string.pref_accent_color, "red"))?.let {
+        context.getTheme().applyStyle(it, true)
+      }
       if (dialogTheme) {
         context.setTheme(AppUtils.getThemedResId(context, R.attr.alertDialogTheme))
       }
     }
+
+    @StyleRes
+    private fun getPrimaryColorOverlay(name: String): Int? =
+        when (name) {
+          "purple" -> R.style.PrimaryColorOverlay_Purple
+          "red" -> R.style.PrimaryColorOverlay_Red
+          "indigo" -> R.style.PrimaryColorOverlay_Indigo
+          "blue" -> R.style.PrimaryColorOverlay_Blue
+          "teal" -> R.style.PrimaryColorOverlay_Teal
+          "brown" -> R.style.PrimaryColorOverlay_Brown
+          else -> null
+        }
+
+    @StyleRes
+    private fun getAccentColorOverlay(name: String): Int? =
+        when (name) {
+          "purple" -> R.style.AccentColorOverlay_Purple
+          "red" -> R.style.AccentColorOverlay_Red
+          "indigo" -> R.style.AccentColorOverlay_Indigo
+          "blue" -> R.style.AccentColorOverlay_Blue
+          "teal" -> R.style.AccentColorOverlay_Teal
+          "brown" -> R.style.AccentColorOverlay_Brown
+          else -> null
+        }
 
     @JvmStatic
     fun getTypeface(context: Context): String {

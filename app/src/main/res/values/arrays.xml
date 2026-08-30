@@ -227,6 +227,32 @@
         <item>@color/blueGrey500</item>
     </array>
 
+    <!-- Accent color picker swatches (shared by pref_primary_color and pref_accent_color) -->
+    <array name="accent_color_values">
+        <item>@color/purple400</item>
+        <item>@color/redA200</item>
+        <item>@color/indigoA700</item>
+        <item>@color/lightBlue700</item>
+        <item>@color/teal500</item>
+        <item>@color/brown500</item>
+    </array>
+    <string-array name="accent_color_names" translatable="false">
+        <item>purple</item>
+        <item>red</item>
+        <item>indigo</item>
+        <item>blue</item>
+        <item>teal</item>
+        <item>brown</item>
+    </string-array>
+    <string-array name="accent_color_labels">
+        <item>@string/color_purple</item>
+        <item>@string/color_red</item>
+        <item>@string/color_indigo</item>
+        <item>@string/color_blue</item>
+        <item>@string/color_teal</item>
+        <item>@string/color_brown</item>
+    </string-array>
+
     <!-- Swipe options -->
     <string-array name="pref_list_swipe_options">
         <item>@string/none</item>
