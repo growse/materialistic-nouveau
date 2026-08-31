@@ -77,4 +77,47 @@ class LauncherIconSyncTest {
     Preferences.Theme.syncLauncherIcon(context)
     assert(enabledComponentName() == "LauncherActivity")
   }
+
+  // Regression test for disabling an activity-alias closing the task it launched (see
+  // syncLauncherIcon's kdoc): if the alias that just launched the current task would otherwise
+  // be disabled, it must be left alone instead.
+  @Test
+  fun neverDisablesTheComponentThatLaunchedTheCurrentTask() {
+    val redAlias = ComponentName(context.packageName, "${context.packageName}.LauncherAliasRed")
+    PreferenceManager.getDefaultSharedPreferences(context).edit {
+      putString(context.getString(R.string.pref_primary_color), "red")
+    }
+    Preferences.Theme.syncLauncherIcon(context)
+    assert(
+        packageManager.getComponentEnabledSetting(redAlias) !=
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+    ) {
+      "Precondition failed: red alias should be enabled before switching away from it"
+    }
+
+    // Switch the preference to Teal, as if from within a task that was launched via the Red
+    // alias - simulating the exact scenario where naively disabling Red would close that task.
+    PreferenceManager.getDefaultSharedPreferences(context).edit {
+      putString(context.getString(R.string.pref_primary_color), "teal")
+    }
+    Preferences.Theme.syncLauncherIcon(context, redAlias)
+
+    assert(
+        packageManager.getComponentEnabledSetting(redAlias) !=
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+    ) {
+      "The component that launched the current task must never be disabled by syncLauncherIcon"
+    }
+    val tealAlias = ComponentName(context.packageName, "${context.packageName}.LauncherAliasTeal")
+    assert(
+        packageManager.getComponentEnabledSetting(tealAlias) ==
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+    ) {
+      "The new target should still be enabled even though the old one was skipped"
+    }
+
+    // Clean up the intentionally-left-enabled Red alias so later tests in this class still see
+    // exactly one enabled component, as if a later cold start (no protected component) reconciled.
+    Preferences.Theme.syncLauncherIcon(context)
+  }
 }

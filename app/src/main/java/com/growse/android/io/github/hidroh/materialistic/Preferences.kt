@@ -523,9 +523,18 @@ object Preferences {
      * Enables the launcher activity-alias matching the current toolbar color choice and disables
      * the rest, so the home-screen icon matches. Touches disk via PackageManager - call off the
      * main thread.
+     *
+     * [launchedViaComponent], when given, is skipped even if it should be disabled: disabling the
+     * exact component that launched the currently-running task closes that task outright (an
+     * activity-alias, once disabled, no longer resolves at all - see
+     * ActivityTaskManager/WindowManagerShell logs showing a CLOSE transition for the task the
+     * moment PackageManager reports the alias gone). DONT_KILL_APP only protects the process, not
+     * the task. Skipping it here just defers that one disable to the next cold start, once this
+     * task is no longer using it.
      */
     @JvmStatic
-    fun syncLauncherIcon(context: Context) {
+    @JvmOverloads
+    fun syncLauncherIcon(context: Context, launchedViaComponent: ComponentName? = null) {
       val appContext = context.applicationContext
       val packageManager = appContext.packageManager
       val packageName = appContext.packageName
@@ -536,6 +545,12 @@ object Preferences {
         val desiredState =
             if (className == activeClassName) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
             else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+        if (
+            desiredState == PackageManager.COMPONENT_ENABLED_STATE_DISABLED &&
+                component == launchedViaComponent
+        ) {
+          continue
+        }
         if (packageManager.getComponentEnabledSetting(component) != desiredState) {
           packageManager.setComponentEnabledSetting(
               component,
