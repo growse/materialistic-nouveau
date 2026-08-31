@@ -16,6 +16,7 @@
 package com.growse.android.io.github.hidroh.materialistic
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -456,16 +457,23 @@ object Preferences {
       if (themeSpec.themeOverrides >= 0) {
         context.getTheme().applyStyle(themeSpec.themeOverrides, true)
       }
-      getPrimaryColorOverlay(get(context, R.string.pref_primary_color, "purple"))?.let {
-        context.getTheme().applyStyle(it, true)
-      }
-      getAccentColorOverlay(get(context, R.string.pref_accent_color, "red"))?.let {
-        context.getTheme().applyStyle(it, true)
-      }
+      getPrimaryColorOverlay(
+              get(context, R.string.pref_primary_color, defaultColorChoice("purple"))
+          )
+          ?.let { context.getTheme().applyStyle(it, true) }
+      getAccentColorOverlay(get(context, R.string.pref_accent_color, defaultColorChoice("red")))
+          ?.let { context.getTheme().applyStyle(it, true) }
       if (dialogTheme) {
         context.setTheme(AppUtils.getThemedResId(context, R.attr.alertDialogTheme))
       }
     }
+
+    // Devices/users that never open Settings never persist a color choice, so this - not
+    // ColorPreference's own default - is what most people actually see: prefer the wallpaper-
+    // derived system color where it's available, falling back to the fixed swatch otherwise.
+    @JvmStatic
+    fun defaultColorChoice(fallback: String): String =
+        if (DynamicColors.isDynamicColorAvailable()) "system" else fallback
 
     @StyleRes
     private fun getPrimaryColorOverlay(name: String): Int? =
@@ -496,6 +504,47 @@ object Preferences {
           "brown" -> R.style.AccentColorOverlay_Brown
           else -> null
         }
+
+    // Manifest activity-alias suffixes (see AndroidManifest.xml) for each toolbar color that has
+    // its own launcher icon. "purple" and "system" have no entry: both leave .LauncherActivity
+    // itself enabled, since its default icon is already purple and already carries the adaptive
+    // icon's monochrome layer that the OS's own wallpaper-based icon theming re-tints for
+    // "system" when the user has that OS feature on.
+    private val LAUNCHER_ALIASES =
+        mapOf(
+            "red" to "LauncherAliasRed",
+            "indigo" to "LauncherAliasIndigo",
+            "blue" to "LauncherAliasBlue",
+            "teal" to "LauncherAliasTeal",
+            "brown" to "LauncherAliasBrown",
+        )
+
+    /**
+     * Enables the launcher activity-alias matching the current toolbar color choice and disables
+     * the rest, so the home-screen icon matches. Touches disk via PackageManager - call off the
+     * main thread.
+     */
+    @JvmStatic
+    fun syncLauncherIcon(context: Context) {
+      val appContext = context.applicationContext
+      val packageManager = appContext.packageManager
+      val packageName = appContext.packageName
+      val colorName = get(appContext, R.string.pref_primary_color, defaultColorChoice("purple"))
+      val activeClassName = LAUNCHER_ALIASES[colorName] ?: "LauncherActivity"
+      for (className in setOf("LauncherActivity") + LAUNCHER_ALIASES.values) {
+        val component = ComponentName(packageName, "$packageName.$className")
+        val desiredState =
+            if (className == activeClassName) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+        if (packageManager.getComponentEnabledSetting(component) != desiredState) {
+          packageManager.setComponentEnabledSetting(
+              component,
+              desiredState,
+              PackageManager.DONT_KILL_APP,
+          )
+        }
+      }
+    }
 
     @JvmStatic
     fun getTypeface(context: Context): String {

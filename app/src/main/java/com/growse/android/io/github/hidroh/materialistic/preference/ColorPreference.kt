@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.google.android.material.color.DynamicColors
+import com.growse.android.io.github.hidroh.materialistic.Preferences
 import com.growse.android.io.github.hidroh.materialistic.R
 
 private data class Swatch(val name: String, val label: CharSequence, @ColorInt val color: Int)
@@ -52,7 +53,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
   }
 
   override fun onGetDefaultValue(a: TypedArray, index: Int): Any =
-      a.getString(index) ?: swatches[0].name
+      Preferences.Theme.defaultColorChoice(a.getString(index) ?: swatches[0].name)
 
   override fun onSetInitialValue(defaultValue: Any?) {
     selected = getPersistedString((defaultValue as? String) ?: swatches[0].name)

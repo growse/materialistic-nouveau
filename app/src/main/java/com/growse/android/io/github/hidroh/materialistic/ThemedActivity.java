@@ -17,6 +17,7 @@
 package com.growse.android.io.github.hidroh.materialistic;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
@@ -116,6 +117,10 @@ public abstract class ThemedActivity extends AppCompatActivity {
     private void onThemeChanged(int key) {
         if (key == R.string.pref_daynight_auto) {
             AppCompatDelegate.setDefaultNightMode(Preferences.Theme.getAutoDayNightMode(this));
+        }
+        if (key == R.string.pref_primary_color) {
+            Context appContext = getApplicationContext();
+            new Thread(() -> Preferences.Theme.syncLauncherIcon(appContext)).start();
         }
         if (mResumed) {
             AppUtils.restart(this, true);

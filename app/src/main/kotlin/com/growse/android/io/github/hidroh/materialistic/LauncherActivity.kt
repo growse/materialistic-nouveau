@@ -22,6 +22,11 @@ import android.os.Bundle
 class LauncherActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    // Reconciles the home-screen icon with the toolbar color preference, in case it changed
+    // (or the app was just installed) since the icon was last synced. Off the main thread since
+    // it touches disk via PackageManager; doesn't need to complete before the redirect below.
+    val appContext = applicationContext
+    Thread { Preferences.Theme.syncLauncherIcon(appContext) }.start()
     val launchScreens: Map<String, Class<out Activity>> =
         mapOf(
             getString(R.string.pref_launch_screen_value_top) to ListActivity::class.java,
