@@ -62,7 +62,8 @@ public abstract class ThemedActivity extends AppCompatActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mThemeObservable.subscribe(this, (key, contextChanged) ->  onThemeChanged(key),
-                R.string.pref_theme, R.string.pref_daynight_auto);
+                R.string.pref_theme, R.string.pref_daynight_auto,
+                R.string.pref_primary_color, R.string.pref_accent_color);
     }
 
     @CallSuper
@@ -116,6 +117,12 @@ public abstract class ThemedActivity extends AppCompatActivity {
         if (key == R.string.pref_daynight_auto) {
             AppCompatDelegate.setDefaultNightMode(Preferences.Theme.getAutoDayNightMode(this));
         }
+        // The launcher icon itself is deliberately NOT synced here: this runs from whichever
+        // activity is on top of the back stack, which has no reliable way to know what component
+        // actually launched the task's root. Disabling the wrong (currently-in-use) launcher
+        // activity-alias closes the whole task outright (see Preferences.Theme.syncLauncherIcon).
+        // It's synced instead from LauncherActivity.onCreate() on the next cold start, where the
+        // launching component is known for certain.
         if (mResumed) {
             AppUtils.restart(this, true);
         } else {

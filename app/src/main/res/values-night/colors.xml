@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- orange400 is actually Material purple; lighten by one step for dark mode -->
-    <color name="orange400">#BA68C8</color>
-</resources>

@@ -16,6 +16,7 @@
 package com.growse.android.io.github.hidroh.materialistic
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -30,6 +31,7 @@ import androidx.core.content.edit
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import com.google.android.material.color.DynamicColors
 import com.growse.android.io.github.hidroh.materialistic.annotation.PublicApi
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClient
@@ -455,8 +457,107 @@ object Preferences {
       if (themeSpec.themeOverrides >= 0) {
         context.getTheme().applyStyle(themeSpec.themeOverrides, true)
       }
+      getPrimaryColorOverlay(
+              get(context, R.string.pref_primary_color, defaultColorChoice("purple"))
+          )
+          ?.let { context.getTheme().applyStyle(it, true) }
+      getAccentColorOverlay(get(context, R.string.pref_accent_color, defaultColorChoice("red")))
+          ?.let { context.getTheme().applyStyle(it, true) }
       if (dialogTheme) {
         context.setTheme(AppUtils.getThemedResId(context, R.attr.alertDialogTheme))
+      }
+    }
+
+    // Devices/users that never open Settings never persist a color choice, so this - not
+    // ColorPreference's own default - is what most people actually see: prefer the wallpaper-
+    // derived system color where it's available, falling back to the fixed swatch otherwise.
+    @JvmStatic
+    fun defaultColorChoice(fallback: String): String =
+        if (DynamicColors.isDynamicColorAvailable()) "system" else fallback
+
+    @StyleRes
+    private fun getPrimaryColorOverlay(name: String): Int? =
+        when (name) {
+          "system" ->
+              if (DynamicColors.isDynamicColorAvailable()) R.style.PrimaryColorOverlay_System
+              else R.style.PrimaryColorOverlay_Purple
+          "purple" -> R.style.PrimaryColorOverlay_Purple
+          "red" -> R.style.PrimaryColorOverlay_Red
+          "indigo" -> R.style.PrimaryColorOverlay_Indigo
+          "blue" -> R.style.PrimaryColorOverlay_Blue
+          "teal" -> R.style.PrimaryColorOverlay_Teal
+          "brown" -> R.style.PrimaryColorOverlay_Brown
+          else -> null
+        }
+
+    @StyleRes
+    private fun getAccentColorOverlay(name: String): Int? =
+        when (name) {
+          "system" ->
+              if (DynamicColors.isDynamicColorAvailable()) R.style.AccentColorOverlay_System
+              else R.style.AccentColorOverlay_Red
+          "purple" -> R.style.AccentColorOverlay_Purple
+          "red" -> R.style.AccentColorOverlay_Red
+          "indigo" -> R.style.AccentColorOverlay_Indigo
+          "blue" -> R.style.AccentColorOverlay_Blue
+          "teal" -> R.style.AccentColorOverlay_Teal
+          "brown" -> R.style.AccentColorOverlay_Brown
+          else -> null
+        }
+
+    // Manifest activity-alias suffixes (see AndroidManifest.xml) for each toolbar color that has
+    // its own launcher icon. "purple" and "system" have no entry: both leave .LauncherActivity
+    // itself enabled, since its default icon is already purple and already carries the adaptive
+    // icon's monochrome layer that the OS's own wallpaper-based icon theming re-tints for
+    // "system" when the user has that OS feature on.
+    private val LAUNCHER_ALIASES =
+        mapOf(
+            "red" to "LauncherAliasRed",
+            "indigo" to "LauncherAliasIndigo",
+            "blue" to "LauncherAliasBlue",
+            "teal" to "LauncherAliasTeal",
+            "brown" to "LauncherAliasBrown",
+        )
+
+    /**
+     * Enables the launcher activity-alias matching the current toolbar color choice and disables
+     * the rest, so the home-screen icon matches. Touches disk via PackageManager - call off the
+     * main thread.
+     *
+     * [launchedViaComponent], when given, is skipped even if it should be disabled: disabling the
+     * exact component that launched the currently-running task closes that task outright (an
+     * activity-alias, once disabled, no longer resolves at all - see
+     * ActivityTaskManager/WindowManagerShell logs showing a CLOSE transition for the task the
+     * moment PackageManager reports the alias gone). DONT_KILL_APP only protects the process, not
+     * the task. Skipping it here just defers that one disable to the next cold start, once this
+     * task is no longer using it.
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun syncLauncherIcon(context: Context, launchedViaComponent: ComponentName? = null) {
+      val appContext = context.applicationContext
+      val packageManager = appContext.packageManager
+      val packageName = appContext.packageName
+      val colorName = get(appContext, R.string.pref_primary_color, defaultColorChoice("purple"))
+      val activeClassName = LAUNCHER_ALIASES[colorName] ?: "LauncherActivity"
+      for (className in setOf("LauncherActivity") + LAUNCHER_ALIASES.values) {
+        val component = ComponentName(packageName, "$packageName.$className")
+        val desiredState =
+            if (className == activeClassName) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            else PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+        if (
+            desiredState == PackageManager.COMPONENT_ENABLED_STATE_DISABLED &&
+                component == launchedViaComponent
+        ) {
+          continue
+        }
+        if (packageManager.getComponentEnabledSetting(component) != desiredState) {
+          packageManager.setComponentEnabledSetting(
+              component,
+              desiredState,
+              PackageManager.DONT_KILL_APP,
+          )
+        }
       }
     }
 
@@ -501,6 +602,11 @@ object Preferences {
 
     @JvmStatic
     fun getAutoDayNightMode(context: Context): Int {
+      // "System" (the default) always follows the OS, independent of the pref_daynight_auto
+      // toggle below, which stays available for other DayNight-capable themes (e.g. Sepia).
+      if (ThemePreference.isSystemTheme(get(context, R.string.pref_theme, ""))) {
+        return AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+      }
       return if (
           getTheme(context, false) is DayNightSpec &&
               get(context, R.string.pref_daynight_auto, false)

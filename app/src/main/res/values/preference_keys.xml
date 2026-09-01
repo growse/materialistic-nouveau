@@ -58,6 +58,8 @@
     <string translatable="false" name="pref_text_size">pref_text_size</string>
     <string translatable="false" name="pref_theme">pref_theme</string>
     <string translatable="false" name="pref_daynight_auto">pref_daynight_auto</string>
+    <string translatable="false" name="pref_primary_color">pref_primary_color</string>
+    <string translatable="false" name="pref_accent_color">pref_accent_color</string>
     <string translatable="false" name="pref_widget_theme">pref_widget_theme</string>
     <string translatable="false" name="pref_widget_section">pref_widget_section</string>
     <string translatable="false" name="pref_widget_query">pref_widget_query</string>

@@ -24,7 +24,7 @@
     <com.growse.android.io.github.hidroh.materialistic.preference.ThemePreference
         android:key="@string/pref_theme"
         android:title="@string/pref_theme_title"
-        android:defaultValue="light" />
+        android:defaultValue="system" />
 
     <androidx.preference.SwitchPreferenceCompat
         app:iconSpaceReserved="false"
@@ -32,6 +32,16 @@
         android:key="@string/pref_daynight_auto"
         android:title="@string/pref_daynight_title"
         android:defaultValue="false" />
+
+    <com.growse.android.io.github.hidroh.materialistic.preference.ColorPreference
+        android:key="@string/pref_primary_color"
+        android:title="@string/pref_primary_color_title"
+        android:defaultValue="purple" />
+
+    <com.growse.android.io.github.hidroh.materialistic.preference.ColorPreference
+        android:key="@string/pref_accent_color"
+        android:title="@string/pref_accent_color_title"
+        android:defaultValue="red" />
 
     <com.growse.android.io.github.hidroh.materialistic.preference.FontSizePreference
         android:key="@string/pref_text_size"

@@ -33,6 +33,11 @@ import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 public class ThemePreference extends Preference {
 
+    // "System" is a DayNightSpec identical to LIGHT's, and is the default: see isSystemTheme()
+    // and Preferences.Theme.getAutoDayNightMode(), which forces auto day-night for it regardless
+    // of the separate pref_daynight_auto toggle (which stays independently available for e.g.
+    // "Sepia + auto day-night" combos that aren't otherwise expressible).
+    private static final String SYSTEM = "system";
     private static final String LIGHT = "light";
     private static final String DARK = "dark";
     private static final String BLACK = "black";
@@ -43,6 +48,7 @@ public class ThemePreference extends Preference {
     private static final ArrayMap<Integer, String> BUTTONS = new ArrayMap<>();
     private static final ArrayMap<String, ThemeSpec> VALUES = new ArrayMap<>();
     static {
+        BUTTONS.put(R.id.theme_system, SYSTEM);
         BUTTONS.put(R.id.theme_light, LIGHT);
         BUTTONS.put(R.id.theme_dark, DARK);
         BUTTONS.put(R.id.theme_black, BLACK);
@@ -51,6 +57,7 @@ public class ThemePreference extends Preference {
         BUTTONS.put(R.id.theme_solarized, SOLARIZED);
         BUTTONS.put(R.id.theme_solarized_dark, SOLARIZED_DARK);
 
+        VALUES.put(SYSTEM, new DayNightSpec(R.string.theme_system));
         VALUES.put(LIGHT, new DayNightSpec(R.string.theme_light));
         VALUES.put(DARK, new DarkSpec(R.string.theme_dark));
         VALUES.put(BLACK, new DarkSpec(R.string.theme_black, R.style.Black));
@@ -64,8 +71,16 @@ public class ThemePreference extends Preference {
     private String mSelectedTheme;
 
     public static ThemeSpec getTheme(String value, boolean isTranslucent) {
-        ThemeSpec themeSpec = VALUES.get(VALUES.containsKey(value) ? value : LIGHT);
+        ThemeSpec themeSpec = VALUES.get(VALUES.containsKey(value) ? value : SYSTEM);
         return isTranslucent ? themeSpec.getTranslucent() : themeSpec;
+    }
+
+    /** True for the literal "system" value, and for empty/unset (SYSTEM is the default). */
+    public static boolean isSystemTheme(String value) {
+        // Not TextUtils.isEmpty(): it's an unmocked Android stub under Robolectric-free JVM unit
+        // tests (returns the default `false` regardless of input), which would make this always
+        // resolve as non-system there. Plain Java has no such stub.
+        return SYSTEM.equals(value) || value == null || value.isEmpty();
     }
 
     @SuppressWarnings("unused")
@@ -80,7 +95,7 @@ public class ThemePreference extends Preference {
 
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
-        return LIGHT;
+        return SYSTEM;
     }
 
     @Override
@@ -88,7 +103,7 @@ public class ThemePreference extends Preference {
         super.onSetInitialValue(restorePersistedValue, defaultValue);
         mSelectedTheme = restorePersistedValue ? getPersistedString(null): (String) defaultValue;
         if (TextUtils.isEmpty(mSelectedTheme)) {
-            mSelectedTheme = LIGHT;
+            mSelectedTheme = SYSTEM;
         }
         setSummary(VALUES.get(mSelectedTheme).summary);
     }
@@ -115,8 +130,9 @@ public class ThemePreference extends Preference {
 
     @Override
     public boolean shouldDisableDependents() {
-        // assume only auto day-night is dependent
-        return !(VALUES.get(mSelectedTheme) instanceof DayNightSpec);
+        // assume only auto day-night is dependent; "System" already always follows day/night on
+        // its own (see Preferences.Theme.getAutoDayNightMode), making the toggle redundant for it
+        return isSystemTheme(mSelectedTheme) || !(VALUES.get(mSelectedTheme) instanceof DayNightSpec);
     }
 
     public static class ThemeSpec {
