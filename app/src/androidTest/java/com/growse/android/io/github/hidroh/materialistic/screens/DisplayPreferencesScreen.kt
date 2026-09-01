@@ -10,6 +10,7 @@ object DisplayPreferencesScreen : KScreen<DisplayPreferencesScreen>() {
   override val layoutId = R.layout.activity_preferences
   override val viewClass = PreferencesActivity::class.java
 
+  val themeTitle = KTextView { withText(R.string.pref_theme_title) }
   val primaryColorTitle = KTextView { withText(R.string.pref_primary_color_title) }
   val accentColorTitle = KTextView { withText(R.string.pref_accent_color_title) }
 

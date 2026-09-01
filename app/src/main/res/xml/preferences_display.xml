@@ -24,7 +24,7 @@
     <com.growse.android.io.github.hidroh.materialistic.preference.ThemePreference
         android:key="@string/pref_theme"
         android:title="@string/pref_theme_title"
-        android:defaultValue="light" />
+        android:defaultValue="system" />
 
     <androidx.preference.SwitchPreferenceCompat
         app:iconSpaceReserved="false"

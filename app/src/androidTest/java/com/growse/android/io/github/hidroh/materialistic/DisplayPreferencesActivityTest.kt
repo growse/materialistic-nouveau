@@ -2,6 +2,7 @@ package com.growse.android.io.github.hidroh.materialistic
 
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
@@ -25,7 +26,7 @@ class DisplayPreferencesActivityTest : TestCase() {
 
   private val context = ApplicationProvider.getApplicationContext<Context>()
 
-  // Each ColorPreference persists its choice to the app's default SharedPreferences, which
+  // Each of these preferences persists its choice to the app's default SharedPreferences, which
   // outlives any single Activity instance. Cleared as an outer rule (rather than @Before) so it
   // runs before ActivityScenarioRule launches the activity, not after - otherwise a prior test's
   // leftover selection would already be bound into the freshly-launched screen.
@@ -35,6 +36,8 @@ class DisplayPreferencesActivityTest : TestCase() {
           PreferenceManager.getDefaultSharedPreferences(context).edit {
             remove(context.getString(R.string.pref_primary_color))
             remove(context.getString(R.string.pref_accent_color))
+            remove(context.getString(R.string.pref_theme))
+            remove(context.getString(R.string.pref_daynight_auto))
           }
         }
       }
@@ -48,6 +51,28 @@ class DisplayPreferencesActivityTest : TestCase() {
 
   @get:Rule
   val rules: RuleChain = RuleChain.outerRule(clearColorPreferencesRule).around(activityScenarioRule)
+
+  @Test
+  fun themeDefaultsToSystemWithAutoDayNightImplied() = run {
+    step("Verify the theme picker defaults to System") {
+      DisplayPreferencesScreen { themeTitle.isVisible() }
+      onView(
+              allOf(
+                  withText(R.string.theme_system),
+                  hasSibling(withText(R.string.pref_theme_title)),
+              )
+          )
+          .check(matches(isDisplayed()))
+    }
+    step("Verify day/night follows the OS by default, without needing the separate toggle") {
+      // The default state has neither pref_theme nor pref_daynight_auto persisted yet - this is
+      // exactly what a fresh install resolves to.
+      val mode = Preferences.Theme.getAutoDayNightMode(context)
+      assert(mode == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
+        "Expected MODE_NIGHT_FOLLOW_SYSTEM by default, was $mode"
+      }
+    }
+  }
 
   @Test
   fun colorPickersAreVisibleWithDefaultSummaries() = run {

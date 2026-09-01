@@ -602,6 +602,11 @@ object Preferences {
 
     @JvmStatic
     fun getAutoDayNightMode(context: Context): Int {
+      // "System" (the default) always follows the OS, independent of the pref_daynight_auto
+      // toggle below, which stays available for other DayNight-capable themes (e.g. Sepia).
+      if (ThemePreference.isSystemTheme(get(context, R.string.pref_theme, ""))) {
+        return AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+      }
       return if (
           getTheme(context, false) is DayNightSpec &&
               get(context, R.string.pref_daynight_auto, false)
