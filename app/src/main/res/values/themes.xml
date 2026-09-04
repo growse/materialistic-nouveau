@@ -146,6 +146,24 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog.Dark</item>
     </style>
 
+    <!--
+      Fallback for devices below API 31, where Material You dynamic color isn't available: looks
+      just like the default Light theme. ThemePreference hides the System swatch on those devices,
+      so this is never actually shown - it only exists so @style/System always resolves, since the
+      real, dynamic-color-driven definition lives in values-v31/themes.xml and values-night-v31/themes.xml.
+    -->
+    <style name="System">
+        <item name="colorPrimary">@color/orange300</item>
+        <item name="colorPrimaryDark">@color/orange400</item>
+        <item name="colorAccent">@color/redA200</item>
+        <item name="colorCardBackground">@color/grey100</item>
+        <item name="colorCardHighlight">@color/orange100</item>
+        <item name="android:textColorPrimary">@color/blackT87</item>
+        <item name="android:textColorSecondary">@color/blackT50</item>
+        <item name="alertDialogTheme">@style/AppAlertDialog.System</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog.System</item>
+    </style>
+
     <style name="Sepia">
         <item name="colorPrimary">@color/orange300</item>
         <item name="colorPrimaryDark">@color/orange400</item>
@@ -220,6 +238,15 @@
         <item name="backgroundDrawerHeader">@drawable/bg_drawer_dark</item>
     </style>
 
+    <style name="AppAlertDialog.System">
+        <item name="colorPrimary">@color/orange300</item>
+        <item name="colorAccent">@color/redA200</item>
+        <item name="android:textColorPrimary">@color/blackT87</item>
+        <item name="android:textColorSecondary">@color/blackT50</item>
+        <item name="colorCardBackground">@color/grey100</item>
+        <item name="colorCardHighlight">@color/orange100</item>
+    </style>
+
     <style name="AppAlertDialog.Sepia">
         <item name="colorPrimary">@color/orange300</item>
         <item name="android:textColorPrimary">@color/brown800</item>
@@ -265,6 +292,14 @@
         <item name="android:textColorSecondary">@color/whiteT50</item>
         <item name="android:textColorTertiary">?android:textColorPrimary</item>
         <item name="android:colorBackground">@color/cardDarkBackground</item>
+    </style>
+
+    <style name="AppBottomSheetDialog.System">
+        <item name="colorPrimary">@color/orange300</item>
+        <item name="colorAccent">@color/redA200</item>
+        <item name="android:textColorPrimary">@color/blackT87</item>
+        <item name="android:textColorSecondary">@color/blackT50</item>
+        <item name="android:colorBackground">@color/grey100</item>
     </style>
 
     <style name="AppBottomSheetDialog.Sepia">

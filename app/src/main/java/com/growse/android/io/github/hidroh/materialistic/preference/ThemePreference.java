@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.google.android.material.color.DynamicColors;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
@@ -34,6 +35,7 @@ import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 public class ThemePreference extends Preference {
 
     private static final String LIGHT = "light";
+    public static final String SYSTEM = "system";
     private static final String DARK = "dark";
     private static final String BLACK = "black";
     private static final String SEPIA = "sepia";
@@ -44,6 +46,7 @@ public class ThemePreference extends Preference {
     private static final ArrayMap<String, ThemeSpec> VALUES = new ArrayMap<>();
     static {
         BUTTONS.put(R.id.theme_light, LIGHT);
+        BUTTONS.put(R.id.theme_system, SYSTEM);
         BUTTONS.put(R.id.theme_dark, DARK);
         BUTTONS.put(R.id.theme_black, BLACK);
         BUTTONS.put(R.id.theme_sepia, SEPIA);
@@ -52,6 +55,7 @@ public class ThemePreference extends Preference {
         BUTTONS.put(R.id.theme_solarized_dark, SOLARIZED_DARK);
 
         VALUES.put(LIGHT, new DayNightSpec(R.string.theme_light));
+        VALUES.put(SYSTEM, new DayNightSpec(R.string.theme_system, R.style.System));
         VALUES.put(DARK, new DarkSpec(R.string.theme_dark));
         VALUES.put(BLACK, new DarkSpec(R.string.theme_black, R.style.Black));
         VALUES.put(SEPIA, new DayNightSpec(R.string.theme_sepia, R.style.Sepia));
@@ -101,6 +105,12 @@ public class ThemePreference extends Preference {
             final int buttonId = BUTTONS.keyAt(i);
             final String value = BUTTONS.valueAt(i);
             View button = holder.findViewById(buttonId);
+            if (SYSTEM.equals(value) && !DynamicColors.isDynamicColorAvailable()) {
+                // Wallpaper-derived color isn't available on this device/OS version: don't offer
+                // a swatch that would resolve to a copy of the plain Light theme.
+                button.setVisibility(View.GONE);
+                continue;
+            }
             button.setClickable(true);
             button.setOnClickListener(v -> {
                 mSelectedTheme = value;

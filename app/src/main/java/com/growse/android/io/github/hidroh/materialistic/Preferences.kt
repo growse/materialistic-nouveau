@@ -30,6 +30,7 @@ import androidx.core.content.edit
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import com.google.android.material.color.DynamicColors
 import com.growse.android.io.github.hidroh.materialistic.annotation.PublicApi
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClient
@@ -522,7 +523,16 @@ object Preferences {
     }
 
     private fun getTheme(context: Context, isTransulcent: Boolean): ThemeSpec {
-      return ThemePreference.getTheme(get(context, R.string.pref_theme, ""), isTransulcent)
+      var value = get(context, R.string.pref_theme, "")
+      if (value == ThemePreference.SYSTEM && !DynamicColors.isDynamicColorAvailable()) {
+        // A "system" choice can only have been persisted on a device where dynamic color was
+        // available (ThemePreference hides that swatch otherwise) - but the same preferences can
+        // end up restored onto an older device/OS via backup, where @style/System is only ever
+        // the inert Light-colored placeholder. Resolve explicitly to Light instead of relying on
+        // that placeholder happening to match.
+        value = ""
+      }
+      return ThemePreference.getTheme(value, isTransulcent)
     }
   }
 
