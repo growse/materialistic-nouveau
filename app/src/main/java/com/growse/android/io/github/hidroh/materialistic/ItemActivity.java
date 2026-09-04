@@ -161,6 +161,7 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP);
+        AppUtils.applyToolbarTopInset(findViewById(R.id.toolbar));
         mSystemUiHelper = new AppUtils.SystemUiHelper(getWindow());
         mReplyButton = findViewById(R.id.reply_button);
         mNavButton = findViewById(R.id.navigation_button);

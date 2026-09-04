@@ -67,8 +67,11 @@ import androidx.annotation.StyleRes;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsSession;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.util.Pair;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.growse.android.io.github.hidroh.materialistic.annotation.PublicApi;
 import com.growse.android.io.github.hidroh.materialistic.data.HackerNewsClient;
@@ -484,6 +487,23 @@ public class AppUtils {
 
     public static void setStatusBarColor(Window window, int color) {
         window.setStatusBarColor(color);
+    }
+
+    /**
+     * Pads a scrolling AppBarLayout's first child down below the status bar without setting
+     * {@code fitsSystemWindows} on it or its AppBarLayout. That flag makes AppBarLayout reserve
+     * the status bar's height as space it will never scroll away, leaving a colored sliver stuck
+     * under the status bar when the bar is supposed to fully hide.
+     */
+    public static void applyToolbarTopInset(View toolbar) {
+        final int initialPaddingTop = toolbar.getPaddingTop();
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, windowInsets) -> {
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), initialPaddingTop + systemBars.top,
+                    v.getPaddingRight(), v.getPaddingBottom());
+            return windowInsets;
+        });
+        ViewCompat.requestApplyInsets(toolbar);
     }
 
     public static void navigate(int direction, AppBarLayout appBarLayout, Navigable navigable) {

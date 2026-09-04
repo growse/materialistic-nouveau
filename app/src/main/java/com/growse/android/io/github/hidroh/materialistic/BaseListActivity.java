@@ -118,6 +118,7 @@ public abstract class BaseListActivity extends DrawerActivity implements MultiPa
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
+        AppUtils.applyToolbarTopInset(findViewById(R.id.toolbar));
         findViewById(R.id.toolbar).setOnClickListener(v -> {
             Scrollable scrollable = getScrollableList();
             if (scrollable != null) {

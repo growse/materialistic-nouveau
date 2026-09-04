@@ -51,6 +51,7 @@ public class OfflineWebActivity extends ThemedActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setOnClickListener(v -> scrollView.smoothScrollTo(0, 0));
         setSupportActionBar(toolbar);
+        AppUtils.applyToolbarTopInset(toolbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
         getSupportActionBar().setSubtitle(R.string.offline);
