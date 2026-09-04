@@ -2,6 +2,7 @@ package com.growse.android.io.github.hidroh.materialistic
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.platform.app.InstrumentationRegistry
 import com.growse.android.io.github.hidroh.materialistic.screens.ReleaseNotesScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Rule
@@ -15,6 +16,17 @@ class ReleaseNotesActivityTest : TestCase() {
   fun webViewIsDisplayed() = run {
     step("Verify the release notes WebView is visible") {
       ReleaseNotesScreen { webView.isVisible() }
+    }
+  }
+
+  @Test
+  fun openingTheScreenMarksReleaseNotesAsSeen() = run {
+    step("Verify the release-notes-seen preference is set once the screen is shown") {
+      assert(
+          Preferences.isReleaseNotesSeen(InstrumentationRegistry.getInstrumentation().targetContext)
+      ) {
+        "Release notes should be marked as seen after ReleaseNotesActivity is shown"
+      }
     }
   }
 
