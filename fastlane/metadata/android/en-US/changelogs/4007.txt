@@ -1,0 +1,1 @@
+Added a System theme option that colours the app using Android's wallpaper-based Material You palette. Fixed the toolbar getting stuck under the status bar when scrolling - it now hides completely. Fixed the About screen link to point to this fork instead of the original project. The What's New screen now actually shows the release notes instead of a blank page.

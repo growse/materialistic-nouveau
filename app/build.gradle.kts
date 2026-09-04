@@ -5,8 +5,8 @@ plugins {
   alias(libs.plugins.ktfmt)
 }
 
-val appVersionCode = 4006
-val appVersionName = "v4.0.6"
+val appVersionCode = 4007
+val appVersionName = "v4.0.7"
 
 // Feeds the in-app "What's new" screen from the same file the release workflow requires,
 // so there's a single place to update per release instead of two.
