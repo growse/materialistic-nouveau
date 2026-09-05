@@ -47,6 +47,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
@@ -139,44 +140,72 @@ public class AppUtils {
         // TODO https://code.google.com/p/android/issues/detail?id=191430
         //noinspection Convert2Lambda
         textView.setOnTouchListener(new View.OnTouchListener() {
+            private ClickableSpan mDownSpan;
+            private float mDownX;
+            private float mDownY;
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
-                if (action == MotionEvent.ACTION_UP ||
-                        action == MotionEvent.ACTION_DOWN) {
-                    int x = (int) event.getX();
-                    int y = (int) event.getY();
-
-                    TextView widget = (TextView) v;
-                    x -= widget.getTotalPaddingLeft();
-                    y -= widget.getTotalPaddingTop();
-
-                    x += widget.getScrollX();
-                    y += widget.getScrollY();
-
-                    Layout layout = widget.getLayout();
-                    int line = layout.getLineForVertical(y);
-                    int off = layout.getOffsetForHorizontal(line, x);
-
-                    ClickableSpan[] links = Spannable.Factory.getInstance()
-                            .newSpannable(widget.getText())
-                            .getSpans(off, off, ClickableSpan.class);
-
-                    if (links.length != 0) {
-                        if (action == MotionEvent.ACTION_UP) {
-                            if (links[0] instanceof URLSpan) {
-                                openWebUrlExternal(widget.getContext(), null,
-                                        ((URLSpan) links[0]).getURL(), null);
-                            } else {
-                                links[0].onClick(widget);
-                            }
-                        }
-                        return true;
-                    }
+                if (action != MotionEvent.ACTION_DOWN && action != MotionEvent.ACTION_UP) {
+                    return false;
                 }
-                return false;
+                TextView widget = (TextView) v;
+                ClickableSpan span = findSpanAt(widget, event.getX(), event.getY());
+                if (action == MotionEvent.ACTION_DOWN) {
+                    mDownSpan = span;
+                    mDownX = event.getX();
+                    mDownY = event.getY();
+                    if (span != null && widget.getParent() != null) {
+                        // otherwise the enclosing RecyclerView can steal the gesture as a scroll
+                        // on the tiny finger drift a real tap always has, turning the up event
+                        // into a CANCEL before it ever reaches the check below
+                        widget.getParent().requestDisallowInterceptTouchEvent(true);
+                    }
+                    return span != null;
+                }
+                // A real finger practically never releases on the exact pixel it pressed, so a
+                // release that slips off a one-line-tall link's span would otherwise be dropped
+                // silently - fall back to the span under the initial press within touch slop.
+                if (span == null && mDownSpan != null &&
+                        isWithinTouchSlop(widget.getContext(), mDownX, mDownY,
+                                event.getX(), event.getY())) {
+                    span = mDownSpan;
+                }
+                mDownSpan = null;
+                if (span == null) {
+                    return false;
+                }
+                if (span instanceof URLSpan) {
+                    openWebUrlExternal(widget.getContext(), null,
+                            ((URLSpan) span).getURL(), null);
+                } else {
+                    span.onClick(widget);
+                }
+                return true;
             }
         });
+    }
+
+    private static ClickableSpan findSpanAt(TextView widget, float rawX, float rawY) {
+        Layout layout = widget.getLayout();
+        if (layout == null) {
+            return null;
+        }
+        int x = (int) rawX - widget.getTotalPaddingLeft() + widget.getScrollX();
+        int y = (int) rawY - widget.getTotalPaddingTop() + widget.getScrollY();
+        int line = layout.getLineForVertical(y);
+        int off = layout.getOffsetForHorizontal(line, x);
+        ClickableSpan[] spans = Spannable.Factory.getInstance()
+                .newSpannable(widget.getText())
+                .getSpans(off, off, ClickableSpan.class);
+        return spans.length == 0 ? null : spans[0];
+    }
+
+    private static boolean isWithinTouchSlop(Context context, float x1, float y1,
+                                              float x2, float y2) {
+        int slop = ViewConfiguration.get(context).getScaledTouchSlop();
+        return Math.abs(x1 - x2) <= slop && Math.abs(y1 - y2) <= slop;
     }
 
     public static CharSequence fromHtml(String htmlText) {
