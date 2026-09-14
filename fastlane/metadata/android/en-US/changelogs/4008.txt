@@ -1,0 +1,1 @@
+Fixed comment links being hard to tap - a real finger rarely lifts off the exact pixel it pressed, which was silently swallowing the tap instead of opening the link.
