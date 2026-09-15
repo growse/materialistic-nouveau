@@ -16,7 +16,7 @@ runs:
       uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
       with:
         distribution: "temurin"
-        java-version: "21"
+        java-version: "25.0.4+101.0.LTS"
     - name: Gradle setup
       uses: gradle/actions/setup-gradle@v6
       with:
