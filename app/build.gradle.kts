@@ -5,14 +5,10 @@ plugins {
   alias(libs.plugins.ktfmt)
 }
 
-val appVersionCode = 4008
-val appVersionName = "v4.0.8"
-
 // Feeds the in-app "What's new" screen from the same file the release workflow requires,
 // so there's a single place to update per release instead of two.
-val releaseNotesFile = file("../fastlane/metadata/android/en-US/changelogs/$appVersionCode.txt")
-val releaseNotesEscaped =
-    releaseNotesFile
+fun releaseNotesEscaped(versionCode: Int): String =
+    file("../fastlane/metadata/android/en-US/changelogs/$versionCode.txt")
         .takeIf { it.exists() }
         ?.readText()
         ?.trim()
@@ -33,13 +29,14 @@ android {
     applicationId = "com.growse.android.io.github.hidroh.materialistic"
     minSdk = 23
     targetSdk = 37
-    versionCode = appVersionCode
-    versionName = appVersionName
+    // Keep these as literals: F-Droid's update checker regex-parses them from this file.
+    versionCode = 4008
+    versionName = "v4.0.8"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
     buildConfigField("String", "MERCURY_TOKEN", "\"\"")
-    buildConfigField("String", "RELEASE_NOTES_HTML", "\"$releaseNotesEscaped\"")
+    buildConfigField("String", "RELEASE_NOTES_HTML", "\"${releaseNotesEscaped(versionCode!!)}\"")
   }
 
   androidResources { localeFilters += setOf("en", "zh-rCN", "es") }
