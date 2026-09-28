@@ -30,8 +30,8 @@ android {
     minSdk = 23
     targetSdk = 37
     // Keep these as literals: F-Droid's update checker regex-parses them from this file.
-    versionCode = 4008
-    versionName = "v4.0.8"
+    versionCode = 4009
+    versionName = "v4.0.9"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
