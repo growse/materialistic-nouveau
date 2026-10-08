@@ -374,7 +374,7 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
                 sourceTextView.setVisibility(View.VISIBLE);
             }
         } else {
-            AppUtils.setTextAppearance(titleTextView, R.style.TextAppearance_App_Small);
+            titleTextView.setTextAppearance(R.style.TextAppearance_App_Small);
             titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(AppUtils.getThemedResId(this, R.attr.contentTextSize)));
             CharSequence title = AppUtils.fromHtml(story.getDisplayedTitle(), true);
