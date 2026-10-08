@@ -33,6 +33,7 @@ import rx.schedulers.Schedulers;
 public class Application extends android.app.Application {
 
     public static Typeface TYPE_FACE = null;
+    private static final String LEGACY_SYNC_ACCOUNT_NAME = "Materialistic";
 
     @Override
     public void onCreate() {
@@ -51,8 +52,25 @@ public class Application extends android.app.Application {
         }
         Preferences.migrate(this);
         TYPE_FACE = FontCache.get(this, Preferences.Theme.getTypeface(this));
+        removeLegacySyncAccount(this);
         registerAccountsUpdatedListener(this);
         AdBlocker.init(this, Schedulers.io());
+    }
+
+    /**
+     * Removes the placeholder account that the old sync adapter created to request syncs against.
+     * It shares the login accounts' type, so it was offered in the account chooser. Unlike a real
+     * login it was never given a password, which tells it apart from a user named the same.
+     */
+    @SuppressLint("MissingPermission")
+    private static void removeLegacySyncAccount(Context context) {
+        AccountManager accountManager = AccountManager.get(context);
+        for (Account account : accountManager.getAccountsByType(BuildConfig.APPLICATION_ID)) {
+            if (TextUtils.equals(account.name, LEGACY_SYNC_ACCOUNT_NAME)
+                    && accountManager.getPassword(account) == null) {
+                accountManager.removeAccount(account, null, null, null);
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
