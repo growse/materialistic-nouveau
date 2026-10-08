@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Ha Duy Trung
+ * Copyright (c) 2016 Ha Duy Trung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.growse.android.io.github.hidroh.materialistic.annotation
 
-package com.growse.android.io.github.hidroh.materialistic.data;
-
-public class SearchRecentSuggestionsProvider extends android.content.SearchRecentSuggestionsProvider {
-    public static final String PROVIDER_AUTHORITY = "com.growse.android.io.github.hidroh.materialistic.recentprovider";
-    public static final int MODE = DATABASE_MODE_QUERIES;
-
-    public SearchRecentSuggestionsProvider() {
-        setupSuggestions(PROVIDER_AUTHORITY, MODE);
-    }
-}
+/** Indicates that target's visibility can be relaxed to avoid synthetic methods */
+@Retention(AnnotationRetention.SOURCE)
+@Target(
+    AnnotationTarget.FIELD,
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER,
+    AnnotationTarget.CLASS,
+)
+annotation class Synthetic

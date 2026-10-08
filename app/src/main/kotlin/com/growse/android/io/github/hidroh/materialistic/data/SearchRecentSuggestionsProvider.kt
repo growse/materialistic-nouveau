@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.growse.android.io.github.hidroh.materialistic.data
 
-package com.growse.android.io.github.hidroh.materialistic;
+import android.content.SearchRecentSuggestionsProvider
 
-import android.view.MenuItem;
-import android.view.View;
+class SearchRecentSuggestionsProvider : SearchRecentSuggestionsProvider() {
+  init {
+    setupSuggestions(PROVIDER_AUTHORITY, MODE)
+  }
 
-/**
- * Injectable utility to resolve action view for menu items
- */
-class ActionViewResolver {
-    /**
-     * Returns the currently set action view for this menu item.
-     *
-     * @param menuItem the item to query
-     * @return This item's action view
-     */
-    View getActionView(MenuItem menuItem) {
-        return menuItem.getActionView();
-    }
+  companion object {
+    const val PROVIDER_AUTHORITY: String =
+        "com.growse.android.io.github.hidroh.materialistic.recentprovider"
+    const val MODE: Int = DATABASE_MODE_QUERIES
+  }
 }

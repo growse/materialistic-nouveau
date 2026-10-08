@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Ha Duy Trung
+ * Copyright (c) 2015 Ha Duy Trung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.growse.android.io.github.hidroh.materialistic.data
 
-package com.growse.android.io.github.hidroh.materialistic;
+/**
+ * Callback interface for requests
+ *
+ * @param <T> response type </T>
+ */
+interface ResponseListener<T> {
+  /**
+   * Fired when request is successful
+   *
+   * @param response result
+   */
+  fun onResponse(response: T?)
 
-import android.content.res.TypedArray;
-import androidx.annotation.ArrayRes;
-
-public interface ResourcesProvider {
-    TypedArray obtainTypedArray(@ArrayRes int resId);
+  /**
+   * Fired when request is failed
+   *
+   * @param errorMessage error message or null
+   */
+  fun onError(errorMessage: String?)
 }

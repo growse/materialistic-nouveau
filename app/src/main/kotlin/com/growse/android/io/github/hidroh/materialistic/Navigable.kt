@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Ha Duy Trung
+ * Copyright (c) 2016 Ha Duy Trung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.growse.android.io.github.hidroh.materialistic
 
-package com.growse.android.io.github.hidroh.materialistic.data;
+interface Navigable {
+  fun onNavigate(direction: Int)
 
-import android.content.Context;
-import android.os.Parcelable;
-import androidx.annotation.NonNull;
-
-public interface UserManager {
-    void getUser(String username, final ResponseListener<User> listener);
-
-    interface User extends Parcelable {
-        String getId();
-        String getAbout();
-        long getKarma();
-        String getCreated(Context context);
-        @NonNull Item[] getItems();
-    }
+  companion object {
+    const val DIRECTION_UP: Int = 0
+    const val DIRECTION_DOWN: Int = 1
+    const val DIRECTION_LEFT: Int = 2
+    const val DIRECTION_RIGHT: Int = 3
+  }
 }

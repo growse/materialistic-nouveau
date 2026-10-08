@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Ha Duy Trung
+ * Copyright (c) 2015 Ha Duy Trung
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.growse.android.io.github.hidroh.materialistic.data
 
-package com.growse.android.io.github.hidroh.materialistic.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-/**
- * Indicates target's visibility (and its members) can be made public to allow API discoverability
- */
-@Retention(RetentionPolicy.SOURCE)
-@Target({ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.TYPE})
-public @interface PublicApi {
+object ItemManagerQualifiers {
+  const val ALGOLIA: String = "algolia"
+  const val POPULAR: String = "popular"
+  const val HN: String = "hn"
 }

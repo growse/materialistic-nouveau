@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.growse.android.io.github.hidroh.materialistic
 
-package com.growse.android.io.github.hidroh.materialistic.data;
+import android.view.MenuItem
+import android.view.View
 
-import androidx.annotation.Nullable;
-
-/**
- * Callback interface for requests
- * @param <T> response type
- */
-public interface ResponseListener<T> {
-    /**
-     * Fired when request is successful
-     * @param response result
-     */
-    void onResponse(@Nullable T response);
-
-    /**
-     * Fired when request is failed
-     * @param errorMessage error message or null
-     */
-    void onError(String errorMessage);
+/** Injectable utility to resolve action view for menu items */
+internal class ActionViewResolver {
+  /**
+   * Returns the currently set action view for this menu item.
+   *
+   * @param menuItem the item to query
+   * @return This item's action view
+   */
+  fun getActionView(menuItem: MenuItem): View? {
+    return menuItem.actionView
+  }
 }

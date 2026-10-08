@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.growse.android.io.github.hidroh.materialistic.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package com.growse.android.io.github.hidroh.materialistic.annotation
 
 /**
- * Indicates that target's visibility can be relaxed to avoid synthetic methods
+ * Indicates target's visibility (and its members) can be made public to allow API discoverability
  */
-@Retention(RetentionPolicy.SOURCE)
-@Target({ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.METHOD, ElementType.TYPE})
-public @interface Synthetic {
-}
+@Retention(AnnotationRetention.SOURCE)
+@Target(
+    AnnotationTarget.CONSTRUCTOR,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY_GETTER,
+    AnnotationTarget.PROPERTY_SETTER,
+    AnnotationTarget.CLASS,
+)
+annotation class PublicApi

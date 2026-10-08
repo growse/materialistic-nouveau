@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.growse.android.io.github.hidroh.materialistic.data
 
-package com.growse.android.io.github.hidroh.materialistic.data;
+import android.content.Context
+import android.os.Parcelable
 
-public final class ItemManagerQualifiers {
-    public static final String ALGOLIA = "algolia";
-    public static final String POPULAR = "popular";
-    public static final String HN = "hn";
+interface UserManager {
+  fun getUser(username: String?, listener: ResponseListener<User?>?)
 
-    private ItemManagerQualifiers() {
-    }
+  interface User : Parcelable {
+    val id: String?
+    val about: String?
+    val karma: Long
+
+    fun getCreated(context: Context?): String?
+
+    val items: Array<Item?>
+  }
 }
