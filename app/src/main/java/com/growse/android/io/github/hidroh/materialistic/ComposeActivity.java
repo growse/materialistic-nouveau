@@ -95,7 +95,7 @@ public class ComposeActivity extends ThemedActivity {
             finish();
             return;
         }
-        AppUtils.setStatusBarColor(getWindow(), ContextCompat.getColor(this, R.color.blackT12));
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.blackT12));
         setContentView(R.layout.activity_compose);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         //noinspection ConstantConditions

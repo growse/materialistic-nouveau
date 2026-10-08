@@ -109,7 +109,7 @@ public class SettingsActivity extends DrawerActivity {
                     .setNegativeButton(android.R.string.cancel, null)
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                         Preferences.reset(SettingsActivity.this);
-                        AppUtils.restart(SettingsActivity.this, false);
+                        SettingsActivity.this.recreate();
                     })
                     .create()
                     .show();

@@ -35,7 +35,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Parcelable;
-import android.text.Html;
+import androidx.core.text.HtmlCompat;
 import android.text.Layout;
 import android.text.Spannable;
 import android.text.TextUtils;
@@ -214,27 +214,10 @@ public class AppUtils {
         if (TextUtils.isEmpty(htmlText)) {
             return null;
         }
-        CharSequence spanned;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //noinspection InlinedApi
-            spanned = Html.fromHtml(htmlText, compact ?
-                    Html.FROM_HTML_MODE_COMPACT : Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            //noinspection deprecation
-            spanned = Html.fromHtml(htmlText);
-        }
-        return trim(spanned);
+        return trim(HtmlCompat.fromHtml(htmlText, compact ?
+                HtmlCompat.FROM_HTML_MODE_COMPACT : HtmlCompat.FROM_HTML_MODE_LEGACY));
     }
 
-    public static Intent makeSendIntentChooser(Context context, Uri data) {
-        // use ACTION_SEND_MULTIPLE instead of ACTION_SEND to filter out
-        // share receivers that accept only EXTRA_TEXT but not EXTRA_STREAM
-        return Intent.createChooser(new Intent(Intent.ACTION_SEND_MULTIPLE)
-                        .setType("text/plain")
-                        .putParcelableArrayListExtra(Intent.EXTRA_STREAM,
-                                new ArrayList<Uri>(){{add(data);}}),
-                context.getString(R.string.share_file));
-    }
 
     public static void openExternal(@NonNull final Context context,
                              @NonNull PopupMenu popupMenu,
@@ -303,10 +286,6 @@ public class AppUtils {
     public static int getDimensionInDp(Context context, @DimenRes int dimenResId) {
         return (int) (context.getResources().getDimension(dimenResId) /
                         context.getResources().getDisplayMetrics().density);
-    }
-
-    public static void restart(Activity activity, boolean transition) {
-        activity.recreate();
     }
 
     public static String getAbbreviatedTimeSpan(long timeMillis) {
@@ -502,13 +481,9 @@ public class AppUtils {
     }
 
     public static void setStatusBarDim(Window window, boolean dim) {
-        setStatusBarColor(window, dim ? Color.TRANSPARENT :
+        window.setStatusBarColor(dim ? Color.TRANSPARENT :
                 ContextCompat.getColor(window.getContext(),
                         AppUtils.getThemedResId(window.getContext(), R.attr.colorPrimaryDark)));
-    }
-
-    public static void setStatusBarColor(Window window, int color) {
-        window.setStatusBarColor(color);
     }
 
     /**

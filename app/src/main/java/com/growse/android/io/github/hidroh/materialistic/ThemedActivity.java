@@ -77,7 +77,7 @@ public abstract class ThemedActivity extends AppCompatActivity {
         super.onResume();
         mResumed = true;
         if (mPendingThemeChanged) {
-            AppUtils.restart(this, false);
+            recreate();
         }
     }
 
@@ -117,7 +117,7 @@ public abstract class ThemedActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(Preferences.Theme.getAutoDayNightMode(this));
         }
         if (mResumed) {
-            AppUtils.restart(this, true);
+            recreate();
         } else {
             mPendingThemeChanged = true;
         }
