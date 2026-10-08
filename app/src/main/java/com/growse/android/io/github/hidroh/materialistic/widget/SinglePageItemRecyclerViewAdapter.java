@@ -344,6 +344,11 @@ public class SinglePageItemRecyclerViewAdapter
             if (recyclerView == null) {
                 return; // adapter detached
             }
+            // state may have changed since this was posted: a rebind may have queued a duplicate
+            // expansion, or an ancestor may have been collapsed and removed this item
+            if (mState.isExpanded(item) || mState.indexOf(item) < 0) {
+                return;
+            }
             int index = mState.expand(item);
             notifyItemRangeInserted(index, item.getKidCount());
             notifyItemChanged(index - 1, TOGGLE);
