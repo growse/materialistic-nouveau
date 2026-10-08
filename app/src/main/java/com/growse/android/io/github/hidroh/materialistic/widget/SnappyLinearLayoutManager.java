@@ -16,6 +16,9 @@
 
 package com.growse.android.io.github.hidroh.materialistic.widget;
 
+import android.graphics.Point;
+import android.view.Display;
+import android.view.WindowManager;
 import android.content.Context;
 import android.graphics.PointF;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +37,7 @@ public class SnappyLinearLayoutManager extends LinearLayoutManager {
 
     public SnappyLinearLayoutManager(Context context, boolean preload) {
         super(context);
-        mExtraSpace = preload ? AppUtils.getDisplayHeight(context) : 0;
+        mExtraSpace = preload ? getDisplayHeight(context) : 0;
     }
 
     @Override
@@ -61,5 +64,13 @@ public class SnappyLinearLayoutManager extends LinearLayoutManager {
     @Override
     protected int getExtraLayoutSpace(RecyclerView.State state) {
         return mExtraSpace == 0 ? super.getExtraLayoutSpace(state) : mExtraSpace;
+    }
+
+    private static int getDisplayHeight(Context context) {
+        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        return point.y;
     }
 }

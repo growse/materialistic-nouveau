@@ -166,7 +166,7 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
         mNavButton = findViewById(R.id.navigation_button);
         mNavButton.setNavigable(direction ->
                 // if callback is fired navigable should not be null
-                AppUtils.navigate(direction, mAppBar, (Navigable) mAdapter.getItem(0)));
+                navigate(direction, mAppBar, (Navigable) mAdapter.getItem(0)));
         mVoteButton = findViewById(R.id.vote_button);
         mBookmark = findViewById(R.id.bookmarked);
         mCoordinatorLayout = findViewById(R.id.content_frame);
@@ -507,6 +507,22 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
             if (mItemActivity.get() != null && !mItemActivity.get().isActivityDestroyed()) {
                 mItemActivity.get().onVoted(null);
             }
+        }
+    }
+
+    private static void navigate(int direction, AppBarLayout appBarLayout, Navigable navigable) {
+        switch (direction) {
+            case Navigable.DIRECTION_DOWN:
+            case Navigable.DIRECTION_RIGHT:
+                if (appBarLayout.getBottom() == 0) {
+                    navigable.onNavigate(direction);
+                } else {
+                    appBarLayout.setExpanded(false, true);
+                }
+                break;
+            default:
+                navigable.onNavigate(direction);
+                break;
         }
     }
 }

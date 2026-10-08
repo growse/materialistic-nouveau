@@ -16,6 +16,8 @@
 
 package com.growse.android.io.github.hidroh.materialistic;
 
+import androidx.annotation.StyleRes;
+import com.growse.android.io.github.hidroh.materialistic.data.HackerNewsClient;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -147,7 +149,7 @@ public class WebFragment extends LazyLoadFragment
                     Preferences.StoryViewMode.Readability;
             mItem = getArguments().getParcelable(EXTRA_ITEM);
         }
-        mIsHackerNewsUrl = AppUtils.isHackerNewsUrl(mItem);
+        mIsHackerNewsUrl = isHackerNewsUrl(mItem);
     }
 
     @Override
@@ -345,7 +347,7 @@ public class WebFragment extends LazyLoadFragment
 
     void loadContent() {
         setWebSettings(false);
-        mWebView.reloadHtml(AppUtils.wrapHtml(getActivity(), mContent));
+        mWebView.reloadHtml(wrapHtml(getActivity(), mContent));
     }
 
     private void parse() {
@@ -726,5 +728,30 @@ public class WebFragment extends LazyLoadFragment
             void onFailure();
             void onLoad();
         }
+    }
+
+    private static boolean isHackerNewsUrl(WebItem item) {
+        return !TextUtils.isEmpty(item.getUrl()) &&
+                item.getUrl().equals(String.format(HackerNewsClient.WEB_ITEM_PATH, item.getId()));
+    }
+
+    private static String wrapHtml(Context context, String html) {
+        return context.getString(R.string.html,
+                Preferences.Theme.getReadabilityTypeface(context),
+                toHtmlPx(context, Preferences.Theme.resolvePreferredReadabilityTextSize(context)),
+                AppUtils.toHtmlColor(context, android.R.attr.textColorPrimary),
+                AppUtils.toHtmlColor(context, android.R.attr.textColorLink),
+                TextUtils.isEmpty(html) ? context.getString(R.string.empty_text) : html,
+                toHtmlPx(context, context.getResources().getDimension(R.dimen.activity_vertical_margin)),
+                toHtmlPx(context, context.getResources().getDimension(R.dimen.activity_horizontal_margin)),
+                Preferences.getReadabilityLineHeight(context));
+    }
+
+    private static float toHtmlPx(Context context, @StyleRes int textStyleAttr) {
+        return toHtmlPx(context, AppUtils.getDimension(context, textStyleAttr, R.attr.contentTextSize));
+    }
+
+    private static float toHtmlPx(Context context, float dimen) {
+        return dimen / context.getResources().getDisplayMetrics().density;
     }
 }

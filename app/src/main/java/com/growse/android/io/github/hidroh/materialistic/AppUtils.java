@@ -28,8 +28,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -43,13 +41,11 @@ import android.text.format.DateUtils;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.view.ContextThemeWrapper;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
-import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +65,6 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.browser.customtabs.CustomTabsSession;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
-import androidx.core.util.Pair;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -278,11 +273,6 @@ public class AppUtils {
         return size;
     }
 
-    public static boolean isHackerNewsUrl(WebItem item) {
-        return !TextUtils.isEmpty(item.getUrl()) &&
-                item.getUrl().equals(String.format(HackerNewsClient.WEB_ITEM_PATH, item.getId()));
-    }
-
     public static int getDimensionInDp(Context context, @DimenRes int dimenResId) {
         return (int) (context.getResources().getDimension(dimenResId) /
                         context.getResources().getDisplayMetrics().density);
@@ -319,22 +309,6 @@ public class AppUtils {
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
-    @SuppressLint("MissingPermission")
-    public static Pair<String, String> getCredentials(Context context) {
-        String username = Preferences.getUsername(context);
-        if (TextUtils.isEmpty(username)) {
-            return null;
-        }
-        AccountManager accountManager = AccountManager.get(context);
-        Account[] accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID);
-        for (Account account : accounts) {
-            if (TextUtils.equals(username, account.name)) {
-                return Pair.create(username, accountManager.getPassword(account));
-            }
-        }
-        return null;
-    }
-
     /**
      * Displays UI to allow user to login
      * If no accounts exist in user's device, regardless of login status, prompt to login again
@@ -353,22 +327,6 @@ public class AppUtils {
         } else { // logged out, choose from existing accounts to log in
             showAccountChooser(context, alertDialogBuilder, accounts);
         }
-    }
-
-    @SuppressLint("MissingPermission")
-    public static void registerAccountsUpdatedListener(final Context context) {
-        AccountManager.get(context).addOnAccountsUpdatedListener(accounts -> {
-            String username = Preferences.getUsername(context);
-            if (TextUtils.isEmpty(username)) {
-                return;
-            }
-            for (Account account : accounts) {
-                if (TextUtils.equals(account.name, username)) {
-                    return;
-                }
-            }
-            Preferences.setUsername(context, null);
-        }, null, true);
     }
 
     @SuppressWarnings("deprecation")
@@ -480,12 +438,6 @@ public class AppUtils {
         webSettings.setDisplayZoomControls(false);
     }
 
-    public static void setStatusBarDim(Window window, boolean dim) {
-        window.setStatusBarColor(dim ? Color.TRANSPARENT :
-                ContextCompat.getColor(window.getContext(),
-                        AppUtils.getThemedResId(window.getContext(), R.attr.colorPrimaryDark)));
-    }
-
     /**
      * Pads a scrolling AppBarLayout's first child down below the status bar without setting
      * {@code fitsSystemWindows} on it or its AppBarLayout. That flag makes AppBarLayout reserve
@@ -501,30 +453,6 @@ public class AppUtils {
             return windowInsets;
         });
         ViewCompat.requestApplyInsets(toolbar);
-    }
-
-    public static void navigate(int direction, AppBarLayout appBarLayout, Navigable navigable) {
-        switch (direction) {
-            case Navigable.DIRECTION_DOWN:
-            case Navigable.DIRECTION_RIGHT:
-                if (appBarLayout.getBottom() == 0) {
-                    navigable.onNavigate(direction);
-                } else {
-                    appBarLayout.setExpanded(false, true);
-                }
-                break;
-            default:
-                navigable.onNavigate(direction);
-                break;
-        }
-    }
-
-    public static int getDisplayHeight(Context context) {
-        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
-                .getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        return point.y;
     }
 
     public static LayoutInflater createLayoutInflater(Context context) {
@@ -567,26 +495,6 @@ public class AppUtils {
         } else { // web URI
             return intent.getData().getQueryParameter(altParamId);
         }
-    }
-
-    public static String wrapHtml(Context context, String html) {
-        return context.getString(R.string.html,
-                Preferences.Theme.getReadabilityTypeface(context),
-                toHtmlPx(context, Preferences.Theme.resolvePreferredReadabilityTextSize(context)),
-                AppUtils.toHtmlColor(context, android.R.attr.textColorPrimary),
-                AppUtils.toHtmlColor(context, android.R.attr.textColorLink),
-                TextUtils.isEmpty(html) ? context.getString(R.string.empty_text) : html,
-                toHtmlPx(context, context.getResources().getDimension(R.dimen.activity_vertical_margin)),
-                toHtmlPx(context, context.getResources().getDimension(R.dimen.activity_horizontal_margin)),
-                Preferences.getReadabilityLineHeight(context));
-    }
-
-    private static float toHtmlPx(Context context, @StyleRes int textStyleAttr) {
-        return toHtmlPx(context, AppUtils.getDimension(context, textStyleAttr, R.attr.contentTextSize));
-    }
-
-    private static float toHtmlPx(Context context, float dimen) {
-        return dimen / context.getResources().getDisplayMetrics().density;
     }
 
     private static CharSequence trim(CharSequence charSequence) {

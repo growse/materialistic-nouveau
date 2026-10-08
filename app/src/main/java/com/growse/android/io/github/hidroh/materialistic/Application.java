@@ -16,6 +16,11 @@
 
 package com.growse.android.io.github.hidroh.materialistic;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.text.TextUtils;
 import android.graphics.Typeface;
 import android.os.StrictMode;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -46,7 +51,23 @@ public class Application extends android.app.Application {
         }
         Preferences.migrate(this);
         TYPE_FACE = FontCache.get(this, Preferences.Theme.getTypeface(this));
-        AppUtils.registerAccountsUpdatedListener(this);
+        registerAccountsUpdatedListener(this);
         AdBlocker.init(this, Schedulers.io());
+    }
+
+    @SuppressLint("MissingPermission")
+    private static void registerAccountsUpdatedListener(final Context context) {
+        AccountManager.get(context).addOnAccountsUpdatedListener(accounts -> {
+            String username = Preferences.getUsername(context);
+            if (TextUtils.isEmpty(username)) {
+                return;
+            }
+            for (Account account : accounts) {
+                if (TextUtils.equals(account.name, username)) {
+                    return;
+                }
+            }
+            Preferences.setUsername(context, null);
+        }, null, true);
     }
 }

@@ -16,6 +16,11 @@
 
 package com.growse.android.io.github.hidroh.materialistic.accounts;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.annotation.SuppressLint;
+import com.growse.android.io.github.hidroh.materialistic.Preferences;
+import com.growse.android.io.github.hidroh.materialistic.BuildConfig;
 import android.content.Context;
 import android.net.Uri;
 import androidx.core.util.Pair;
@@ -97,7 +102,7 @@ public class UserServicesClient implements UserServices {
 
     @Override
     public boolean voteUp(Context context, String itemId, Callback callback) {
-        Pair<String, String> credentials = AppUtils.getCredentials(context);
+        Pair<String, String> credentials = getCredentials(context);
         if (credentials == null) {
             return false;
         }
@@ -111,7 +116,7 @@ public class UserServicesClient implements UserServices {
 
     @Override
     public void reply(Context context, String parentId, String text, Callback callback) {
-        Pair<String, String> credentials = AppUtils.getCredentials(context);
+        Pair<String, String> credentials = getCredentials(context);
         if (credentials == null) {
             callback.onDone(false);
             return;
@@ -124,7 +129,7 @@ public class UserServicesClient implements UserServices {
 
     @Override
     public void submit(Context context, String title, String content, boolean isUrl, Callback callback) {
-        Pair<String, String> credentials = AppUtils.getCredentials(context);
+        Pair<String, String> credentials = getCredentials(context);
         if (credentials == null) {
             callback.onDone(false);
             return;
@@ -296,5 +301,21 @@ public class UserServicesClient implements UserServices {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private static Pair<String, String> getCredentials(Context context) {
+        String username = Preferences.getUsername(context);
+        if (TextUtils.isEmpty(username)) {
+            return null;
+        }
+        AccountManager accountManager = AccountManager.get(context);
+        Account[] accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID);
+        for (Account account : accounts) {
+            if (TextUtils.equals(username, account.name)) {
+                return Pair.create(username, accountManager.getPassword(account));
+            }
+        }
+        return null;
     }
 }

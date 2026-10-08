@@ -16,6 +16,9 @@
 
 package com.growse.android.io.github.hidroh.materialistic;
 
+import android.graphics.Color;
+import android.view.Window;
+import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -91,7 +94,7 @@ public class UserActivity extends ThemedActivity implements Scrollable {
             return;
         }
         setTaskTitle(mUsername);
-        AppUtils.setStatusBarDim(getWindow(), true);
+        setStatusBarDim(getWindow(), true);
         setContentView(R.layout.activity_user);
         findViewById(R.id.touch_outside).setOnClickListener(v -> finish());
         mBottomSheetBehavior = BottomSheetBehavior.from(findViewById(R.id.bottom_sheet));
@@ -103,7 +106,7 @@ public class UserActivity extends ThemedActivity implements Scrollable {
                         finish();
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
-                        AppUtils.setStatusBarDim(getWindow(), false);
+                        setStatusBarDim(getWindow(), false);
                         mRecyclerView.setLayoutFrozen(false);
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
@@ -111,7 +114,7 @@ public class UserActivity extends ThemedActivity implements Scrollable {
                     case BottomSheetBehavior.STATE_HALF_EXPANDED:
                     case BottomSheetBehavior.STATE_SETTLING:
                     default:
-                        AppUtils.setStatusBarDim(getWindow(), true);
+                        setStatusBarDim(getWindow(), true);
                         break;
                 }
             }
@@ -293,5 +296,11 @@ public class UserActivity extends ThemedActivity implements Scrollable {
                 Toast.makeText(mUserActivity.get(), R.string.user_failed, Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private static void setStatusBarDim(Window window, boolean dim) {
+        window.setStatusBarColor(dim ? Color.TRANSPARENT :
+                ContextCompat.getColor(window.getContext(),
+                        AppUtils.getThemedResId(window.getContext(), R.attr.colorPrimaryDark)));
     }
 }
