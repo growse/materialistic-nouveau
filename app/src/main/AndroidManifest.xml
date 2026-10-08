@@ -23,15 +23,10 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <permission android:name="com.growse.android.io.github.hidroh.materialistic.permission.SYNC_ITEM"
-        android:protectionLevel="signature" />
     <permission android:name="com.growse.android.io.github.hidroh.materialistic.permission.AUTHENTICATE_ACCOUNTS"
         android:protectionLevel="signature" />
-    <uses-permission android:name="com.growse.android.io.github.hidroh.materialistic.permission.SYNC_ITEM" />
     <uses-permission android:name="com.growse.android.io.github.hidroh.materialistic.permission.AUTHENTICATE_ACCOUNTS" />
 
     <uses-sdk tools:overrideLibrary="androidx.browser" />
@@ -257,16 +252,6 @@
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-        <service android:name=".data.ItemSyncService"
-            android:process=":sync"
-            android:permission="com.growse.android.io.github.hidroh.materialistic.permission.SYNC_ITEM"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-            <meta-data android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
-        </service>
         <service
             android:name=".data.ItemSyncJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
@@ -282,10 +267,6 @@
             android:name=".data.WebCacheService"
             android:exported="false" />
         <provider
-            android:authorities="com.growse.android.io.github.hidroh.materialistic.syncprovider"
-            android:name=".data.SyncContentProvider"
-            android:exported="false" />
-        <provider
             android:authorities="com.growse.android.io.github.hidroh.materialistic.recentprovider"
             android:name=".data.SearchRecentSuggestionsProvider"
             android:exported="false" />
@@ -298,14 +279,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <receiver android:name=".data.ItemSyncWifiReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action
-                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
-                    tools:ignore="BatteryLife"/>
-            </intent-filter>
-        </receiver>
         <receiver
             android:name=".appwidget.WidgetProvider"
             tools:ignore="ExportedReceiver"

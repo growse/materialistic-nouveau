@@ -548,11 +548,6 @@ object Preferences {
     }
 
     @JvmStatic
-    fun currentConnectionEnabled(context: Context): Boolean {
-      return !isWifiOnly(context) || AppUtils.isOnWiFi(context)
-    }
-
-    @JvmStatic
     fun isNotificationEnabled(context: Context): Boolean {
       return get(context, R.string.pref_offline_notification, false)
     }

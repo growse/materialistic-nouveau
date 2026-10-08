@@ -295,14 +295,6 @@ public class AppUtils {
         return (span / DateUtils.MINUTE_IN_MILLIS) + ABBR_MINUTE;
     }
 
-    public static boolean isOnWiFi(Context context) {
-        NetworkInfo activeNetwork = ((ConnectivityManager) context.getSystemService(
-                Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-        return activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting() &&
-                activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-    }
-
     public static boolean hasConnection(Context context) {
         NetworkInfo activeNetworkInfo = ((ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();

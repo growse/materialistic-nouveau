@@ -16,21 +16,16 @@
 
 package com.growse.android.io.github.hidroh.materialistic.data;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -41,7 +36,6 @@ import android.text.format.DateUtils;
 import android.webkit.WebView;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -52,12 +46,10 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
-import com.growse.android.io.github.hidroh.materialistic.BuildConfig;
 import com.growse.android.io.github.hidroh.materialistic.ItemActivity;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
@@ -68,9 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class SyncDelegate {
-    static final String SYNC_PREFERENCES_FILE = "_syncpreferences";
     private static final String NOTIFICATION_GROUP_KEY = "group";
-    private static final String SYNC_ACCOUNT_NAME = "Materialistic";
     /**
      * Idle timeout: the sync is abandoned only after this long with no unit of work completing,
      * rather than after a fixed budget for the whole comment tree.
@@ -92,7 +82,6 @@ public class SyncDelegate {
     private final HackerNewsClient.RestService mHnRestService;
     private final ReadabilityClient mReadabilityClient;
     private final LocalCache mLocalCache;
-    private final SharedPreferences mSharedPreferences;
     private final NotificationManager mNotificationManager;
     private final NotificationCompat.Builder mNotificationBuilder;
     private final Handler mHandler = new Handler(Looper.getMainLooper());
@@ -113,8 +102,6 @@ public class SyncDelegate {
     SyncDelegate(@ApplicationContext Context context, RestServiceFactory factory,
                  ReadabilityClient readabilityClient, LocalCache localCache) {
         mContext = context;
-        mSharedPreferences = context.getSharedPreferences(
-                context.getPackageName() + SYNC_PREFERENCES_FILE, Context.MODE_PRIVATE);
         mHnRestService = factory.create(HackerNewsClient.BASE_API_URL,
                 HackerNewsClient.RestService.class, new BackgroundThreadExecutor());
         mReadabilityClient = readabilityClient;
@@ -146,33 +133,16 @@ public class SyncDelegate {
         if (!Preferences.Offline.isEnabled(context)) {
             return;
         }
-        if (!TextUtils.isEmpty(job.id)) {
-            JobInfo.Builder builder = new JobInfo.Builder(Long.valueOf(job.id).intValue(),
-                    new ComponentName(context.getPackageName(),
-                            ItemSyncJobService.class.getName()))
-                    .setRequiredNetworkType(Preferences.Offline.isWifiOnly(context) ?
-                            JobInfo.NETWORK_TYPE_UNMETERED :
-                            JobInfo.NETWORK_TYPE_ANY)
-                    .setExtras(job.toPersistableBundle());
-            if (Preferences.Offline.currentConnectionEnabled(context)) {
-                builder.setOverrideDeadline(0);
-            }
-            ((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE))
-                    .schedule(builder.build());
-        } else {
-            Bundle extras = new Bundle(job.toBundle());
-            extras.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-            Account syncAccount;
-            AccountManager accountManager = AccountManager.get(context);
-            Account[] accounts = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID);
-            if (accounts.length == 0) {
-                syncAccount = new Account(SYNC_ACCOUNT_NAME, BuildConfig.APPLICATION_ID);
-                accountManager.addAccountExplicitly(syncAccount, null, null);
-            } else {
-                syncAccount = accounts[0];
-            }
-            ContentResolver.requestSync(syncAccount, SyncContentProvider.PROVIDER_AUTHORITY, extras);
-        }
+        // the network constraint holds the job until a permitted connection is available, so the
+        // sync itself never has to check
+        JobInfo jobInfo = new JobInfo.Builder(Long.valueOf(job.id).intValue(),
+                new ComponentName(context.getPackageName(), ItemSyncJobService.class.getName()))
+                .setRequiredNetworkType(Preferences.Offline.isWifiOnly(context) ?
+                        JobInfo.NETWORK_TYPE_UNMETERED :
+                        JobInfo.NETWORK_TYPE_ANY)
+                .setExtras(job.toPersistableBundle())
+                .build();
+        ((JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE)).schedule(jobInfo);
     }
 
     void subscribe(ProgressListener listener) {
@@ -180,16 +150,11 @@ public class SyncDelegate {
     }
 
     void performSync(@NonNull Job job) {
-        // assume that connection wouldn't change until we finish syncing
         mJob = job;
-        if (!TextUtils.isEmpty(mJob.id)) {
-            mSyncProgress = new SyncProgress(mJob);
-            resetTimeout();
-            mOutstanding.set(1); // the story itself
-            SYNC_EXECUTOR.execute(() -> sync(mJob.id));
-        } else {
-            syncDeferredItems();
-        }
+        mSyncProgress = new SyncProgress(mJob);
+        resetTimeout();
+        mOutstanding.set(1); // the story itself
+        SYNC_EXECUTOR.execute(() -> sync(mJob.id));
     }
 
     /**
@@ -215,20 +180,12 @@ public class SyncDelegate {
         }
     }
 
-    private void syncDeferredItems() {
-        Set<String> itemIds = mSharedPreferences.getAll().keySet();
-        for (String itemId : itemIds) {
-            scheduleSync(mContext, new JobBuilder(mContext, itemId).setNotificationEnabled(false).build());
-        }
-    }
-
     /**
      * Syncs a single item. Every exit path must account for exactly one unit of work, either by
      * completing it here or by handing it to {@link #sync(HackerNewsItem, boolean)}.
      */
     private void sync(String itemId) {
-        if (!mJob.connectionEnabled) {
-            defer(itemId);
+        if (mJob.stopped) {
             completeUnit();
             return;
         }
@@ -278,7 +235,6 @@ public class SyncDelegate {
      *              content, and {@link #CACHE_TTL_MILLIS} would never elapse.
      */
     void sync(@NonNull HackerNewsItem item, boolean store) {
-        mSharedPreferences.edit().remove(item.getId()).apply();
         if (store) {
             mLocalCache.putCachedItem(HackerNewsItem.toCachedItem(item));
         }
@@ -339,10 +295,6 @@ public class SyncDelegate {
         }
     }
 
-    private void defer(String itemId) {
-        mSharedPreferences.edit().putBoolean(itemId, true).apply();
-    }
-
     /**
      * @return whatever the HTTP cache still holds for an item with no stored copy, so that items
      * predating the dedicated cache are not all re-downloaded, or null if it holds nothing.
@@ -357,7 +309,7 @@ public class SyncDelegate {
 
     void notifyItem(@NonNull String id, @Nullable HackerNewsItem item) {
         mSyncProgress.finishItem(id, item,
-                mJob.readabilityEnabled && mJob.connectionEnabled);
+                mJob.readabilityEnabled && !mJob.stopped);
         updateProgress();
     }
 
@@ -404,7 +356,7 @@ public class SyncDelegate {
     }
 
     void stopSync() {
-        mJob.connectionEnabled = false;
+        mJob.stopped = true;
         int id = Integer.valueOf(mJob.id);
         mNotificationManager.cancel(id);
         mHandler.removeMessages(id);
@@ -503,15 +455,17 @@ public class SyncDelegate {
 
     static class Job {
         private static final String EXTRA_ID = "extra:id";
-        private static final String EXTRA_CONNECTION_ENABLED = "extra:connectionEnabled";
         private static final String EXTRA_READABILITY_ENABLED = "extra:readabilityEnabled";
         private static final String EXTRA_ARTICLE_ENABLED = "extra:articleEnabled";
         private static final String EXTRA_COMMENTS_ENABLED = "extra:commentsEnabled";
         private static final String EXTRA_NOTIFICATION_ENABLED = "extra:notificationEnabled";
         private static final String EXTRA_REFRESH = "extra:refresh";
         final String id;
-        // written on the main thread when the sync is stopped, read on sync worker threads
-        volatile boolean connectionEnabled;
+        /**
+         * Set when the system stops the job, so that the remaining tree is abandoned rather than
+         * fetched. Not persisted: a stopped job is rescheduled and starts over.
+         */
+        volatile boolean stopped;
         boolean readabilityEnabled;
         boolean articleEnabled;
         boolean commentsEnabled;
@@ -528,7 +482,6 @@ public class SyncDelegate {
 
         Job(PersistableBundle bundle) {
             id = bundle.getString(EXTRA_ID);
-            connectionEnabled = bundle.getInt(EXTRA_CONNECTION_ENABLED) == 1;
             readabilityEnabled = bundle.getInt(EXTRA_READABILITY_ENABLED) == 1;
             articleEnabled = bundle.getInt(EXTRA_ARTICLE_ENABLED) == 1;
             commentsEnabled = bundle.getInt(EXTRA_COMMENTS_ENABLED) == 1;
@@ -536,37 +489,14 @@ public class SyncDelegate {
             refresh = bundle.getInt(EXTRA_REFRESH) == 1;
         }
 
-        Job(Bundle bundle) {
-            id = bundle.getString(EXTRA_ID);
-            connectionEnabled = bundle.getBoolean(EXTRA_CONNECTION_ENABLED);
-            readabilityEnabled = bundle.getBoolean(EXTRA_READABILITY_ENABLED);
-            articleEnabled = bundle.getBoolean(EXTRA_ARTICLE_ENABLED);
-            commentsEnabled = bundle.getBoolean(EXTRA_COMMENTS_ENABLED);
-            notificationEnabled = bundle.getBoolean(EXTRA_NOTIFICATION_ENABLED);
-            refresh = bundle.getBoolean(EXTRA_REFRESH);
-        }
-
         PersistableBundle toPersistableBundle() {
             PersistableBundle bundle = new PersistableBundle();
             bundle.putString(EXTRA_ID, id);
-            bundle.putInt(EXTRA_CONNECTION_ENABLED, connectionEnabled ? 1 : 0);
             bundle.putInt(EXTRA_READABILITY_ENABLED, readabilityEnabled ? 1 : 0);
             bundle.putInt(EXTRA_ARTICLE_ENABLED, articleEnabled ? 1 : 0);
             bundle.putInt(EXTRA_COMMENTS_ENABLED, commentsEnabled ? 1 : 0);
             bundle.putInt(EXTRA_NOTIFICATION_ENABLED, notificationEnabled ? 1 : 0);
             bundle.putInt(EXTRA_REFRESH, refresh ? 1 : 0);
-            return bundle;
-        }
-
-        Bundle toBundle() {
-            Bundle bundle = new Bundle();
-            bundle.putString(EXTRA_ID, id);
-            bundle.putBoolean(EXTRA_CONNECTION_ENABLED, connectionEnabled);
-            bundle.putBoolean(EXTRA_READABILITY_ENABLED, readabilityEnabled);
-            bundle.putBoolean(EXTRA_ARTICLE_ENABLED, articleEnabled);
-            bundle.putBoolean(EXTRA_COMMENTS_ENABLED, commentsEnabled);
-            bundle.putBoolean(EXTRA_NOTIFICATION_ENABLED, notificationEnabled);
-            bundle.putBoolean(EXTRA_REFRESH, refresh);
             return bundle;
         }
     }
@@ -576,16 +506,10 @@ public class SyncDelegate {
 
         public JobBuilder(Context context, String id) {
             job = new Job(id);
-            setConnectionEnabled(Preferences.Offline.currentConnectionEnabled(context));
             setReadabilityEnabled(Preferences.Offline.isReadabilityEnabled(context));
             setArticleEnabled(Preferences.Offline.isArticleEnabled(context));
             setCommentsEnabled(Preferences.Offline.isCommentsEnabled(context));
             setNotificationEnabled(Preferences.Offline.isNotificationEnabled(context));
-        }
-
-        JobBuilder setConnectionEnabled(boolean connectionEnabled) {
-            job.connectionEnabled = connectionEnabled;
-            return this;
         }
 
         JobBuilder setReadabilityEnabled(boolean readabilityEnabled) {
@@ -603,7 +527,7 @@ public class SyncDelegate {
             return this;
         }
 
-        public JobBuilder setNotificationEnabled(boolean notificationEnabled) {
+        JobBuilder setNotificationEnabled(boolean notificationEnabled) {
             job.notificationEnabled = notificationEnabled;
             return this;
         }
