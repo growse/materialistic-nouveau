@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -24,7 +23,7 @@ import okio.Okio;
 public class FileDownloader {
     private Call.Factory mCallFactory;
     private final String mCacheDir;
-    @Synthetic final Handler mMainHandler;
+    final Handler mMainHandler;
 
     @Inject
     public FileDownloader(@ApplicationContext Context context, Call.Factory callFactory) {

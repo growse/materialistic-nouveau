@@ -26,7 +26,6 @@ import android.text.TextUtils;
 
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
 import com.growse.android.io.github.hidroh.materialistic.R;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 /**
  * Represents a favorite item
@@ -60,7 +59,6 @@ public class Favorite implements WebItem {
         this.favorite = true;
     }
 
-    @Synthetic
     Favorite(Parcel source) {
         itemId = source.readString();
         url = source.readString();

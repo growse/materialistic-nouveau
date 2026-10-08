@@ -74,14 +74,12 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import com.growse.android.io.github.hidroh.materialistic.annotation.PublicApi;
 import com.growse.android.io.github.hidroh.materialistic.data.HackerNewsClient;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.WebItem;
 import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu;
 
 @SuppressWarnings("WeakerAccess")
-@PublicApi
 public class AppUtils {
     private static final String ABBR_YEAR = "y";
     private static final String ABBR_WEEK = "w";

@@ -40,7 +40,6 @@ import android.view.View;
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
 import com.growse.android.io.github.hidroh.materialistic.Navigable;
 import com.growse.android.io.github.hidroh.materialistic.R;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 class HackerNewsItem implements Item {
     private static final String AUTHOR_SEPARATOR = " - ";
@@ -118,7 +117,6 @@ class HackerNewsItem implements Item {
         this.level = level;
     }
 
-    @Synthetic
     HackerNewsItem(Parcel source) {
         id = source.readLong();
         title = source.readString();

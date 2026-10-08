@@ -46,7 +46,6 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -59,7 +58,7 @@ public class SubmitActivity extends ThemedActivity {
     private static final String REGEX_FUZZY_URL = "(.*)((http|https)://[^\\s]*)$";
     @Inject UserServices mUserServices;
     @Inject AlertDialogBuilder mAlertDialogBuilder;
-    @Synthetic TextView mTitleEditText;
+    TextView mTitleEditText;
     private TextView mContentEditText;
     private TextInputLayout mTitleLayout;
     private TextInputLayout mContentLayout;
@@ -202,7 +201,6 @@ public class SubmitActivity extends ThemedActivity {
                 mContentEditText.getText().toString(), isUrl, new SubmitCallback(this));
     }
 
-    @Synthetic
     void onSubmitted(Boolean successful) {
         if (successful == null) {
             toggleControls(false);
@@ -221,7 +219,6 @@ public class SubmitActivity extends ThemedActivity {
         }
     }
 
-    @Synthetic
     void onError(int message, Uri data) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         if (data != null) {
@@ -273,7 +270,6 @@ public class SubmitActivity extends ThemedActivity {
     static class SubmitCallback extends UserServices.Callback {
         private final WeakReference<SubmitActivity> mSubmitActivity;
 
-        @Synthetic
         SubmitCallback(SubmitActivity submitActivity) {
             mSubmitActivity = new WeakReference<>(submitActivity);
         }

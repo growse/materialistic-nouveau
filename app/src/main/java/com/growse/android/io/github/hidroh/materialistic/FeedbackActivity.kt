@@ -21,7 +21,6 @@ import android.view.Window
 import android.widget.EditText
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputLayout
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import com.growse.android.io.github.hidroh.materialistic.data.FeedbackClient
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
@@ -73,7 +72,6 @@ class FeedbackActivity : ThemedActivity() {
     return true
   }
 
-  @Synthetic
   fun onFeedbackSent(success: Boolean) {
     Toast.makeText(
             this,
@@ -88,8 +86,7 @@ class FeedbackActivity : ThemedActivity() {
     }
   }
 
-  internal class FeedbackCallback @Synthetic constructor(drawerActivity: FeedbackActivity?) :
-      FeedbackClient.Callback {
+  internal class FeedbackCallback(drawerActivity: FeedbackActivity?) : FeedbackClient.Callback {
     private val mFeedbackActivity: WeakReference<FeedbackActivity?> =
         WeakReference<FeedbackActivity?>(drawerActivity)
 

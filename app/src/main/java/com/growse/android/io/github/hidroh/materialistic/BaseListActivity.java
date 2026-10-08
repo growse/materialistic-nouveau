@@ -47,7 +47,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.SessionManager;
 import com.growse.android.io.github.hidroh.materialistic.data.WebItem;
@@ -83,7 +82,7 @@ public abstract class BaseListActivity extends DrawerActivity implements MultiPa
     private FloatingActionButton mReplyButton;
     private NavFloatingActionButton mNavButton;
     private View mListView;
-    @Synthetic boolean mFullscreen;
+    boolean mFullscreen;
     private boolean mMultiWindowEnabled;
     private final Preferences.Observable mPreferenceObservable = new Preferences.Observable();
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -351,7 +350,6 @@ public abstract class BaseListActivity extends DrawerActivity implements MultiPa
         return ItemManager.MODE_DEFAULT;
     }
 
-    @Synthetic
     void setFullscreen() {
         mAppBar.setExpanded(!mFullscreen, true);
         mTabLayout.setVisibility(mFullscreen ? View.GONE : View.VISIBLE);

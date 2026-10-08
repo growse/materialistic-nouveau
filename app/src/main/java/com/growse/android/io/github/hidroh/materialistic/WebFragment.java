@@ -59,7 +59,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.FileDownloader;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
@@ -91,9 +90,9 @@ public class WebFragment extends LazyLoadFragment
     private static final int DEFAULT_PROGRESS = 20;
     public static final String PDF_LOADER_URL = "file:///android_asset/pdf/index.html";
     private static final String PDF_MIME_TYPE = "application/pdf";
-    @Synthetic WebView mWebView;
+    WebView mWebView;
     private NestedScrollView mScrollView;
-    @Synthetic boolean mExternalRequired = false;
+    boolean mExternalRequired = false;
     @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManager;
     @Inject PopupMenu mPopupMenu;
     private KeyDelegate.NestedScrollViewHelper mScrollableHelper;
@@ -106,7 +105,7 @@ public class WebFragment extends LazyLoadFragment
     };
     private ViewGroup mFullscreenView;
     private ViewGroup mScrollViewContent;
-    @Synthetic ImageButton mButtonRefresh;
+    ImageButton mButtonRefresh;
     private ViewSwitcher mControls;
     private EditText mEditText;
     private View mButtonMore;
@@ -344,7 +343,6 @@ public class WebFragment extends LazyLoadFragment
         mWebView.reloadUrl(url);
     }
 
-    @Synthetic
     void loadContent() {
         setWebSettings(false);
         mWebView.reloadHtml(AppUtils.wrapHtml(getActivity(), mContent));
@@ -498,7 +496,6 @@ public class WebFragment extends LazyLoadFragment
         getActivity().invalidateOptionsMenu();
     }
 
-    @Synthetic
     void setFullscreen(boolean isFullscreen) {
         if (getView() == null) {
             return;
@@ -584,7 +581,6 @@ public class WebFragment extends LazyLoadFragment
         }
     }
 
-    @Synthetic
     void onParsed(String content) {
         if (isAttached()) {
             mContent = content;
@@ -600,7 +596,6 @@ public class WebFragment extends LazyLoadFragment
         }
     }
 
-    @Synthetic
     void onItemLoaded(@NonNull Item response) {
         getActivity().invalidateOptionsMenu();
         mItem = response;
@@ -624,7 +619,6 @@ public class WebFragment extends LazyLoadFragment
     static class ReadabilityCallback implements ReadabilityClient.Callback {
         private final WeakReference<WebFragment> mReadabilityFragment;
 
-        @Synthetic
         ReadabilityCallback(WebFragment webFragment) {
             mReadabilityFragment = new WeakReference<>(webFragment);
         }
@@ -640,7 +634,6 @@ public class WebFragment extends LazyLoadFragment
     static class ItemResponseListener implements ResponseListener<Item> {
         private final WeakReference<WebFragment> mFragment;
 
-        @Synthetic
         ItemResponseListener(WebFragment webFragment) {
             mFragment = new WeakReference<>(webFragment);
         }

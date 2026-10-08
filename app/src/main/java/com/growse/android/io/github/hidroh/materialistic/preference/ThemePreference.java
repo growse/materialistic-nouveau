@@ -30,7 +30,6 @@ import android.view.View;
 import com.google.android.material.color.DynamicColors;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 public class ThemePreference extends Preference {
 
@@ -135,7 +134,6 @@ public class ThemePreference extends Preference {
         public final @StyleRes int themeOverrides;
         ThemeSpec translucent;
 
-        @Synthetic
         ThemeSpec(@StringRes int summary, @StyleRes int theme, @StyleRes int themeOverrides) {
             this.summary = summary;
             this.theme = theme;

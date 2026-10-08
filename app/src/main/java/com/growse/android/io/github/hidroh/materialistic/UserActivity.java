@@ -44,7 +44,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener;
@@ -74,7 +73,7 @@ public class UserActivity extends ThemedActivity implements Scrollable {
     private TextView mTitle;
     private TextView mInfo;
     private TextView mAbout;
-    @Synthetic RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
     private TabLayout mTabLayout;
     private View mEmpty;
     private BottomSheetBehavior<View> mBottomSheetBehavior;
@@ -237,7 +236,6 @@ public class UserActivity extends ThemedActivity implements Scrollable {
         mUserManager.getUser(mUsername, new UserResponseListener(this));
     }
 
-    @Synthetic
     void onUserLoaded(UserManager.User response) {
         if (response != null) {
             mUser = response;
@@ -278,7 +276,6 @@ public class UserActivity extends ThemedActivity implements Scrollable {
     static class UserResponseListener implements ResponseListener<UserManager.User> {
         private final WeakReference<UserActivity> mUserActivity;
 
-        @Synthetic
         UserResponseListener(UserActivity userActivity) {
             mUserActivity = new WeakReference<>(userActivity);
         }

@@ -43,7 +43,6 @@ import com.growse.android.io.github.hidroh.materialistic.Navigable;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
 import com.growse.android.io.github.hidroh.materialistic.data.ResponseListener;
@@ -214,7 +213,6 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         holder.mMoreButton.setVisibility(View.INVISIBLE);
     }
 
-    @Synthetic
     boolean isAttached() {
         return context != null;
     }
@@ -225,7 +223,6 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
                 new ItemResponseListener(this, adapterPosition, item));
     }
 
-    @Synthetic
     void onItemLoadFailed(int position, Item item) {
         item.setLocalRevision(REVISION_FAILED);
         if (position < getItemCount()) {
@@ -306,7 +303,6 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         mUserServices.voteUp(context, item.getId(), new VoteCallback(this));
     }
 
-    @Synthetic
     void onVoted(Boolean successful) {
         if (successful == null) {
             Toast.makeText(context, R.string.vote_failed, Toast.LENGTH_SHORT).show();
@@ -353,7 +349,6 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
         private final int mPosition;
         private final Item mPartialItem;
 
-        @Synthetic
         ItemResponseListener(ItemRecyclerViewAdapter adapter, int position,
                                     Item partialItem) {
             mAdapter = new WeakReference<>(adapter);
@@ -392,7 +387,6 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     static class VoteCallback extends UserServices.Callback {
         private final WeakReference<ItemRecyclerViewAdapter> mAdapter;
 
-        @Synthetic
         VoteCallback(ItemRecyclerViewAdapter adapter) {
             mAdapter = new WeakReference<>(adapter);
         }

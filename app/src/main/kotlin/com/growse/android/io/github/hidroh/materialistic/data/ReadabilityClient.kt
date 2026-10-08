@@ -19,7 +19,6 @@ import androidx.annotation.Keep
 import androidx.annotation.WorkerThread
 import com.growse.android.io.github.hidroh.materialistic.BuildConfig
 import com.growse.android.io.github.hidroh.materialistic.DataModule
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import javax.inject.Inject
 import javax.inject.Named
 import retrofit2.http.GET
@@ -65,7 +64,7 @@ interface ReadabilityClient {
     }
 
     internal class Readable {
-      @Keep @Synthetic var content: String? = null
+      @Keep var content: String? = null
     }
 
     init {

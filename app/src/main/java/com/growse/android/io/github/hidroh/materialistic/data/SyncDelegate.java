@@ -61,7 +61,6 @@ import com.growse.android.io.github.hidroh.materialistic.BuildConfig;
 import com.growse.android.io.github.hidroh.materialistic.ItemActivity;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.widget.AdBlockWebViewClient;
 import com.growse.android.io.github.hidroh.materialistic.widget.CacheableWebView;
 import dagger.hilt.android.qualifiers.ApplicationContext;
@@ -278,7 +277,6 @@ public class SyncDelegate {
      *              back out of it - that would refresh the row's timestamp without refreshing its
      *              content, and {@link #CACHE_TTL_MILLIS} would never elapse.
      */
-    @Synthetic
     void sync(@NonNull HackerNewsItem item, boolean store) {
         mSharedPreferences.edit().remove(item.getId()).apply();
         if (store) {
@@ -357,7 +355,6 @@ public class SyncDelegate {
         }
     }
 
-    @Synthetic
     void notifyItem(@NonNull String id, @Nullable HackerNewsItem item) {
         mSyncProgress.finishItem(id, item,
                 mJob.readabilityEnabled && mJob.connectionEnabled);
@@ -369,7 +366,6 @@ public class SyncDelegate {
         updateProgress();
     }
 
-    @Synthetic
     void notifyArticle(int newProgress) {
         mSyncProgress.updateArticle(newProgress, 100);
         updateProgress();
@@ -396,7 +392,6 @@ public class SyncDelegate {
                 .build());
     }
 
-    @Synthetic
     void finish() {
         if (!mFinished.compareAndSet(false, true)) {
             return; // already finished, or timed out
@@ -433,7 +428,6 @@ public class SyncDelegate {
         private Boolean readability;
         String title;
 
-        @Synthetic
         SyncProgress(Job job) {
             this.id = job.id;
             if (job.articleEnabled) {
@@ -461,7 +455,6 @@ public class SyncDelegate {
             totalKids += count;
         }
 
-        @Synthetic
         synchronized void finishItem(@NonNull String id, @Nullable HackerNewsItem item,
                         boolean readabilityEnabled) {
             if (TextUtils.equals(id, this.id)) {
@@ -471,12 +464,10 @@ public class SyncDelegate {
             }
         }
 
-        @Synthetic
         synchronized void finishReadability() {
             readability = true;
         }
 
-        @Synthetic
         synchronized void updateArticle(int webProgress, int maxWebProgress) {
             this.webProgress = webProgress;
             this.maxWebProgress = maxWebProgress;
@@ -497,7 +488,7 @@ public class SyncDelegate {
 
     private static class BackgroundThreadExecutor implements Executor {
 
-        @Synthetic BackgroundThreadExecutor() { }
+        BackgroundThreadExecutor() { }
 
         @Override
         public void execute(@NonNull Runnable r) {
@@ -555,7 +546,7 @@ public class SyncDelegate {
             refresh = bundle.getBoolean(EXTRA_REFRESH);
         }
 
-        @Synthetic PersistableBundle toPersistableBundle() {
+        PersistableBundle toPersistableBundle() {
             PersistableBundle bundle = new PersistableBundle();
             bundle.putString(EXTRA_ID, id);
             bundle.putInt(EXTRA_CONNECTION_ENABLED, connectionEnabled ? 1 : 0);
@@ -567,7 +558,7 @@ public class SyncDelegate {
             return bundle;
         }
 
-        @Synthetic Bundle toBundle() {
+        Bundle toBundle() {
             Bundle bundle = new Bundle();
             bundle.putString(EXTRA_ID, id);
             bundle.putBoolean(EXTRA_CONNECTION_ENABLED, connectionEnabled);

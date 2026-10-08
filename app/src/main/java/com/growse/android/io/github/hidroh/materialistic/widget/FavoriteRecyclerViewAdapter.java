@@ -44,7 +44,6 @@ import com.growse.android.io.github.hidroh.materialistic.ComposeActivity;
 import com.growse.android.io.github.hidroh.materialistic.MenuTintDelegate;
 import com.growse.android.io.github.hidroh.materialistic.R;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.Favorite;
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
@@ -117,9 +116,9 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
             notifyDataSetChanged();
         }
     };
-    @Synthetic final ActionModeDelegate mActionModeDelegate;
-    @Synthetic final MenuTintDelegate mMenuTintDelegate;
-    @Synthetic final ArrayMap<Integer, String> mSelected = new ArrayMap<>();
+    final ActionModeDelegate mActionModeDelegate;
+    final MenuTintDelegate mMenuTintDelegate;
+    final ArrayMap<Integer, String> mSelected = new ArrayMap<>();
     private int mPendingAdd = -1;
 
     public FavoriteRecyclerViewAdapter(Context context, PopupMenu popupMenu,
@@ -243,19 +242,16 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
         }
     }
 
-    @Synthetic
     void removeSelection() {
         mFavoriteManager.remove(context, mSelected.values());
     }
 
-    @Synthetic
     void refreshSelection() {
         for (String id : mSelected.values()) {
             mSyncScheduler.scheduleSync(context, id);
         }
     }
 
-    @Synthetic
     void dismiss(View view, final int position) {
         final Favorite item = getItem(position);
         mSelected.put(position, item.getId());
@@ -304,7 +300,6 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
         mUserServices.voteUp(context, item.getId(), new VoteCallback(this));
     }
 
-    @Synthetic
     void onVoted(Boolean successful) {
         if (successful == null) {
             Toast.makeText(context, R.string.vote_failed, Toast.LENGTH_SHORT).show();
@@ -318,7 +313,6 @@ public class FavoriteRecyclerViewAdapter extends ListRecyclerViewAdapter
     static class VoteCallback extends UserServices.Callback {
         private final WeakReference<FavoriteRecyclerViewAdapter> mAdapter;
 
-        @Synthetic
         VoteCallback(FavoriteRecyclerViewAdapter adapter) {
             mAdapter = new WeakReference<>(adapter);
         }

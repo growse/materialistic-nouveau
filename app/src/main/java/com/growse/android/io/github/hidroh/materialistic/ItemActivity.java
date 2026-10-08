@@ -55,7 +55,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
@@ -81,9 +80,9 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
     private static final String STATE_ITEM = "state:item";
     private static final String STATE_ITEM_ID = "state:itemId";
     private static final String STATE_FULLSCREEN = "state:fullscreen";
-    @Synthetic WebItem mItem;
-    @Synthetic String mItemId = null;
-    @Synthetic ImageView mBookmark;
+    WebItem mItem;
+    String mItemId = null;
+    ImageView mBookmark;
     private boolean mExternalBrowser;
     private Preferences.StoryViewMode mStoryViewMode;
     @Inject @Named(ItemManagerQualifiers.HN) ItemManager mItemManager;
@@ -95,14 +94,14 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
     @Inject CustomTabsDelegate mCustomTabsDelegate;
     @Inject KeyDelegate mKeyDelegate;
     private TabLayout mTabLayout;
-    @Synthetic AppBarLayout mAppBar;
-    @Synthetic CoordinatorLayout mCoordinatorLayout;
+    AppBarLayout mAppBar;
+    CoordinatorLayout mCoordinatorLayout;
     private ImageButton mVoteButton;
     private FloatingActionButton mReplyButton;
     private NavFloatingActionButton mNavButton;
     private ItemPagerAdapter mAdapter;
     private ViewPager mViewPager;
-    @Synthetic boolean mFullscreen;
+    boolean mFullscreen;
     private final Observer<Uri> mObserver = uri -> {
         if (mItem == null) {
             return;
@@ -306,7 +305,6 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
         }
     }
 
-    @Synthetic
     void setFullscreen() {
         mSystemUiHelper.setFullscreen(mFullscreen);
         mAppBar.setExpanded(!mFullscreen, true);
@@ -315,14 +313,12 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
         AppUtils.toggleFab(mReplyButton, !mFullscreen);
     }
 
-    @Synthetic
     void onItemLoaded(@Nullable Item response) {
         mItem = response;
         supportInvalidateOptionsMenu();
         bindData(mItem);
     }
 
-    @Synthetic
     void bindFavorite() {
         if (mItem == null) {
             return;
@@ -449,7 +445,6 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
         mUserServices.voteUp(ItemActivity.this, story.getId(), new VoteCallback(this));
     }
 
-    @Synthetic
     void onVoted(Boolean successful) {
         if (successful == null) {
             Toast.makeText(this, R.string.vote_failed, Toast.LENGTH_SHORT).show();
@@ -476,7 +471,6 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
     static class ItemResponseListener implements ResponseListener<Item> {
         private final WeakReference<ItemActivity> mItemActivity;
 
-        @Synthetic
         ItemResponseListener(ItemActivity itemActivity) {
             mItemActivity = new WeakReference<>(itemActivity);
         }
@@ -497,7 +491,6 @@ public class ItemActivity extends ThemedActivity implements ItemFragment.ItemCha
     static class VoteCallback extends UserServices.Callback {
         private final WeakReference<ItemActivity> mItemActivity;
 
-        @Synthetic
         VoteCallback(ItemActivity itemActivity) {
             mItemActivity = new WeakReference<>(itemActivity);
         }

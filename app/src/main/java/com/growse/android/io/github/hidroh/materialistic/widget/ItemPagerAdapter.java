@@ -34,7 +34,6 @@ import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
 import com.growse.android.io.github.hidroh.materialistic.Scrollable;
 import com.growse.android.io.github.hidroh.materialistic.WebFragment;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.WebItem;
 
@@ -136,7 +135,6 @@ public class ItemPagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
-    @Synthetic
     void toggleFabs(boolean isComments,
                     FloatingActionButton navigationFab,
                     FloatingActionButton genericFab) {

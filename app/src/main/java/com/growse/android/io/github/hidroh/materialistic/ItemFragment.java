@@ -41,7 +41,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.Item;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers;
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager;
@@ -312,7 +311,6 @@ public class ItemFragment extends LazyLoadFragment implements Scrollable, Naviga
     static class ItemResponseListener implements ResponseListener<Item> {
         private WeakReference<ItemFragment> mItemFragment;
 
-        @Synthetic
         ItemResponseListener(ItemFragment itemFragment) {
             mItemFragment = new WeakReference<>(itemFragment);
         }

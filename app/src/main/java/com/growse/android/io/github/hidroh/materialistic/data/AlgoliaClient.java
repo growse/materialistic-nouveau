@@ -24,7 +24,6 @@ import javax.inject.Named;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import com.growse.android.io.github.hidroh.materialistic.DataModule;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -125,12 +124,12 @@ public class AlgoliaClient implements ItemManager {
     }
 
     static class AlgoliaHits {
-        @Keep @Synthetic
+        @Keep
         Hit[] hits;
     }
 
     static class Hit {
-        @Keep @Synthetic
+        @Keep
         String objectID;
     }
 }

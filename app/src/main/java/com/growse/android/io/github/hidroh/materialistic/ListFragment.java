@@ -35,7 +35,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaClient;
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClient;
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager;
@@ -247,7 +246,6 @@ public class ListFragment extends BaseListFragment {
         mStoryListViewModel.refreshStories(mFilter, mCacheMode);
     }
 
-    @Synthetic
     void onItemsLoaded(Item[] items) {
         if (!isAttached()) {
             return;

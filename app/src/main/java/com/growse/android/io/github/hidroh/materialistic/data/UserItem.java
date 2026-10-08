@@ -22,7 +22,6 @@ import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import android.text.format.DateUtils;
 
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 class UserItem implements UserManager.User {
     public static final Creator<UserItem> CREATOR = new Creator<UserItem>() {
@@ -46,7 +45,6 @@ class UserItem implements UserManager.User {
     // view state
     private HackerNewsItem[] submittedItems = new HackerNewsItem[0];
 
-    @Synthetic
     UserItem(Parcel source) {
         id = source.readString();
         delay = source.readLong();

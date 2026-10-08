@@ -31,15 +31,12 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.google.android.material.color.DynamicColors
-import com.growse.android.io.github.hidroh.materialistic.annotation.PublicApi
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaPopularClient
 import com.growse.android.io.github.hidroh.materialistic.preference.ThemePreference
 import com.growse.android.io.github.hidroh.materialistic.preference.ThemePreference.DayNightSpec
 import com.growse.android.io.github.hidroh.materialistic.preference.ThemePreference.ThemeSpec
 import java.util.Locale
 
-@PublicApi
 object Preferences {
   private const val DRAFT_PREFIX = "draft_%1\$s"
   private const val PREFERENCES_DRAFT = "_drafts"
@@ -352,7 +349,6 @@ object Preferences {
     }
   }
 
-  @Synthetic
   fun get(context: Context, @StringRes key: Int, defaultValue: Boolean): Boolean {
     return PreferenceManager.getDefaultSharedPreferences(context)
         .getBoolean(context.getString(key), defaultValue)
@@ -378,7 +374,6 @@ object Preferences {
     }
   }
 
-  @Synthetic
   fun get(context: Context, @StringRes key: Int, defaultValue: String): String {
     return get(context, context.getString(key), defaultValue) ?: defaultValue
   }
@@ -406,7 +401,6 @@ object Preferences {
     PreferenceManager.getDefaultSharedPreferences(context).edit { putString(key, value) }
   }
 
-  @Synthetic
   fun set(context: Context, @StringRes key: Int, value: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit {
       putBoolean(context.getString(key), value)
@@ -428,26 +422,22 @@ object Preferences {
   }
 
   class BoolToStringPref
-  @Synthetic
   internal constructor(
-      @field:Synthetic @param:StringRes val oldKey: Int,
+      @param:StringRes val oldKey: Int,
       private val oldDefault: Boolean,
-      @field:Synthetic @param:StringRes val newKey: Int,
-      @field:Synthetic @param:StringRes val newValue: Int,
+      @param:StringRes val newKey: Int,
+      @param:StringRes val newValue: Int,
   ) {
-    @Synthetic
     fun isChanged(context: Context, sp: SharedPreferences): Boolean {
       return hasOldValue(context, sp) &&
           sp.getBoolean(context.getString(oldKey), oldDefault) != oldDefault
     }
 
-    @Synthetic
     fun hasOldValue(context: Context, sp: SharedPreferences): Boolean {
       return sp.contains(context.getString(oldKey))
     }
   }
 
-  @PublicApi
   object Theme {
     @JvmStatic
     fun apply(context: Context, dialogTheme: Boolean, isTranslucent: Boolean) {
@@ -536,7 +526,6 @@ object Preferences {
     }
   }
 
-  @PublicApi
   object Offline {
     @JvmStatic
     fun isEnabled(context: Context): Boolean {

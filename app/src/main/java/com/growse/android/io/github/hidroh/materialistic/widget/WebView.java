@@ -25,13 +25,12 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebViewClient;
 
 import com.growse.android.io.github.hidroh.materialistic.AppUtils;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 public class WebView extends android.webkit.WebView {
     static final String BLANK = "about:blank";
     static final String FILE = "file:///";
     private final HistoryWebViewClient mClient = new HistoryWebViewClient();
-    @Synthetic String mPendingUrl, mPendingHtml;
+    String mPendingUrl, mPendingHtml;
 
     public WebView(Context context) {
         this(context, null);
@@ -120,7 +119,6 @@ public class WebView extends android.webkit.WebView {
                     super.shouldInterceptRequest(view, request);
         }
 
-        @Synthetic
         void wrap(WebViewClient client) {
             mClient = client;
         }

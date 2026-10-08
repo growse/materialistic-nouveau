@@ -45,7 +45,6 @@ import com.growse.android.io.github.hidroh.materialistic.Preferences.SwipeAction
 import com.growse.android.io.github.hidroh.materialistic.R
 import com.growse.android.io.github.hidroh.materialistic.UserActivity
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager.Companion.isAdded
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager.Companion.isCleared
@@ -102,20 +101,20 @@ class StoryRecyclerViewAdapter(
         }
       }
 
-  @Synthetic val items: SortedList<Item> = SortedList<Item>(Item::class.java, mSortedListCallback)
+  val items: SortedList<Item> = SortedList<Item>(Item::class.java, mSortedListCallback)
 
-  @Synthetic val mAdded: ArraySet<Item?> = ArraySet<Item?>()
+  val mAdded: ArraySet<Item?> = ArraySet<Item?>()
 
-  @Synthetic val mPromoted: ArrayMap<String?, Int?> = ArrayMap<String?, Int?>()
+  val mPromoted: ArrayMap<String?, Int?> = ArrayMap<String?, Int?>()
 
-  @Synthetic var mFavoriteRevision: Int = 1
+  var mFavoriteRevision: Int = 1
   private var mUsername: String? = null
   private var mHighlightUpdated = true
   private var mShowAll = true
   private var mCacheMode = ItemManager.MODE_DEFAULT
   private val mItemTouchHelper: ItemTouchHelper
 
-  @Synthetic internal var callback: ItemTouchHelperCallback
+  internal var callback: ItemTouchHelperCallback
 
   @SuppressLint("NotifyDataSetChanged")
   private val mObserver = Observer { uri: Uri? ->
@@ -422,7 +421,6 @@ class StoryRecyclerViewAdapter(
   }
 
   @SuppressLint("NotifyDataSetChanged")
-  @Synthetic
   fun notifyUpdated() {
     if (mUpdateListener != null) {
       mUpdateListener!!.onUpdated(mShowAll, mAdded.size) { _: View? ->
@@ -433,7 +431,6 @@ class StoryRecyclerViewAdapter(
     }
   }
 
-  @Synthetic
   fun onItemLoaded(item: Item?) {
     val position = this.items.indexOf(item)
     // ignore changes if item was invalidated by refresh / filter
@@ -442,7 +439,6 @@ class StoryRecyclerViewAdapter(
     }
   }
 
-  @Synthetic
   fun showMoreOptions(v: View?, story: Item, holder: ItemViewHolder) {
     mPopupMenu
         .create(context, v, Gravity.NO_GRAVITY)
@@ -491,7 +487,6 @@ class StoryRecyclerViewAdapter(
         .show()
   }
 
-  @Synthetic
   fun toggleSave(story: Item) {
     if (!story.isFavorite()) {
       mFavoriteManager.add(context, story)
@@ -500,13 +495,11 @@ class StoryRecyclerViewAdapter(
     }
   }
 
-  @Synthetic
   fun refresh(story: Item, holder: RecyclerView.ViewHolder) {
     story.setLocalRevision(-1)
     notifyItemChanged(holder.absoluteAdapterPosition)
   }
 
-  @Synthetic
   fun vote(story: Item, holder: RecyclerView.ViewHolder) {
     if (
         !mUserServices.voteUp(
@@ -519,7 +512,6 @@ class StoryRecyclerViewAdapter(
     }
   }
 
-  @Synthetic
   fun onVoted(position: Int, successful: Boolean?) {
     if (successful == null) {
       Toast.makeText(context, R.string.vote_failed, Toast.LENGTH_SHORT).show()
@@ -535,7 +527,6 @@ class StoryRecyclerViewAdapter(
     mCacheMode = cacheMode
   }
 
-  @Synthetic
   fun markAsViewed(position: Int) {
     if (position < 0) {
       return
@@ -556,7 +547,6 @@ class StoryRecyclerViewAdapter(
   }
 
   internal class ItemResponseListener
-  @Synthetic
   constructor(adapter: StoryRecyclerViewAdapter?, private val mPartialItem: Item) :
       ResponseListener<Item?> {
     private val mAdapter: WeakReference<StoryRecyclerViewAdapter?>
@@ -578,7 +568,6 @@ class StoryRecyclerViewAdapter(
   }
 
   internal class VoteCallback
-  @Synthetic
   constructor(
       adapter: StoryRecyclerViewAdapter?,
       private val mPosition: Int,
@@ -637,7 +626,6 @@ class StoryRecyclerViewAdapter(
       return mColors[1]
     }
 
-    @Synthetic
     fun setSwipePreferences(context: Context, swipePreferences: List<SwipeAction>) {
       this@ItemTouchHelperCallback.swipePreferences = swipePreferences
       for (i in 0..1) {

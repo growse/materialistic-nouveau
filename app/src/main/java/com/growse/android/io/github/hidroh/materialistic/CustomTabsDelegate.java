@@ -36,7 +36,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 
 public class CustomTabsDelegate {
@@ -103,13 +102,11 @@ public class CustomTabsDelegate {
         return mCustomTabsSession;
     }
 
-    @Synthetic
     void onServiceConnected(CustomTabsClient client) {
         mClient = client;
         mClient.warmup(0L);
     }
 
-    @Synthetic
     void onServiceDisconnected() {
         mClient = null;
         mCustomTabsSession = null;
@@ -174,11 +171,9 @@ public class CustomTabsDelegate {
         return packagesSupportingCustomTabs;
     }
 
-    @Synthetic
     static class ServiceConnection extends CustomTabsServiceConnection {
         private WeakReference<CustomTabsDelegate> mDelegate;
 
-        @Synthetic
         ServiceConnection(CustomTabsDelegate delegate) {
             mDelegate = new WeakReference<>(delegate);
         }

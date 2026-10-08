@@ -24,7 +24,6 @@ import javax.inject.Named;
 
 import com.growse.android.io.github.hidroh.materialistic.BuildConfig;
 import com.growse.android.io.github.hidroh.materialistic.DataModule;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -76,14 +75,13 @@ public interface FeedbackClient {
         static class Issue {
             private static final String LABEL_FEEDBACK = "feedback";
 
-            @Keep @Synthetic
+            @Keep
             final String title;
-            @Keep @Synthetic
+            @Keep
             final String body;
-            @Keep @Synthetic
+            @Keep
             final String[] labels;
 
-            @Synthetic
             Issue(String title, String body) {
                 this.title = title;
                 this.body = body;

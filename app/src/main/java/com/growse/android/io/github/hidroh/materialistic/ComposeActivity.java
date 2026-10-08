@@ -40,7 +40,6 @@ import java.lang.ref.WeakReference;
 import javax.inject.Inject;
 
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -202,7 +201,6 @@ public class ComposeActivity extends ThemedActivity {
         mUserServices.reply(this, mParentId, content, new ComposeCallback(this, mParentId));
     }
 
-    @Synthetic
     void onSent(Boolean successful) {
         if (successful == null) {
             Toast.makeText(this, R.string.comment_failed, Toast.LENGTH_SHORT).show();
@@ -245,7 +243,6 @@ public class ComposeActivity extends ThemedActivity {
         private final Context mAppContext;
         private final String mParentId;
 
-        @Synthetic
         ComposeCallback(ComposeActivity composeActivity, String parentId) {
             mComposeActivity = new WeakReference<>(composeActivity);
             mAppContext = composeActivity.getApplicationContext();

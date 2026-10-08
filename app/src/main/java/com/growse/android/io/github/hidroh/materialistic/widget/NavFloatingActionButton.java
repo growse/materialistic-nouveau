@@ -41,7 +41,6 @@ import com.growse.android.io.github.hidroh.materialistic.AppUtils;
 import com.growse.android.io.github.hidroh.materialistic.Navigable;
 import com.growse.android.io.github.hidroh.materialistic.Preferences;
 import com.growse.android.io.github.hidroh.materialistic.R;
-import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic;
 
 public class NavFloatingActionButton extends FloatingActionButton implements ViewTreeObserver.OnGlobalLayoutListener {
     private static final String PREFERENCES_FAB = "_fab";
@@ -60,14 +59,14 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
             Navigable.DIRECTION_RIGHT,
             DOUBLE_TAP
     };
-    @Synthetic final Vibrator mVibrator;
+    final Vibrator mVibrator;
     private final Preferences.Observable mPreferenceObservable = new Preferences.Observable();
-    @Synthetic Navigable mNavigable;
-    @Synthetic boolean mMoved;
+    Navigable mNavigable;
+    boolean mMoved;
     private int mNextKonamiCode = 0;
     private SharedPreferences mPreferences;
     private String mPreferenceX, mPreferenceY;
-    @Synthetic boolean mVibrationEnabled;
+    boolean mVibrationEnabled;
 
     public static void resetPosition(Context context) {
         getSharedPreferences(context).edit().clear().apply();
@@ -122,7 +121,6 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
         mNavigable = navigable;
     }
 
-    @Synthetic
     @SuppressLint("ClickableViewAccessibility")
     void bindNavigationPad() {
         GestureDetectorCompat detectorCompat = new GestureDetectorCompat(getContext(),
@@ -181,7 +179,6 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
         });
     }
 
-    @Synthetic
     @SuppressLint("ClickableViewAccessibility")
     void startDrag(float startX, float startY) {
         if (mVibrationEnabled) {
@@ -215,7 +212,6 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
         });
     }
 
-    @Synthetic
     boolean trackKonami(int direction) {
         if (KONAMI_CODE[mNextKonamiCode] != direction) {
             mNextKonamiCode = direction == KONAMI_CODE[0] ? 1 : 0;
@@ -250,7 +246,7 @@ public class NavFloatingActionButton extends FloatingActionButton implements Vie
     }
 
     @SuppressLint("CommitPrefEdits")
-    @Synthetic void persistPosition() {
+    void persistPosition() {
         getPreferences()
                 .edit()
                 .putFloat(mPreferenceX, getX())
