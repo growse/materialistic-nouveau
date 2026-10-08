@@ -122,12 +122,11 @@ public abstract class ItemRecyclerViewAdapter<VH extends ItemRecyclerViewAdapter
     }
 
     /**
-     * Renders a failed item as a tappable error, so a comment lost to a transient network failure
-     * can be recovered without scrolling it out of view and back.
+     * Leaves a failed item on the loading placeholder set by {@link #clear}, rather than an error,
+     * but makes it tappable so a comment lost to a transient network failure can be recovered
+     * without scrolling it out of view and back.
      */
     private void bindError(final VH holder, final Item item) {
-        holder.mPostedTextView.setText("");
-        holder.mContentTextView.setText(R.string.connection_error);
         // a selectable text view consumes the tap without ever performing a click, and posted stays
         // clickable once a previous bind gave it a listener - so drop selection and wire all three
         holder.mContentTextView.setTextIsSelectable(false);
