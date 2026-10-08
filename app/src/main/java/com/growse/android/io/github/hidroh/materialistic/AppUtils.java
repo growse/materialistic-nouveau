@@ -678,12 +678,12 @@ public class AppUtils {
     }
 
     public static boolean urlEquals(String thisUrl, String thatUrl) {
-        if (AndroidUtils.TextUtils.isEmpty(thisUrl) || AndroidUtils.TextUtils.isEmpty(thatUrl)) {
+        if (thisUrl == null || thisUrl.isEmpty() || thatUrl == null || thatUrl.isEmpty()) {
             return false;
         }
         thisUrl = thisUrl.endsWith("/") ? thisUrl : thisUrl + "/";
         thatUrl = thatUrl.endsWith("/") ? thatUrl : thatUrl + "/";
-        return AndroidUtils.TextUtils.equals(thisUrl, thatUrl);
+        return thisUrl.equals(thatUrl);
     }
 
     static class SystemUiHelper {

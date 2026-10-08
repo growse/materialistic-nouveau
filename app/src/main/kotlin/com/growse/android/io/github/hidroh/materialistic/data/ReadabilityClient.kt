@@ -17,7 +17,6 @@ package com.growse.android.io.github.hidroh.materialistic.data
 
 import androidx.annotation.Keep
 import androidx.annotation.WorkerThread
-import com.growse.android.io.github.hidroh.materialistic.AndroidUtils
 import com.growse.android.io.github.hidroh.materialistic.BuildConfig
 import com.growse.android.io.github.hidroh.materialistic.DataModule
 import com.growse.android.io.github.hidroh.materialistic.annotation.Synthetic
@@ -46,8 +45,8 @@ interface ReadabilityClient {
   constructor(
       private val mCache: LocalCache,
       factory: RestServiceFactory,
-      @Named(DataModule.IO_THREAD) private val mIoScheduler: Scheduler,
-      @Named(DataModule.MAIN_THREAD) private val mMainThreadScheduler: Scheduler,
+      @param:Named(DataModule.IO_THREAD) private val mIoScheduler: Scheduler,
+      @param:Named(DataModule.MAIN_THREAD) private val mMainThreadScheduler: Scheduler,
   ) : ReadabilityClient {
     private val mMercuryService: MercuryService
 
@@ -88,16 +87,7 @@ interface ReadabilityClient {
               }
           )
           .map<String?>(
-              Func1 { content: String? ->
-                if (
-                    AndroidUtils.TextUtils.equals(
-                        EMPTY_CONTENT,
-                        content,
-                    )
-                )
-                    null
-                else content
-              }
+              Func1 { content: String? -> if (content == EMPTY_CONTENT) null else content }
           )
           .observeOn(mMainThreadScheduler)
           .subscribe(Action1 { content: String? -> callback.onResponse(content) })
@@ -109,16 +99,7 @@ interface ReadabilityClient {
           .subscribeOn(Schedulers.immediate())
           .switchIfEmpty(fromNetwork(itemId, url))
           .map<String?>(
-              Func1 { content: String? ->
-                if (
-                    AndroidUtils.TextUtils.equals(
-                        EMPTY_CONTENT,
-                        content,
-                    )
-                )
-                    null
-                else content
-              }
+              Func1 { content: String? -> if (content == EMPTY_CONTENT) null else content }
           )
           .observeOn(Schedulers.immediate())
           .subscribe()
@@ -137,7 +118,7 @@ interface ReadabilityClient {
     }
 
     companion object {
-      private val EMPTY_CONTENT: CharSequence = "<div></div>"
+      private const val EMPTY_CONTENT = "<div></div>"
     }
   }
 
