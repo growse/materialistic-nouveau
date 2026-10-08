@@ -45,7 +45,7 @@ public class Application extends android.app.Application {
                     .build());
         }
         Preferences.migrate(this);
-        TYPE_FACE = FontCache.getInstance().get(this, Preferences.Theme.getTypeface(this));
+        TYPE_FACE = FontCache.get(this, Preferences.Theme.getTypeface(this));
         AppUtils.registerAccountsUpdatedListener(this);
         AdBlocker.init(this, Schedulers.io());
     }
