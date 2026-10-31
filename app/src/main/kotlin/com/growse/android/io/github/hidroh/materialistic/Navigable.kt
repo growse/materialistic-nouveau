@@ -15,7 +15,7 @@
  */
 package com.growse.android.io.github.hidroh.materialistic
 
-interface Navigable {
+fun interface Navigable {
   fun onNavigate(direction: Int)
 
   companion object {

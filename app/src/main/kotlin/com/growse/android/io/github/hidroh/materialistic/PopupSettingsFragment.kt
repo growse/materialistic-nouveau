@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 
@@ -46,7 +45,7 @@ class PopupSettingsFragment : AppCompatDialogFragment() {
     if (savedInstanceState == null) {
       @Suppress("DEPRECATION")
       val fragment =
-          Fragment.instantiate(
+          instantiate(
               requireActivity(),
               PreferenceFragment::class.java.name,
               arguments,

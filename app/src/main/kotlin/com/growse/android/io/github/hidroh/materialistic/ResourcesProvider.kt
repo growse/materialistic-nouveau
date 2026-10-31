@@ -18,6 +18,6 @@ package com.growse.android.io.github.hidroh.materialistic
 import android.content.res.TypedArray
 import androidx.annotation.ArrayRes
 
-interface ResourcesProvider {
+fun interface ResourcesProvider {
   fun obtainTypedArray(@ArrayRes resId: Int): TypedArray?
 }

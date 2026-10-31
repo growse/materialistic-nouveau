@@ -47,9 +47,10 @@
         app:entries="@array/font_options"
         app:entryValues="@array/font_values" />
 
-    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <androidx.preference.DropDownPreference
         android:key="@string/pref_launch_screen"
         android:title="@string/pref_launch_screen_title"
+        app:useSimpleSummaryProvider="true"
         android:defaultValue="top"
         app:entries="@array/pref_launch_screen_options"
         app:entryValues="@array/pref_launch_screen_values" />

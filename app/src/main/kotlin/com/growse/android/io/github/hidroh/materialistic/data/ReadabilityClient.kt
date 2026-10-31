@@ -18,7 +18,7 @@ package com.growse.android.io.github.hidroh.materialistic.data
 import androidx.annotation.Keep
 import androidx.annotation.WorkerThread
 import com.growse.android.io.github.hidroh.materialistic.BuildConfig
-import com.growse.android.io.github.hidroh.materialistic.DataModule
+import com.growse.android.io.github.hidroh.materialistic.di.DataModule
 import javax.inject.Inject
 import javax.inject.Named
 import retrofit2.http.GET
@@ -31,7 +31,7 @@ import rx.functions.Func1
 import rx.schedulers.Schedulers
 
 interface ReadabilityClient {
-  interface Callback {
+  fun interface Callback {
     fun onResponse(content: String?)
   }
 
@@ -42,12 +42,12 @@ interface ReadabilityClient {
   class Impl
   @Inject
   constructor(
-      private val mCache: LocalCache,
+      private val cache: LocalCache,
       factory: RestServiceFactory,
-      @param:Named(DataModule.IO_THREAD) private val mIoScheduler: Scheduler,
-      @param:Named(DataModule.MAIN_THREAD) private val mMainThreadScheduler: Scheduler,
+      @param:Named(DataModule.IO_THREAD) private val ioScheduler: Scheduler,
+      @param:Named(DataModule.MAIN_THREAD) private val mainThreadScheduler: Scheduler,
   ) : ReadabilityClient {
-    private val mMercuryService: MercuryService
+    private val mercuryService: MercuryService
 
     internal interface MercuryService {
       @Headers(
@@ -68,7 +68,7 @@ interface ReadabilityClient {
     }
 
     init {
-      mMercuryService =
+      mercuryService =
           factory
               .rxEnabled(true)
               .create(
@@ -79,7 +79,7 @@ interface ReadabilityClient {
 
     override fun parse(itemId: String?, url: String?, callback: Callback) {
       Observable.defer<String?> { fromCache(itemId) }
-          .subscribeOn(mIoScheduler)
+          .subscribeOn(ioScheduler)
           .flatMap(
               Func1 { content: String? ->
                 if (content != null) Observable.just(content) else fromNetwork(itemId, url)
@@ -88,7 +88,7 @@ interface ReadabilityClient {
           .map<String?>(
               Func1 { content: String? -> if (content == EMPTY_CONTENT) null else content }
           )
-          .observeOn(mMainThreadScheduler)
+          .observeOn(mainThreadScheduler)
           .subscribe(Action1 { content: String? -> callback.onResponse(content) })
     }
 
@@ -105,15 +105,15 @@ interface ReadabilityClient {
     }
 
     private fun fromNetwork(itemId: String?, url: String?): Observable<String?> {
-      return mMercuryService
+      return mercuryService
           .parse(url)!!
           .onErrorReturn(Func1 { null })
           .map<String?>(Func1 { readable: Readable? -> readable?.content })
-          .doOnNext(Action1 { content: String? -> mCache.putReadability(itemId, content) })
+          .doOnNext(Action1 { content: String? -> cache.putReadability(itemId, content) })
     }
 
     private fun fromCache(itemId: String?): Observable<String?> {
-      return Observable.just<String?>(mCache.getReadability(itemId))
+      return Observable.just<String?>(cache.getReadability(itemId))
     }
 
     companion object {

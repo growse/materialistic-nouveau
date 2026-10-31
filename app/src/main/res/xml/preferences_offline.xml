@@ -36,9 +36,10 @@
         android:dependency="@string/pref_saved_item_sync"
         android:defaultValue="false" />
 
-    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <androidx.preference.DropDownPreference
         android:key="@string/pref_offline_data"
         android:title="@string/pref_offline_data_title"
+        app:useSimpleSummaryProvider="true"
         android:dependency="@string/pref_saved_item_sync"
         android:defaultValue="wifi"
         app:entries="@array/offline_data_options"

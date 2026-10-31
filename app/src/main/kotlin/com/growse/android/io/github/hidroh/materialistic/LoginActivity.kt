@@ -41,8 +41,8 @@ class LoginActivity : AccountAuthenticatorActivity() {
   private var passwordLayout: TextInputLayout? = null
   private var usernameEditText: EditText? = null
   private var passwordEditText: EditText? = null
-  private var mUsername: String? = null
-  private var mPassword: String? = null
+  private var username: String? = null
+  private var password: String? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -94,9 +94,8 @@ class LoginActivity : AccountAuthenticatorActivity() {
     passwordEditText = findViewById<View?>(R.id.edittext_password) as EditText
   }
 
-  override fun isDialogTheme(): Boolean {
-    return true
-  }
+  override val isDialogTheme: Boolean
+    get() = true
 
   private fun validate(): Boolean {
     usernameLayout!!.isErrorEnabled = false
@@ -110,9 +109,9 @@ class LoginActivity : AccountAuthenticatorActivity() {
     return usernameEditText!!.length() > 0 && passwordEditText!!.length() > 0
   }
 
-  private fun login(username: String, password: String?, createAccount: Boolean) {
-    mUsername = username
-    mPassword = password
+  private fun login(username: String, password: String, createAccount: Boolean) {
+    this.username = username
+    this.password = password
     userServices.login(username, password, createAccount, LoginCallback(this))
   }
 
@@ -120,8 +119,8 @@ class LoginActivity : AccountAuthenticatorActivity() {
     loginButton!!.isEnabled = true
     registerButton!!.isEnabled = true
     if (successful) {
-      addAccount(mUsername!!, mPassword)
-      Toast.makeText(this, getString(R.string.welcome, mUsername), Toast.LENGTH_SHORT).show()
+      addAccount(username!!, password)
+      Toast.makeText(this, getString(R.string.welcome, username), Toast.LENGTH_SHORT).show()
     } else {
       Toast.makeText(
               this,
@@ -146,18 +145,18 @@ class LoginActivity : AccountAuthenticatorActivity() {
   }
 
   internal class LoginCallback(loginActivity: LoginActivity?) : UserServices.Callback() {
-    private val mLoginActivity: WeakReference<LoginActivity?> =
+    private val loginActivity: WeakReference<LoginActivity?> =
         WeakReference<LoginActivity?>(loginActivity)
 
     override fun onDone(successful: Boolean) {
-      if (mLoginActivity.get() != null && !mLoginActivity.get()!!.isActivityDestroyed) {
-        mLoginActivity.get()!!.onLoggedIn(successful, null)
+      if (loginActivity.get() != null && !loginActivity.get()!!.isActivityDestroyed) {
+        loginActivity.get()!!.onLoggedIn(successful, null)
       }
     }
 
     override fun onError(throwable: Throwable?) {
-      if (mLoginActivity.get() != null && !mLoginActivity.get()!!.isActivityDestroyed) {
-        mLoginActivity.get()!!.onLoggedIn(false, throwable?.message)
+      if (loginActivity.get() != null && !loginActivity.get()!!.isActivityDestroyed) {
+        loginActivity.get()!!.onLoggedIn(false, throwable?.message)
       }
     }
   }

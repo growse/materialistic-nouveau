@@ -19,23 +19,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <androidx.preference.DropDownPreference
         android:key="@string/pref_line_height"
         android:title="@string/pref_line_height_title"
+        app:useSimpleSummaryProvider="true"
         android:defaultValue="1.0"
         app:entries="@array/pref_line_height_options"
         app:entryValues="@array/pref_line_height_values" />
 
-    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <androidx.preference.DropDownPreference
         android:key="@string/pref_comment_display"
         android:title="@string/pref_comment_display_title"
+        app:useSimpleSummaryProvider="true"
         android:defaultValue="@string/pref_comment_display_value_single"
         app:entries="@array/pref_comment_display_options"
         app:entryValues="@array/pref_comment_display_values" />
 
-    <com.growse.android.io.github.hidroh.materialistic.preference.SimpleSpinnerPreference
+    <androidx.preference.DropDownPreference
         android:key="@string/pref_max_lines"
         android:title="@string/pref_max_lines_title"
+        app:useSimpleSummaryProvider="true"
         android:defaultValue="-1"
         app:entries="@array/comment_max_lines_options"
         app:entryValues="@array/comment_max_lines_values" />

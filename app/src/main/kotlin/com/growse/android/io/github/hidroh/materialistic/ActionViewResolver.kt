@@ -19,7 +19,7 @@ import android.view.MenuItem
 import android.view.View
 
 /** Injectable utility to resolve action view for menu items */
-internal class ActionViewResolver {
+class ActionViewResolver {
   /**
    * Returns the currently set action view for this menu item.
    *

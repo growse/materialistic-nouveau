@@ -28,6 +28,6 @@ interface UserManager {
 
     fun getCreated(context: Context?): String?
 
-    val items: Array<Item?>
+    val items: Array<out Item?>
   }
 }
