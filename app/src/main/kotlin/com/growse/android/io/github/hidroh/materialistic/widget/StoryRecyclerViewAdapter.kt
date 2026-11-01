@@ -348,8 +348,10 @@ class StoryRecyclerViewAdapter(
     }
     holder.setFavorite(story.isFavorite)
     holder.bindMoreOptions(
-        { anchor: View ->
-          showMoreOptions(anchor, story, holder)
+        object : ItemViewHolder.ShowMoreOptionsListener {
+          override fun showMoreOptions(anchor: View) {
+            showMoreOptions(anchor, story, holder)
+          }
         }
             as ItemViewHolder.ShowMoreOptionsListener,
         true,
