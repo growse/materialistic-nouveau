@@ -1,6 +1,7 @@
 set dotenv-load := true
 set positional-arguments := true
 gradlec := "./gradlew"
+app_package := "com.growse.android.io.github.hidroh.materialistic"
 
 default:
     @just --list
@@ -64,44 +65,35 @@ unit-test:
 unit-test-coverage:
     {{gradlec}} app:createDebugUnitTestCoverageReport
 
-# Kaspresso tests on every gradle-managed device (ATD API 33 + minSdk API 23; no attached device needed)
+# Kaspresso tests on gradle-managed devices, no attached device needed: allDevices (ATD API 33 + minSdk API 23), atdApi33 or aospApi23
 [group('test')]
-espresso:
-    {{gradlec}} app:allDevicesDebugAndroidTest
+espresso device='allDevices':
+    {{gradlec}} app:{{device}}DebugAndroidTest
 
-[group('test')]
-small-espresso:
-    {{gradlec}} clean createDebugCoverageReport -Pandroid.testInstrumentationRunnerArguments.annotation=androidx.test.filters.SmallTest
-
-# Espresso tests on a connected device + JaCoCo report at app/build/reports/coverage/androidTest/debug/connected/
+# Managed device tests + JaCoCo report at app/build/reports/coverage/androidTest/debug/managedDevice/
 [group('test')]
 espresso-coverage:
-    {{gradlec}} app:createDebugAndroidTestCoverageReport
-
-# Kaspresso tests on the ATD gradle-managed device (no attached device needed)
-[group('test')]
-atd:
-    {{gradlec}} app:atdApi33DebugAndroidTest
-
-# ATD tests + JaCoCo report at app/build/reports/coverage/androidTest/debug/managedDevice/
-[group('test')]
-atd-coverage:
     {{gradlec}} app:createManagedDeviceDebugAndroidTestCoverageReport
+
+# Kaspresso tests on a connected device, optionally one class relative to the app package (e.g. data.FavoriteManagerTest)
+[group('test')]
+espresso-connected test_class='':
+    {{gradlec}} app:connectedDebugAndroidTest {{ if test_class == '' { '' } else { '-Pandroid.testInstrumentationRunnerArguments.class=' + app_package + '.' + test_class } }}
+
+# Connected device tests + JaCoCo report at app/build/reports/coverage/androidTest/debug/connected/
+[group('test')]
+espresso-connected-coverage:
+    {{gradlec}} app:createDebugAndroidTestCoverageReport
 
 # Drop the managed AVDs when an image or device definition changes
 [group('test')]
 clean-managed-devices:
     {{gradlec}} cleanManagedDevices
 
-# Unit + espresso coverage (needs an attached device; see atd-coverage for device-free)
+# Unit + espresso coverage (needs an attached device; see espresso-coverage for device-free)
 [group('test')]
-coverage: unit-test-coverage espresso-coverage
-
-[group('test')]
-run:
-    @just build
-    adb install ./app/build/outputs/apk/debug/app-debug.apk
+coverage: unit-test-coverage espresso-connected-coverage
 
 [group('test')]
 wipe-device:
-    adb uninstall com.growse.android.io.github.hidroh.materialistic
+    adb uninstall {{app_package}}
