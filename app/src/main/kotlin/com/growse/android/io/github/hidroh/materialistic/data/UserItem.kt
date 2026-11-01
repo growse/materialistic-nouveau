@@ -73,6 +73,7 @@ internal class UserItem(source: Parcel) : UserManager.User {
   }
 
   companion object {
+    @JvmField
     val CREATOR: Parcelable.Creator<UserItem?> =
         object : Parcelable.Creator<UserItem?> {
           override fun createFromParcel(source: Parcel): UserItem {
