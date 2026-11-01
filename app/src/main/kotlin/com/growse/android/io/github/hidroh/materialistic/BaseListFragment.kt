@@ -56,7 +56,7 @@ abstract class BaseListFragment : BaseFragment(), Scrollable {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    recyclerView.layoutManager = SnappyLinearLayoutManager(requireActivity(), false)
+    recyclerView.layoutManager = SnappyLinearLayoutManager(requireActivity(), 0)
     val initialPaddingBottom = recyclerView.paddingBottom
     ViewCompat.setOnApplyWindowInsetsListener(recyclerView) { v, windowInsets ->
       val systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())

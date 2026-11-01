@@ -123,7 +123,7 @@ class ItemFragment : LazyLoadFragment(), Scrollable, Navigable {
       fragmentView = inflater.inflate(R.layout.fragment_item, container, false)
       emptyView = fragmentView.findViewById(R.id.empty)
       recyclerView = fragmentView.findViewById(R.id.recycler_view)
-      recyclerView.layoutManager = SnappyLinearLayoutManager(requireActivity(), true)
+      recyclerView.layoutManager = SnappyLinearLayoutManager(requireActivity(), PRELOAD_SCREENS)
       itemDecoration = CommentItemDecoration(requireActivity())
       recyclerView.addItemDecoration(itemDecoration)
       swipeRefreshLayout = fragmentView.findViewById(R.id.swipe_layout)
@@ -318,5 +318,7 @@ class ItemFragment : LazyLoadFragment(), Scrollable, Navigable {
     private const val STATE_ITEM_ID = "state:itemId"
     private const val STATE_ADAPTER_ITEMS = "state:adapterItems"
     private const val STATE_CACHE_MODE = "state:cacheMode"
+    // comments are fetched one at a time as their rows bind, so bind well ahead of the reader
+    private const val PRELOAD_SCREENS = 3
   }
 }

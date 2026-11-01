@@ -25,10 +25,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 
 /**
- * Light extension to [LinearLayoutManager] that overrides smooth scroller to always snap to start
+ * Light extension to [LinearLayoutManager] that overrides smooth scroller to always snap to start,
+ * and lays out [preloadScreens] screens of rows ahead of the scroll direction
  */
-class SnappyLinearLayoutManager(context: Context, preload: Boolean) : LinearLayoutManager(context) {
-  private val mExtraSpace: Int = if (preload) getDisplayHeight(context) else 0
+class SnappyLinearLayoutManager(context: Context, preloadScreens: Int) :
+    LinearLayoutManager(context) {
+  private val mExtraSpace: Int = preloadScreens * getDisplayHeight(context)
 
   override fun smoothScrollToPosition(
       recyclerView: RecyclerView,

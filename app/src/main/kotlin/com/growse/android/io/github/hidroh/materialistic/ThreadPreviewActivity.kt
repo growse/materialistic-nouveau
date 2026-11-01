@@ -60,7 +60,7 @@ class ThreadPreviewActivity : ThemedActivity() {
     supportActionBar?.displayOptions =
         ActionBar.DISPLAY_SHOW_HOME or ActionBar.DISPLAY_SHOW_TITLE or ActionBar.DISPLAY_HOME_AS_UP
     val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-    recyclerView.layoutManager = SnappyLinearLayoutManager(this, false)
+    recyclerView.layoutManager = SnappyLinearLayoutManager(this, 0)
     recyclerView.addItemDecoration(CommentItemDecoration(this))
     recyclerView.adapter =
         ThreadPreviewRecyclerViewAdapter(

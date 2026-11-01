@@ -129,7 +129,7 @@ class UserActivity : ThemedActivity(), Scrollable {
         }
     )
     recyclerView = findViewById(R.id.recycler_view)
-    recyclerView.layoutManager = SnappyLinearLayoutManager(this, true)
+    recyclerView.layoutManager = SnappyLinearLayoutManager(this, 1)
     recyclerView.addItemDecoration(CommentItemDecoration(this))
     applyBottomInset(recyclerView)
     applyBottomInset(empty)
