@@ -55,15 +55,16 @@ constructor(
   private val mPromotedColorResId: Int
   private val mHotColorResId: Int
   private val mAccentColorResId: Int
-  private val mRankTextView: TextView
-  val mScoreTextView: TextView
-  private val mBookmarked: View
+  // absent from local_story_view, so only bound and used when not local
+  private lateinit var mRankTextView: TextView
+  private lateinit var mScoreTextView: TextView
+  private lateinit var mBookmarked: View
+  private lateinit var mVoteSwitcher: ViewSwitcher
   private val mPostedTextView: TextView
   private val mTitleTextView: TextView
   private val mSourceTextView: TextView
   private val mCommentButton: TextView
   private val mIsLocal: Boolean
-  val mVoteSwitcher: ViewSwitcher
   val moreOptions: View
   private val mCommentDrawable: Drawable
   private val mBackground: View
@@ -104,10 +105,12 @@ constructor(
     inflate(context, if (mIsLocal) R.layout.local_story_view else R.layout.story_view, this)
     mBackground = findViewById(R.id.background)
     mBackground.setBackgroundColor(mBackgroundColor)
-    mVoteSwitcher = findViewById(R.id.vote_switcher)
-    mRankTextView = findViewById(R.id.rank)
-    mScoreTextView = findViewById(R.id.score)
-    mBookmarked = findViewById(R.id.bookmarked)
+    if (!mIsLocal) {
+      mVoteSwitcher = findViewById(R.id.vote_switcher)
+      mRankTextView = findViewById(R.id.rank)
+      mScoreTextView = findViewById(R.id.score)
+      mBookmarked = findViewById(R.id.bookmarked)
+    }
     mPostedTextView = findViewById(R.id.posted)
     mTitleTextView = findViewById(R.id.title)
     mSourceTextView = findViewById(R.id.source)

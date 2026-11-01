@@ -89,7 +89,8 @@ constructor(
   private var cursor: Cursor? = null
   private var loader: FavoriteRoomLoader? = null
 
-  override val size = cursor?.count ?: 0
+  override val size
+    get() = cursor?.count ?: 0
 
   override fun getItem(position: Int) =
       if (cursor?.moveToPosition(position) == true) {
