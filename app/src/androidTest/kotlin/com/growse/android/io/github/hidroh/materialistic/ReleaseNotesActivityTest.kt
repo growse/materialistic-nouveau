@@ -5,6 +5,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import com.growse.android.io.github.hidroh.materialistic.screens.ReleaseNotesScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -42,8 +43,13 @@ class ReleaseNotesActivityTest : TestCase() {
   fun okButtonDismissesActivity() = run {
     step("Click the 'Got it' button") { ReleaseNotesScreen { okButton.click() } }
     step("Verify the activity is destroyed") {
-      assert(activityRule.scenario.state == Lifecycle.State.DESTROYED) {
-        "Activity should be destroyed after OK click"
+      // finish() only requests teardown, which runs after the exit animation
+      flakySafely(allowedExceptions = setOf(AssertionError::class.java)) {
+        assertEquals(
+            "Activity should be destroyed after OK click",
+            Lifecycle.State.DESTROYED,
+            activityRule.scenario.state,
+        )
       }
     }
   }
