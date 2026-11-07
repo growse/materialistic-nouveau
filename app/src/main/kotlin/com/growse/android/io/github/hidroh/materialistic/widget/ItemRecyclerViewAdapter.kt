@@ -16,12 +16,15 @@
 package com.growse.android.io.github.hidroh.materialistic.widget
 
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.CallSuper
@@ -61,6 +64,7 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
   private var username: String? = null
   private var lineHeight = 1.0f
   private val lineCounted = mutableMapOf<String, Int>()
+  private val failedAt = mutableMapOf<String, Long>()
 
   private val isAttached: Boolean
     get() = context != null
@@ -93,6 +97,7 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
     clear(holder)
     val revision = item.localRevision
     when {
+      revision == REVISION_FAILED && shouldRetry(item) -> load(holder.absoluteAdapterPosition, item)
       revision == REVISION_FAILED -> bindError(holder, item)
       revision < REVISION_LOADING -> load(holder.absoluteAdapterPosition, item)
       revision > REVISION_LOADING -> bind(holder, item)
@@ -118,8 +123,14 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
 
   protected abstract fun getItem(position: Int): Item?
 
+  override fun onViewRecycled(holder: VH) {
+    super.onViewRecycled(holder)
+    holder.stopLoadingPulse()
+  }
+
   @CallSuper
   protected open fun bind(holder: VH, item: Item) {
+    holder.stopLoadingPulse()
     holder.contentView.setBackgroundColor(
         if (!username.isNullOrEmpty() && username == item.by) cardHighlightColor
         else cardBackgroundColor
@@ -152,6 +163,7 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
     holder.contentTextView.setTextIsSelectable(true)
     holder.postedTextView.setText(R.string.loading_text)
     holder.contentTextView.setText(R.string.loading_text)
+    holder.startLoadingPulse()
     holder.readMoreTextView.isGone = true
     // an unbound row has no item to act on, and a recycled holder would otherwise keep the
     // previous item's menu until bindActions() runs
@@ -185,6 +197,20 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
     holder.contentTextView.setOnClickListener(retry)
   }
 
+  /**
+   * Whether a failed item should be refetched as its row binds, so that a comment lost while
+   * offline loads once it is viewed again with a connection. The failure's own rebind, or any other
+   * within [RETRY_BACKOFF_MILLIS], is left alone so a failing request can't loop.
+   */
+  private fun shouldRetry(item: Item): Boolean {
+    val context = context ?: return false
+    val failedAt = failedAt[item.id]
+    if (failedAt != null && SystemClock.elapsedRealtime() - failedAt < RETRY_BACKOFF_MILLIS) {
+      return false
+    }
+    return AppUtils.hasConnection(context)
+  }
+
   private fun load(adapterPosition: Int, item: Item) {
     item.localRevision = REVISION_LOADING
     itemManager.getItem(item.id, cacheMode, ItemResponseListener(this, adapterPosition, item))
@@ -192,6 +218,7 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
 
   private fun onItemLoadFailed(position: Int, item: Item) {
     item.localRevision = REVISION_FAILED
+    failedAt[item.id] = SystemClock.elapsedRealtime()
     if (position < itemCount) {
       notifyItemChanged(position)
     }
@@ -270,6 +297,36 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
     lateinit var commentButton: TextView
     lateinit var moreButton: View
     lateinit var contentView: View
+    private var loadingPulse: ValueAnimator? = null
+
+    /** Gently pulses the placeholder text so a pending row reads as in progress. */
+    internal fun startLoadingPulse() {
+      if (loadingPulse != null) {
+        return
+      }
+      loadingPulse =
+          ValueAnimator.ofFloat(1f, LOADING_PULSE_MIN_ALPHA).apply {
+            duration = LOADING_PULSE_MILLIS
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = ValueAnimator.INFINITE
+            interpolator = AccelerateDecelerateInterpolator()
+            addUpdateListener {
+              val alpha = it.animatedValue as Float
+              postedTextView.alpha = alpha
+              contentTextView.alpha = alpha
+            }
+            start()
+          }
+    }
+
+    internal fun stopLoadingPulse() {
+      loadingPulse?.cancel()
+      loadingPulse = null
+      if (!isFooter) {
+        postedTextView.alpha = 1f
+        contentTextView.alpha = 1f
+      }
+    }
 
     constructor(itemView: View) : this(itemView, isFooter = false) {
       postedTextView = itemView.findViewById(R.id.posted)
@@ -332,6 +389,9 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
   companion object {
     private const val PROPERTY_MAX_LINES = "maxLines"
     private const val DURATION_PER_LINE_MILLIS = 20
+    private const val RETRY_BACKOFF_MILLIS = 3_000L
+    private const val LOADING_PULSE_MILLIS = 800L
+    private const val LOADING_PULSE_MIN_ALPHA = 0.35f
 
     /**
      * Local revision states of an [Item]. Anything above [REVISION_LOADING] has been populated and
