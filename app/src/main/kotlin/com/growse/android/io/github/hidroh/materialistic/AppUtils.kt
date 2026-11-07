@@ -91,9 +91,12 @@ object AppUtils {
     }
     val intent = createViewIntent(context, item, url, session)
     if (url?.toUri()?.host != HN_WEB_HOST) {
-      if (intent.resolveActivity(context.packageManager) != null) {
+      // Don't gate on resolveActivity(): package visibility hides apps that only claim
+      // specific hosts (e.g. YouTube for youtube.com), so it returns null even though
+      // startActivity would happily launch them.
+      try {
         context.startActivity(intent)
-      }
+      } catch (_: ActivityNotFoundException) {}
       return
     }
     // HN links resolve to this app too, so offer every other handler instead

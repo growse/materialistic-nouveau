@@ -16,6 +16,7 @@
 package com.growse.android.io.github.hidroh.materialistic
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -437,14 +438,15 @@ class WebFragment : LazyLoadFragment(), Scrollable, BackInterceptor {
   }
 
   private fun offerExternalApp() {
+    // Don't gate on resolveActivity(): package visibility hides apps that only claim
+    // specific hosts (e.g. YouTube for youtube.com), so it returns null for them.
     val intent = Intent(Intent.ACTION_VIEW, item.url?.toUri())
-    if (intent.resolveActivity(requireActivity().packageManager) == null) {
-      return
-    }
     webView.visibility = View.GONE
     requireActivity().findViewById<View>(R.id.empty).visibility = View.VISIBLE
     requireActivity().findViewById<View>(R.id.download_button).setOnClickListener {
-      startActivity(intent)
+      try {
+        startActivity(intent)
+      } catch (_: ActivityNotFoundException) {}
     }
   }
 
