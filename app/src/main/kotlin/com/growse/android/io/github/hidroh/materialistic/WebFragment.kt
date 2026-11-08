@@ -454,7 +454,7 @@ class WebFragment : LazyLoadFragment(), Scrollable, BackInterceptor {
     progressBar.progress = progress
     progressBar.visibility = if (progress == 100) View.GONE else View.VISIBLE
     buttonRefresh.setImageResource(
-        if (progress == 100) R.drawable.ic_refresh_white_24dp else R.drawable.ic_clear_white_24dp
+        if (progress == 100) R.drawable.ic_refresh_white_24dp else R.drawable.ic_clear_white_24dp,
     )
   }
 

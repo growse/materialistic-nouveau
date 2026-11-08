@@ -35,7 +35,7 @@ class StoryListViewModel : ViewModel() {
                     filter,
                     cacheMode,
                 )
-              }
+              },
           )
           .subscribeOn(mIoThreadScheduler)
           .observeOn(AndroidSchedulers.mainThread())
@@ -54,7 +54,7 @@ class StoryListViewModel : ViewModel() {
                   filter,
                   cacheMode,
               )
-            }
+            },
         )
         .subscribeOn(mIoThreadScheduler)
         .observeOn(AndroidSchedulers.mainThread())

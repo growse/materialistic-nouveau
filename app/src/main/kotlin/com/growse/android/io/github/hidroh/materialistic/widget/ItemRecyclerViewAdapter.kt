@@ -133,7 +133,7 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
     holder.stopLoadingPulse()
     holder.contentView.setBackgroundColor(
         if (!username.isNullOrEmpty() && username == item.by) cardHighlightColor
-        else cardBackgroundColor
+        else cardBackgroundColor,
     )
     holder.contentTextView.setTextColor(if (item.isDead) secondaryTextColor else tertiaryTextColor)
     holder.contentTextView.setLineSpacing(0f, lineHeight)
@@ -262,7 +262,7 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
                   context.startActivity(
                       Intent(context, ComposeActivity::class.java)
                           .putExtra(ComposeActivity.EXTRA_PARENT_ID, item.id)
-                          .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, item.text)
+                          .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, item.text),
                   )
               R.id.menu_contextual_share ->
                   AppUtils.share(

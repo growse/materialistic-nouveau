@@ -195,7 +195,7 @@ class FavouriteFragment :
       setSearchableInfo(
           requireContext()
               .getSystemService<SearchManager>()
-              ?.getSearchableInfo(requireActivity().componentName)
+              ?.getSearchableInfo(requireActivity().componentName),
       )
       isIconified = !searchViewExpanded
       setQuery(filter, false)

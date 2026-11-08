@@ -71,7 +71,7 @@ class Favorite : WebItem {
               context.getString(
                   R.string.saved,
                   getAbbreviatedTimeSpan(time),
-              )
+              ),
           )
     }
     return displayedTime!!
@@ -82,7 +82,7 @@ class Favorite : WebItem {
 
   override val type: String
     get() = // TODO treating all saved items as stories for now
-    WebItem.STORY_TYPE
+        WebItem.STORY_TYPE
 
   override fun toString(): String {
     return String.format(

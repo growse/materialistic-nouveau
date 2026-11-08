@@ -27,7 +27,7 @@ class FavoriteManagerTest {
   fun setUp() {
     database =
         MaterialisticDatabase.setupBuilder(
-                Room.inMemoryDatabaseBuilder(context, MaterialisticDatabase::class.java)
+                Room.inMemoryDatabaseBuilder(context, MaterialisticDatabase::class.java),
             )
             .build()
     manager =

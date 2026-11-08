@@ -66,7 +66,7 @@ class LoginActivity : AccountAuthenticatorActivity() {
                     passwordEditText!!.text.toString(),
                     false,
                 )
-              }
+              },
           )
         }
     registerButton =
@@ -83,7 +83,7 @@ class LoginActivity : AccountAuthenticatorActivity() {
                     passwordEditText!!.text.toString().trim { it <= ' ' },
                     true,
                 )
-              }
+              },
           )
         }
     if (!addAccount && !TextUtils.isEmpty(username)) {

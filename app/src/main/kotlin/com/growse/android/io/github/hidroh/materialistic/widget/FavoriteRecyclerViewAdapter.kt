@@ -154,7 +154,7 @@ class FavoriteRecyclerViewAdapter(
                   notifyItemChanged(viewHolder.adapterPosition)
                 }
               }
-            }
+            },
         )
   }
 
@@ -285,7 +285,7 @@ class FavoriteRecyclerViewAdapter(
             context.startActivity(
                 Intent(context, ComposeActivity::class.java)
                     .putExtra(ComposeActivity.EXTRA_PARENT_ID, item.id)
-                    .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, item.displayedTitle)
+                    .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, item.displayedTitle),
             )
             return@setOnMenuItemClickListener true
           }

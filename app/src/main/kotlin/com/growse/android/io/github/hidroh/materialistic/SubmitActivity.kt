@@ -205,7 +205,7 @@ class SubmitActivity : ThemedActivity() {
           startActivity(
               Intent(this, NewActivity::class.java)
                   .putExtra(NewActivity.EXTRA_REFRESH, true)
-                  .setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                  .setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT),
           ) // TODO should go to profile instead?
           finish()
         }

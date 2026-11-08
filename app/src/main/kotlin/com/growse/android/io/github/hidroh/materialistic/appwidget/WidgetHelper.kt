@@ -92,7 +92,7 @@ internal class WidgetHelper(private val mContext: Context) {
             )
             .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
             .setPeriodic(frequencyHourMillis)
-            .build()
+            .build(),
     )
   }
 

@@ -45,7 +45,7 @@ constructor(
         ContextCompat.getColor(
             wrapper,
             textColor,
-        )
+        ),
     )
   }
 }

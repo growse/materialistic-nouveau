@@ -130,7 +130,7 @@ class ListFragment : BaseListFragment() {
     swipeRefreshLayout = view.findViewById(R.id.swipe_layout)
     swipeRefreshLayout.setColorSchemeResources(R.color.white)
     swipeRefreshLayout.setProgressBackgroundColorSchemeResource(
-        AppUtils.getThemedResId(requireActivity(), R.attr.colorAccent)
+        AppUtils.getThemedResId(requireActivity(), R.attr.colorAccent),
     )
     if (savedInstanceState == null) {
       swipeRefreshLayout.isRefreshing = true
@@ -162,7 +162,7 @@ class ListFragment : BaseListFragment() {
           filter == ItemManager.BEST_FETCH_MODE -> AppUtils.HOT_THRESHOLD_HIGH
           filter == ItemManager.NEW_FETCH_MODE -> AppUtils.HOT_THRESHOLD_LOW
           else -> AppUtils.HOT_THRESHOLD_NORMAL
-        }
+        },
     )
     adapter.initDisplayOptions(recyclerView)
     adapter.setCacheMode(cacheMode)
@@ -199,7 +199,7 @@ class ListFragment : BaseListFragment() {
                   .show()
             }
           }
-        }
+        },
     )
     storyListViewModel = ViewModelProvider(this)[StoryListViewModel::class.java]
     storyListViewModel.inject(itemManager, ioThreadScheduler)

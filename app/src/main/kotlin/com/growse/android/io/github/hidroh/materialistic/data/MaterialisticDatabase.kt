@@ -204,7 +204,7 @@ abstract class MaterialisticDatabase : RoomDatabase() {
                               context.applicationContext,
                               MaterialisticDatabase::class.java,
                               DbConstants.DB_NAME,
-                          )
+                          ),
                       )
                       .build()
                       .also { instance = it }
@@ -212,7 +212,7 @@ abstract class MaterialisticDatabase : RoomDatabase() {
 
     @VisibleForTesting
     internal fun setupBuilder(
-        builder: Builder<MaterialisticDatabase>
+        builder: Builder<MaterialisticDatabase>,
     ): Builder<MaterialisticDatabase> = builder.addMigrations(MIGRATION_3_4, MIGRATION_4_5)
 
     /** Moves the pre-Room favorite, viewed and readability tables into Room's tables. */

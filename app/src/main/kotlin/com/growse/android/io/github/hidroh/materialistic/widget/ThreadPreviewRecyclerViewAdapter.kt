@@ -90,7 +90,7 @@ class ThreadPreviewRecyclerViewAdapter(
             context!!,
             !TextUtils.equals(item.by, mUsername),
             0,
-        )
+        ),
     )
     holder.moreButton.visibility = View.GONE
     if (TextUtils.equals(item.type, WebItem.COMMENT_TYPE)) {
@@ -114,7 +114,7 @@ class ThreadPreviewRecyclerViewAdapter(
                 mItems.add(0, item.parentItem) // recursive
                 notifyItemInserted(0)
                 notifyItemRangeChanged(1, mItems.size)
-              }
+              },
           )
     }
   }
@@ -125,7 +125,7 @@ class ThreadPreviewRecyclerViewAdapter(
 
   private fun openItem(item: Item?) {
     context!!.startActivity(
-        Intent(context, ItemActivity::class.java).putExtra(ItemActivity.EXTRA_ITEM, item)
+        Intent(context, ItemActivity::class.java).putExtra(ItemActivity.EXTRA_ITEM, item),
     )
   }
 }

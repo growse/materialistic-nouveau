@@ -86,7 +86,7 @@ abstract class BaseListFragment : BaseFragment(), Scrollable {
               outRect.set(0, 0, 0, divider)
             }
           }
-        }
+        },
     )
   }
 

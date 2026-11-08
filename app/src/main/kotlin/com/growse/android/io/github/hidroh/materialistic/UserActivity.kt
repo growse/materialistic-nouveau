@@ -105,7 +105,7 @@ class UserActivity : ThemedActivity(), Scrollable {
           override fun onSlide(bottomSheet: View, slideOffset: Float) {
             // no op
           }
-        }
+        },
     )
     title = findViewById(R.id.title)
     title.text = username
@@ -126,7 +126,7 @@ class UserActivity : ThemedActivity(), Scrollable {
           override fun onTabReselected(tab: TabLayout.Tab?) {
             scrollToTop()
           }
-        }
+        },
     )
     recyclerView = findViewById(R.id.recycler_view)
     recyclerView.layoutManager = SnappyLinearLayoutManager(this, 1)
@@ -212,7 +212,7 @@ class UserActivity : ThemedActivity(), Scrollable {
     tabLayout.addTab(
         tabLayout
             .newTab()
-            .setText(resources.getQuantityString(R.plurals.submissions_count, 0, "").trim())
+            .setText(resources.getQuantityString(R.plurals.submissions_count, 0, "").trim()),
     )
   }
 
@@ -223,7 +223,7 @@ class UserActivity : ThemedActivity(), Scrollable {
             KARMA.format(
                 Locale.US,
                 NumberFormat.getInstance(Locale.getDefault()).format(user.karma),
-            )
+            ),
         )
     karma.setSpan(RelativeSizeSpan(0.8f), 0, karma.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
     title.append(karma)
@@ -238,8 +238,8 @@ class UserActivity : ThemedActivity(), Scrollable {
         tabLayout
             .newTab()
             .setText(
-                resources.getQuantityString(R.plurals.submissions_count, items.size, items.size)
-            )
+                resources.getQuantityString(R.plurals.submissions_count, items.size, items.size),
+            ),
     )
     recyclerView.adapter =
         SubmissionRecyclerViewAdapter(

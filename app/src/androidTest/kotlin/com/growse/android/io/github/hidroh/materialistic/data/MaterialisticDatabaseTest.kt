@@ -54,7 +54,7 @@ class MaterialisticDatabaseTest {
             isDead = true
             isDeleted = true
             fetchedAt = 1000L
-          }
+          },
       )
 
       val restored = database.itemCacheDao.selectByItemId("42")!!
@@ -91,7 +91,7 @@ class MaterialisticDatabaseTest {
       db.execSQL(DbConstants.SQL_CREATE_READ_TABLE)
       db.execSQL(DbConstants.SQL_CREATE_READABLE_TABLE)
       db.execSQL(
-          "INSERT INTO saved (itemid, url, title, time) VALUES ('1', 'https://a.b/', 'Title', '123')"
+          "INSERT INTO saved (itemid, url, title, time) VALUES ('1', 'https://a.b/', 'Title', '123')",
       )
       db.version = 4
     }
@@ -100,7 +100,7 @@ class MaterialisticDatabaseTest {
   private fun withDatabase(block: (MaterialisticDatabase) -> Unit) {
     val database =
         MaterialisticDatabase.setupBuilder(
-                Room.databaseBuilder(context, MaterialisticDatabase::class.java, DB_NAME)
+                Room.databaseBuilder(context, MaterialisticDatabase::class.java, DB_NAME),
             )
             .allowMainThreadQueries()
             .build()

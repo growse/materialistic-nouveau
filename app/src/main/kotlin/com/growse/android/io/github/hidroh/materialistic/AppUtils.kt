@@ -85,7 +85,7 @@ object AppUtils {
     if (!hasConnection(context)) {
       context.startActivity(
           Intent(context, OfflineWebActivity::class.java)
-              .putExtra(OfflineWebActivity.EXTRA_URL, url)
+              .putExtra(OfflineWebActivity.EXTRA_URL, url),
       )
       return
     }
@@ -112,7 +112,7 @@ object AppUtils {
       else ->
           context.startActivity(
               Intent.createChooser(intents[0], context.getString(R.string.chooser_title))
-                  .putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.drop(1).toTypedArray())
+                  .putExtra(Intent.EXTRA_INITIAL_INTENTS, intents.drop(1).toTypedArray()),
           )
     }
   }
@@ -161,7 +161,7 @@ object AppUtils {
             }
             return true
           }
-        }
+        },
     )
   }
 
@@ -303,7 +303,7 @@ object AppUtils {
                 Intent.FLAG_ACTIVITY_NO_HISTORY or
                     Intent.FLAG_ACTIVITY_MULTIPLE_TASK or
                     Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT,
             )
     try {
       context.startActivity(intent)
@@ -343,7 +343,7 @@ object AppUtils {
               DialogInterface.BUTTON_NEGATIVE -> {
                 context.startActivity(
                     Intent(context, LoginActivity::class.java)
-                        .putExtra(LoginActivity.EXTRA_ADD_ACCOUNT, true)
+                        .putExtra(LoginActivity.EXTRA_ADD_ACCOUNT, true),
                 )
                 dialog.dismiss()
               }
@@ -382,19 +382,19 @@ object AppUtils {
   fun toggleFabAction(fab: FloatingActionButton, item: WebItem, commentMode: Boolean) {
     val context = fab.context
     fab.setImageResource(
-        if (commentMode) R.drawable.ic_reply_white_24dp else R.drawable.ic_zoom_out_map_white_24dp
+        if (commentMode) R.drawable.ic_reply_white_24dp else R.drawable.ic_zoom_out_map_white_24dp,
     )
     fab.setOnClickListener {
       if (commentMode) {
         context.startActivity(
             Intent(context, ComposeActivity::class.java)
                 .putExtra(ComposeActivity.EXTRA_PARENT_ID, item.id)
-                .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, (item as? Item)?.text)
+                .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, (item as? Item)?.text),
         )
       } else {
         LocalBroadcastManager.getInstance(context)
             .sendBroadcast(
-                Intent(WebFragment.ACTION_FULLSCREEN).putExtra(WebFragment.EXTRA_FULLSCREEN, true)
+                Intent(WebFragment.ACTION_FULLSCREEN).putExtra(WebFragment.EXTRA_FULLSCREEN, true),
             )
       }
     }
@@ -480,7 +480,7 @@ object AppUtils {
     val builder =
         CustomTabsIntent.Builder(session)
             .setToolbarColor(
-                ContextCompat.getColor(context, getThemedResId(context, R.attr.colorPrimary))
+                ContextCompat.getColor(context, getThemedResId(context, R.attr.colorPrimary)),
             )
             .setShowTitle(true)
             .enableUrlBarHiding()
@@ -508,7 +508,7 @@ object AppUtils {
       intent.addFlags(
           Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT or
               Intent.FLAG_ACTIVITY_NEW_TASK or
-              Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+              Intent.FLAG_ACTIVITY_MULTIPLE_TASK,
       )
     }
     return intent

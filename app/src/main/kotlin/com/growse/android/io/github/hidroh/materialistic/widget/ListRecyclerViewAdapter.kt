@@ -213,7 +213,7 @@ abstract class ListRecyclerViewAdapter<VH : ListRecyclerViewAdapter.ItemViewHold
                 context as Activity,
                 intent,
             )
-        else intent
+        else intent,
     )
   }
 

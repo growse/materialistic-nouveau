@@ -56,7 +56,7 @@ interface FeedbackClient {
                       Build.VERSION.SDK_INT,
                       BuildConfig.VERSION_CODE,
                   ),
-              )
+              ),
           )
           .map { true }
           .onErrorReturn { false }

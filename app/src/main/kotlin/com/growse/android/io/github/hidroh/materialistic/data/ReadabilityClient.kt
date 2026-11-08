@@ -83,10 +83,10 @@ interface ReadabilityClient {
           .flatMap(
               Func1 { content: String? ->
                 if (content != null) Observable.just(content) else fromNetwork(itemId, url)
-              }
+              },
           )
           .map<String?>(
-              Func1 { content: String? -> if (content == EMPTY_CONTENT) null else content }
+              Func1 { content: String? -> if (content == EMPTY_CONTENT) null else content },
           )
           .observeOn(mainThreadScheduler)
           .subscribe(Action1 { content: String? -> callback.onResponse(content) })
@@ -98,7 +98,7 @@ interface ReadabilityClient {
           .subscribeOn(Schedulers.immediate())
           .switchIfEmpty(fromNetwork(itemId, url))
           .map<String?>(
-              Func1 { content: String? -> if (content == EMPTY_CONTENT) null else content }
+              Func1 { content: String? -> if (content == EMPTY_CONTENT) null else content },
           )
           .observeOn(Schedulers.immediate())
           .subscribe()

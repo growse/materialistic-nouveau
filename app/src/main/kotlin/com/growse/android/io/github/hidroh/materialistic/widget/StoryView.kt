@@ -80,7 +80,7 @@ constructor(
                 android.R.attr.textColorSecondary,
                 R.attr.colorCardBackground,
                 R.attr.colorCardHighlight,
-            )
+            ),
         )
     mTertiaryTextColorResId = ContextCompat.getColor(context, a.getResourceId(0, 0))
     mSecondaryTextColorResId = ContextCompat.getColor(context, a.getResourceId(1, 0))
@@ -99,7 +99,7 @@ constructor(
                     context,
                     R.drawable.ic_comment_white_24dp,
                 )!!
-                .mutate()
+                .mutate(),
         )
     DrawableCompat.setTint(mCommentDrawable, mAccentColorResId)
     inflate(context, if (mIsLocal) R.layout.local_story_view else R.layout.story_view, this)
@@ -123,7 +123,7 @@ constructor(
         getThemedResId(
             context,
             R.attr.selectableItemBackground,
-        )
+        ),
     )
     ta.recycle()
     a.recycle()
@@ -314,7 +314,7 @@ constructor(
           override fun onAnimationRepeat(animation: Animation?) {
             // no op
           }
-        }
+        },
     )
     mVoteSwitcher.showNext()
   }

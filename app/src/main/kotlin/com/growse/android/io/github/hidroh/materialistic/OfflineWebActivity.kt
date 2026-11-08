@@ -49,7 +49,7 @@ class OfflineWebActivity : ThemedActivity() {
               0,
               0,
           )
-        }
+        },
     )
     setSupportActionBar(toolbar)
     AppUtils.applyToolbarTopInset(toolbar)

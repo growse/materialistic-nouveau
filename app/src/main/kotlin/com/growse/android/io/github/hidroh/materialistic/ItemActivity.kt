@@ -132,7 +132,7 @@ class ItemActivity : ThemedActivity(), ItemFragment.ItemChangedListener {
             LocalBroadcastManager.getInstance(this@ItemActivity)
                 .sendBroadcast(
                     Intent(WebFragment.ACTION_FULLSCREEN)
-                        .putExtra(WebFragment.EXTRA_FULLSCREEN, false)
+                        .putExtra(WebFragment.EXTRA_FULLSCREEN, false),
                 )
           } else {
             isEnabled = false
@@ -302,7 +302,7 @@ class ItemActivity : ThemedActivity(), ItemFragment.ItemChangedListener {
     bookmark.isVisible = true
     bookmark.setImageResource(
         if (item.isFavorite) R.drawable.ic_bookmark_white_24dp
-        else R.drawable.ic_bookmark_border_white_24dp
+        else R.drawable.ic_bookmark_border_white_24dp,
     )
     // undo re-clicks the bookmark, which must not offer another undo
     var undoing = false
@@ -364,7 +364,7 @@ class ItemActivity : ThemedActivity(), ItemFragment.ItemChangedListener {
           override fun onTabReselected(tab: TabLayout.Tab) {
             appBar.setExpanded(true, true)
           }
-        }
+        },
     )
     if (story.isStoryType && externalBrowser && !hasText) {
       findViewById<TextView>(R.id.button_article).apply {

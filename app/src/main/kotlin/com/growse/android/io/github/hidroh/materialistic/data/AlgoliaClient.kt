@@ -102,37 +102,37 @@ open class AlgoliaClient @Inject constructor(factory: RestServiceFactory) : Item
 
   interface RestService {
     @GET(
-        "search_by_date?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none"
+        "search_by_date?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none",
     )
     fun searchByDateRx(@Query("query") query: String?): Observable<AlgoliaHits?>?
 
     @GET(
-        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none"
+        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none",
     )
     fun searchRx(@Query("query") query: String?): Observable<AlgoliaHits?>?
 
     @GET(
-        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none"
+        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none",
     )
     fun searchByMinTimestampRx(
-        @Query("numericFilters") timestampSeconds: String?
+        @Query("numericFilters") timestampSeconds: String?,
     ): Observable<AlgoliaHits?>?
 
     @GET(
-        "search_by_date?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none"
+        "search_by_date?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none",
     )
     fun searchByDate(@Query("query") query: String?): Call<AlgoliaHits?>?
 
     @GET(
-        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none"
+        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none",
     )
     fun search(@Query("query") query: String?): Call<AlgoliaHits?>?
 
     @GET(
-        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none"
+        "search?hitsPerPage=100&tags=story&attributesToRetrieve=objectID&attributesToHighlight=none",
     )
     fun searchByMinTimestamp(
-        @Query("numericFilters") timestampSeconds: String?
+        @Query("numericFilters") timestampSeconds: String?,
     ): Call<AlgoliaHits?>?
   }
 

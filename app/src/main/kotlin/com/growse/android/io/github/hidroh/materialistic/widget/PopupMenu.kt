@@ -125,7 +125,7 @@ interface PopupMenu {
 
     override fun setOnMenuItemClickListener(listener: OnMenuItemClickListener): PopupMenu {
       mSupportPopupMenu!!.setOnMenuItemClickListener(
-          SupportPopupMenu.OnMenuItemClickListener { listener.onMenuItemClick(it) }
+          SupportPopupMenu.OnMenuItemClickListener { listener.onMenuItemClick(it) },
       )
       return this
     }

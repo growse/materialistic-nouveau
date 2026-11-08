@@ -90,7 +90,9 @@ class WidgetConfigActivity : ThemedActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
       preferenceManager.setSharedPreferencesName(
-          WidgetHelper.getConfigName(requireArguments().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID))
+          WidgetHelper.getConfigName(
+              requireArguments().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID),
+          ),
       )
       preferenceManager.getSharedPreferences()!!.registerOnSharedPreferenceChangeListener(mListener)
       setFilterQuery()

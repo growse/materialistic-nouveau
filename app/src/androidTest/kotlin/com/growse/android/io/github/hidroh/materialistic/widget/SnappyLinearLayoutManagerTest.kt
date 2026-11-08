@@ -57,7 +57,7 @@ class SnappyLinearLayoutManagerTest {
                 View(context).apply {
                   layoutParams =
                       RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, rowHeight)
-                }
+                },
             ) {}
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

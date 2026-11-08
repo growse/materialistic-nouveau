@@ -28,238 +28,249 @@ import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 
 class UserServicesClientTest :
-    StringSpec({
-      beforeSpec {
-        // deliver callbacks synchronously instead of posting to a main looper the JVM doesn't have
-        RxAndroidPlugins.getInstance().reset()
-        RxAndroidPlugins.getInstance()
-            .registerSchedulersHook(
-                object : RxAndroidSchedulersHook() {
-                  override fun getMainThreadScheduler(): Scheduler = Schedulers.immediate()
-                }
-            )
-        AndroidSchedulers.reset()
-      }
+    StringSpec(
+        {
+          beforeSpec {
+            // deliver callbacks synchronously instead of posting to a main looper the JVM doesn't
+            // have
+            RxAndroidPlugins.getInstance().reset()
+            RxAndroidPlugins.getInstance()
+                .registerSchedulersHook(
+                    object : RxAndroidSchedulersHook() {
+                      override fun getMainThreadScheduler(): Scheduler = Schedulers.immediate()
+                    },
+                )
+            AndroidSchedulers.reset()
+          }
 
-      afterSpec {
-        RxAndroidPlugins.getInstance().reset()
-        AndroidSchedulers.reset()
-      }
+          afterSpec {
+            RxAndroidPlugins.getInstance().reset()
+            AndroidSchedulers.reset()
+          }
 
-      val context = mock<Context>()
-      val credentials = "alice" to "hunter2"
+          val context = mock<Context>()
+          val credentials = "alice" to "hunter2"
 
-      "login posts the credentials to the login page" {
-        val server = FakeHackerNews(redirect("news"))
+          "login posts the credentials to the login page" {
+            val server = FakeHackerNews(redirect("news"))
 
-        server.client().login("alice", "hunter2", false, RecordingCallback())
+            server.client().login("alice", "hunter2", false, RecordingCallback())
 
-        server.requests shouldHaveSize 1
-        server.requests[0].url.toString() shouldBe "https://news.ycombinator.com/login"
-        server.requests[0].form() shouldContainExactly
-            mapOf("acct" to "alice", "pw" to "hunter2", "goto" to "news")
-      }
+            server.requests shouldHaveSize 1
+            server.requests[0].url.toString() shouldBe "https://news.ycombinator.com/login"
+            server.requests[0].form() shouldContainExactly
+                mapOf("acct" to "alice", "pw" to "hunter2", "goto" to "news")
+          }
 
-      "login flags account creation" {
-        val server = FakeHackerNews(redirect("news"))
+          "login flags account creation" {
+            val server = FakeHackerNews(redirect("news"))
 
-        server.client().login("alice", "hunter2", true, RecordingCallback())
+            server.client().login("alice", "hunter2", true, RecordingCallback())
 
-        server.requests[0].form()["creating"] shouldBe "t"
-      }
+            server.requests[0].form()["creating"] shouldBe "t"
+          }
 
-      "login succeeds on a redirect" {
-        val server = FakeHackerNews(redirect("news"))
-        val callback = RecordingCallback()
+          "login succeeds on a redirect" {
+            val server = FakeHackerNews(redirect("news"))
+            val callback = RecordingCallback()
 
-        server.client().login("alice", "hunter2", false, callback)
+            server.client().login("alice", "hunter2", false, callback)
 
-        callback.done shouldBe true
-        callback.error.shouldBeNull()
-        server.allClosed() shouldBe true
-      }
+            callback.done shouldBe true
+            callback.error.shouldBeNull()
+            server.allClosed() shouldBe true
+          }
 
-      "login reports the error message from a re-rendered login page" {
-        val server = FakeHackerNews(ok("<html><body>Bad login.\n  </body></html>"))
-        val callback = RecordingCallback()
+          "login reports the error message from a re-rendered login page" {
+            val server = FakeHackerNews(ok("<html><body>Bad login.\n  </body></html>"))
+            val callback = RecordingCallback()
 
-        server.client().login("alice", "wrong", false, callback)
+            server.client().login("alice", "wrong", false, callback)
 
-        callback.done.shouldBeNull()
-        callback.error.shouldBeTypeOf<UserServices.Exception>().message shouldBe "Bad login."
-        server.allClosed() shouldBe true
-      }
+            callback.done.shouldBeNull()
+            callback.error.shouldBeTypeOf<UserServices.Exception>().message shouldBe "Bad login."
+            server.allClosed() shouldBe true
+          }
 
-      "login fails without an error on any other response" {
-        val server = FakeHackerNews(response(500))
-        val callback = RecordingCallback()
+          "login fails without an error on any other response" {
+            val server = FakeHackerNews(response(500))
+            val callback = RecordingCallback()
 
-        server.client().login("alice", "hunter2", false, callback)
+            server.client().login("alice", "hunter2", false, callback)
 
-        callback.done shouldBe false
-        callback.error.shouldBeNull()
-      }
+            callback.done shouldBe false
+            callback.error.shouldBeNull()
+          }
 
-      "login reports network errors" {
-        val server = FakeHackerNews({ throw IOException("offline") })
-        val callback = RecordingCallback()
+          "login reports network errors" {
+            val server = FakeHackerNews({ throw IOException("offline") })
+            val callback = RecordingCallback()
 
-        server.client().login("alice", "hunter2", false, callback)
+            server.client().login("alice", "hunter2", false, callback)
 
-        callback.done.shouldBeNull()
-        callback.error.shouldBeInstanceOf<IOException>().message shouldBe "offline"
-      }
+            callback.done.shouldBeNull()
+            callback.error.shouldBeInstanceOf<IOException>().message shouldBe "offline"
+          }
 
-      "voting without credentials does nothing" {
-        val server = FakeHackerNews()
-        val callback = RecordingCallback()
+          "voting without credentials does nothing" {
+            val server = FakeHackerNews()
+            val callback = RecordingCallback()
 
-        server.client(credentials = null).voteUp(context, "123", callback) shouldBe false
+            server.client(credentials = null).voteUp(context, "123", callback) shouldBe false
 
-        server.requests.shouldBeEmpty()
-        callback.done.shouldBeNull()
-      }
+            server.requests.shouldBeEmpty()
+            callback.done.shouldBeNull()
+          }
 
-      "replying without credentials fails without sending anything" {
-        val server = FakeHackerNews()
-        val callback = RecordingCallback()
+          "replying without credentials fails without sending anything" {
+            val server = FakeHackerNews()
+            val callback = RecordingCallback()
 
-        server.client(credentials = null).reply(context, "123", "hi", callback)
+            server.client(credentials = null).reply(context, "123", "hi", callback)
 
-        server.requests.shouldBeEmpty()
-        callback.done shouldBe false
-      }
+            server.requests.shouldBeEmpty()
+            callback.done shouldBe false
+          }
 
-      "replying posts the comment and succeeds on a redirect" {
-        val server = FakeHackerNews(redirect("item?id=123"))
-        val callback = RecordingCallback()
+          "replying posts the comment and succeeds on a redirect" {
+            val server = FakeHackerNews(redirect("item?id=123"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).reply(context, "123", "Nice post", callback)
+            server.client(credentials).reply(context, "123", "Nice post", callback)
 
-        server.requests[0].url.toString() shouldBe "https://news.ycombinator.com/comment"
-        server.requests[0].form() shouldContainExactly
-            mapOf("acct" to "alice", "pw" to "hunter2", "parent" to "123", "text" to "Nice post")
-        callback.done shouldBe true
-        server.allClosed() shouldBe true
-      }
+            server.requests[0].url.toString() shouldBe "https://news.ycombinator.com/comment"
+            server.requests[0].form() shouldContainExactly
+                mapOf(
+                    "acct" to "alice",
+                    "pw" to "hunter2",
+                    "parent" to "123",
+                    "text" to "Nice post",
+                )
+            callback.done shouldBe true
+            server.allClosed() shouldBe true
+          }
 
-      "replying fails when not redirected" {
-        val server = FakeHackerNews(ok("<html>try again</html>"))
-        val callback = RecordingCallback()
+          "replying fails when not redirected" {
+            val server = FakeHackerNews(ok("<html>try again</html>"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).reply(context, "123", "Nice post", callback)
+            server.client(credentials).reply(context, "123", "Nice post", callback)
 
-        callback.done shouldBe false
-      }
+            callback.done shouldBe false
+          }
 
-      "submitting without credentials fails without sending anything" {
-        val server = FakeHackerNews()
-        val callback = RecordingCallback()
+          "submitting without credentials fails without sending anything" {
+            val server = FakeHackerNews()
+            val callback = RecordingCallback()
 
-        server.client(credentials = null).submit(context, "Title", "https://a.b", true, callback)
+            server
+                .client(credentials = null)
+                .submit(context, "Title", "https://a.b", true, callback)
 
-        server.requests.shouldBeEmpty()
-        callback.done shouldBe false
-      }
+            server.requests.shouldBeEmpty()
+            callback.done shouldBe false
+          }
 
-      "submitting a link posts the form token, cookie and url" {
-        val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("newest"))
-        val callback = RecordingCallback()
+          "submitting a link posts the form token, cookie and url" {
+            val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("newest"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
+            server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
 
-        server.requests shouldHaveSize 2
-        server.requests[0].url.toString() shouldBe "https://news.ycombinator.com/submit"
-        server.requests[0].form() shouldContainExactly mapOf("acct" to "alice", "pw" to "hunter2")
-        server.requests[1].url.toString() shouldBe "https://news.ycombinator.com/r"
-        server.requests[1].header("cookie") shouldBe "user=alice&token"
-        server.requests[1].form() shouldContainExactly
-            mapOf(
-                "fnid" to "abc123",
-                "fnop" to "submit-page",
-                "title" to "Title",
-                "url" to "https://a.b",
-            )
-        callback.done shouldBe true
-        callback.error.shouldBeNull()
-        server.allClosed() shouldBe true
-      }
+            server.requests shouldHaveSize 2
+            server.requests[0].url.toString() shouldBe "https://news.ycombinator.com/submit"
+            server.requests[0].form() shouldContainExactly
+                mapOf("acct" to "alice", "pw" to "hunter2")
+            server.requests[1].url.toString() shouldBe "https://news.ycombinator.com/r"
+            server.requests[1].header("cookie") shouldBe "user=alice&token"
+            server.requests[1].form() shouldContainExactly
+                mapOf(
+                    "fnid" to "abc123",
+                    "fnop" to "submit-page",
+                    "title" to "Title",
+                    "url" to "https://a.b",
+                )
+            callback.done shouldBe true
+            callback.error.shouldBeNull()
+            server.allClosed() shouldBe true
+          }
 
-      "submitting text sends it as text rather than url" {
-        val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("newest"))
+          "submitting text sends it as text rather than url" {
+            val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("newest"))
 
-        server
-            .client(credentials)
-            .submit(context, "Ask HN", "Question?", false, RecordingCallback())
+            server
+                .client(credentials)
+                .submit(context, "Ask HN", "Question?", false, RecordingCallback())
 
-        server.requests[1].form()["text"] shouldBe "Question?"
-        server.requests[1].form()["url"].shouldBeNull()
-      }
+            server.requests[1].form()["text"] shouldBe "Question?"
+            server.requests[1].form()["url"].shouldBeNull()
+          }
 
-      "submitting accepts an absolute redirect to newest" {
-        val server =
-            FakeHackerNews(
-                submitPage(fnid = "abc123"),
-                redirect("https://news.ycombinator.com/newest"),
-            )
-        val callback = RecordingCallback()
+          "submitting accepts an absolute redirect to newest" {
+            val server =
+                FakeHackerNews(
+                    submitPage(fnid = "abc123"),
+                    redirect("https://news.ycombinator.com/newest"),
+                )
+            val callback = RecordingCallback()
 
-        server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
+            server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
 
-        callback.done shouldBe true
-      }
+            callback.done shouldBe true
+          }
 
-      "submitting fails when the submit page redirects to login" {
-        val server = FakeHackerNews(redirect("login"))
-        val callback = RecordingCallback()
+          "submitting fails when the submit page redirects to login" {
+            val server = FakeHackerNews(redirect("login"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
+            server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
 
-        server.requests shouldHaveSize 1
-        callback.error.shouldBeInstanceOf<IOException>()
-        server.allClosed() shouldBe true
-      }
+            server.requests shouldHaveSize 1
+            callback.error.shouldBeInstanceOf<IOException>()
+            server.allClosed() shouldBe true
+          }
 
-      "submitting fails when the submit page has no form token" {
-        val server = FakeHackerNews(ok("<html><body>no form here</body></html>"))
-        val callback = RecordingCallback()
+          "submitting fails when the submit page has no form token" {
+            val server = FakeHackerNews(ok("<html><body>no form here</body></html>"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
+            server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
 
-        server.requests shouldHaveSize 1
-        callback.error.shouldBeInstanceOf<IOException>()
-      }
+            server.requests shouldHaveSize 1
+            callback.error.shouldBeInstanceOf<IOException>()
+          }
 
-      "submitting a duplicate reports the existing item" {
-        val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("item?id=42"))
-        val callback = RecordingCallback()
+          "submitting a duplicate reports the existing item" {
+            val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("item?id=42"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
+            server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
 
-        val error = callback.error.shouldBeTypeOf<UserServices.Exception>()
-        error.messageResId shouldBe R.string.item_exist
-        error.itemId shouldBe "42"
-      }
+            val error = callback.error.shouldBeTypeOf<UserServices.Exception>()
+            error.messageResId shouldBe R.string.item_exist
+            error.itemId shouldBe "42"
+          }
 
-      "submitting fails on any other redirect" {
-        val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("x?fnid=abc123"))
-        val callback = RecordingCallback()
+          "submitting fails on any other redirect" {
+            val server = FakeHackerNews(submitPage(fnid = "abc123"), redirect("x?fnid=abc123"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
+            server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
 
-        callback.error.shouldBeTypeOf<IOException>()
-      }
+            callback.error.shouldBeTypeOf<IOException>()
+          }
 
-      "submitting fails when the post is not redirected" {
-        val server = FakeHackerNews(submitPage(fnid = "abc123"), ok("<html>error</html>"))
-        val callback = RecordingCallback()
+          "submitting fails when the post is not redirected" {
+            val server = FakeHackerNews(submitPage(fnid = "abc123"), ok("<html>error</html>"))
+            val callback = RecordingCallback()
 
-        server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
+            server.client(credentials).submit(context, "Title", "https://a.b", true, callback)
 
-        callback.error.shouldBeTypeOf<IOException>()
-        server.allClosed() shouldBe true
-      }
-    })
+            callback.error.shouldBeTypeOf<IOException>()
+            server.allClosed() shouldBe true
+          }
+        },
+    )
 
 private class RecordingCallback : UserServices.Callback() {
   var done: Boolean? = null

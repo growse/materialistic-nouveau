@@ -55,7 +55,7 @@ constructor(
                   this.onFailure(call, e)
                 }
               }
-            }
+            },
         )
   }
 

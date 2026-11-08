@@ -130,7 +130,7 @@ class SinglePageItemRecyclerViewAdapter(
               override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
                 return 0.1f
               }
-            }
+            },
         )
     itemTouchHelper!!.attachToRecyclerView(recyclerView)
     recyclerView.addOnScrollListener(scrollListener)
@@ -277,7 +277,7 @@ class SinglePageItemRecyclerViewAdapter(
             context!!,
             true,
             getThreadColor(getItemViewType(holder.absoluteAdapterPosition)),
-        )
+        ),
     )
     bindKids(holder, item)
   }

@@ -75,7 +75,7 @@ class SubmissionRecyclerViewAdapter(
     } else {
       holder.postedTextView.append(" - ")
       holder.postedTextView.append(
-          context!!.resources.getQuantityString(R.plurals.score, item.score, item.score)
+          context!!.resources.getQuantityString(R.plurals.score, item.score, item.score),
       )
       holder.titleTextView!!.setText(item.displayedTitle)
       holder.commentButton.setText(R.string.view_story)
@@ -96,14 +96,14 @@ class SubmissionRecyclerViewAdapter(
 
   private fun openItem(item: Item?) {
     context!!.startActivity(
-        Intent(context, ItemActivity::class.java).putExtra(ItemActivity.EXTRA_ITEM, item)
+        Intent(context, ItemActivity::class.java).putExtra(ItemActivity.EXTRA_ITEM, item),
     )
   }
 
   private fun openPreview(item: Item?) {
     context!!.startActivity(
         Intent(context, ThreadPreviewActivity::class.java)
-            .putExtra(ThreadPreviewActivity.EXTRA_ITEM, item)
+            .putExtra(ThreadPreviewActivity.EXTRA_ITEM, item),
     )
   }
 }

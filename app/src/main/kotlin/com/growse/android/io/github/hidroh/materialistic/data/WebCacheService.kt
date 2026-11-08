@@ -44,7 +44,7 @@ class WebCacheService : Service() {
               stopSelf(startId)
             }
           }
-        }
+        },
     )
     webView.loadUrl(intent.getStringExtra(EXTRA_URL)!!)
     return START_STICKY

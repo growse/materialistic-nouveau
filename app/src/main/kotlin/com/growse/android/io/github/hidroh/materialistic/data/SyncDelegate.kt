@@ -116,7 +116,7 @@ internal constructor(
             BitmapFactory.decodeResource(
                 mContext.resources,
                 R.mipmap.ic_launcher,
-            )
+            ),
         )
         .setSmallIcon(R.drawable.ic_notification)
         .setGroup(NOTIFICATION_GROUP_KEY)
@@ -207,7 +207,7 @@ internal constructor(
                 notifyItem(itemId, null)
                 completeUnit()
               }
-            }
+            },
         )
   }
 
@@ -250,7 +250,7 @@ internal constructor(
       } else {
         mContext.startService(
             Intent(mContext, WebCacheService::class.java)
-                .putExtra(WebCacheService.EXTRA_URL, item.url)
+                .putExtra(WebCacheService.EXTRA_URL, item.url),
         )
         notifyArticle(100)
       }
@@ -266,7 +266,7 @@ internal constructor(
             super.onProgressChanged(view, newProgress)
             notifyArticle(newProgress)
           }
-        }
+        },
     )
     notifyArticle(0)
     mWebView!!.loadUrl(item.url)
@@ -587,7 +587,7 @@ internal constructor(
               )
               .setRequiredNetworkType(
                   if (isWifiOnly(context)) JobInfo.NETWORK_TYPE_UNMETERED
-                  else JobInfo.NETWORK_TYPE_ANY
+                  else JobInfo.NETWORK_TYPE_ANY,
               )
               .setExtras(job.toPersistableBundle())
               .build()

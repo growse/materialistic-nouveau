@@ -24,7 +24,9 @@ class ReleaseNotesActivityTest : TestCase() {
   fun openingTheScreenMarksReleaseNotesAsSeen() = run {
     step("Verify the release-notes-seen preference is set once the screen is shown") {
       assert(
-          Preferences.isReleaseNotesSeen(InstrumentationRegistry.getInstrumentation().targetContext)
+          Preferences.isReleaseNotesSeen(
+              InstrumentationRegistry.getInstrumentation().targetContext,
+          ),
       ) {
         "Release notes should be marked as seen after ReleaseNotesActivity is shown"
       }

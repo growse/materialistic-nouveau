@@ -27,7 +27,7 @@ class SavedStoriesTest : TestCase() {
   fun savedStoryIsListedInSavedStories() = run {
     step("Open a story and tap its bookmark") {
       ActivityScenario.launch<ItemActivity>(
-              Intent(context, ItemActivity::class.java).putExtra(ItemActivity.EXTRA_ITEM, story())
+              Intent(context, ItemActivity::class.java).putExtra(ItemActivity.EXTRA_ITEM, story()),
           )
           .use { ItemScreen { bookmark.click() } }
     }

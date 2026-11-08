@@ -86,7 +86,7 @@ class MultiPageItemRecyclerViewAdapter(
     context!!.startActivity(
         Intent(context, ItemActivity::class.java)
             .putExtra(ItemActivity.EXTRA_ITEM, item)
-            .putExtra(ItemActivity.EXTRA_OPEN_COMMENTS, true)
+            .putExtra(ItemActivity.EXTRA_OPEN_COMMENTS, true),
     )
   }
 

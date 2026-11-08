@@ -40,7 +40,7 @@ class HelpListView(context: Context?, attrs: AttributeSet?) : ScrollView(context
   override fun onFinishInflate() {
     super.onFinishInflate()
     (findViewById<View?>(R.id.item_new).findViewById<View?>(R.id.rank) as TextView).append(
-        makeAsteriskSpan()
+        makeAsteriskSpan(),
     )
     val spannable = SpannableString("+5")
     spannable.setSpan(
@@ -62,7 +62,7 @@ class HelpListView(context: Context?, attrs: AttributeSet?) : ScrollView(context
         Spanned.SPAN_INCLUSIVE_EXCLUSIVE,
     )
     (findViewById<View?>(R.id.item_promoted).findViewById<View?>(R.id.rank) as TextView).append(
-        spannable
+        spannable,
     )
     val comments =
         findViewById<View?>(R.id.item_new_comments).findViewById<View?>(R.id.comment) as TextView

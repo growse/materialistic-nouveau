@@ -50,7 +50,7 @@ class ComposeActivity : ThemedActivity() {
         AppUtils.fromHtml(parentText)
             .toString()
             .trim()
-            .replace(PARAGRAPH_BREAK_REGEX, PARAGRAPH_QUOTE)
+            .replace(PARAGRAPH_BREAK_REGEX, PARAGRAPH_QUOTE),
     )
   }
   private var sending = false

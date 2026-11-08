@@ -137,7 +137,7 @@ abstract class DrawerActivity : ThemedActivity() {
       val icon =
           if (expand) R.drawable.ic_expand_less_white_24dp else R.drawable.ic_expand_more_white_24dp
       moreToggle.setTextColor(
-          ContextCompat.getColor(this, AppUtils.getThemedResId(this, textColor))
+          ContextCompat.getColor(this, AppUtils.getThemedResId(this, textColor)),
       )
       moreToggle.setCompoundDrawablesWithIntrinsicBounds(
           R.drawable.ic_dummy_transparent_24dp,

@@ -112,7 +112,7 @@ abstract class ThemedActivity : AppCompatActivity() {
             title.toString(),
             BitmapFactory.decodeResource(resources, R.drawable.ic_app),
             ContextCompat.getColor(this, AppUtils.getThemedResId(this, R.attr.colorPrimary)),
-        )
+        ),
     )
   }
 

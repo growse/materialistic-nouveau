@@ -99,7 +99,7 @@ class DropDownPreferenceTest : TestCase() {
         ActivityScenario.launch(
             Intent(context, PreferencesActivity::class.java)
                 .putExtra(PreferencesActivity.EXTRA_TITLE, R.string.comments)
-                .putExtra(PreferencesActivity.EXTRA_PREFERENCES, R.xml.preferences_comments)
+                .putExtra(PreferencesActivity.EXTRA_PREFERENCES, R.xml.preferences_comments),
         )
   }
 }

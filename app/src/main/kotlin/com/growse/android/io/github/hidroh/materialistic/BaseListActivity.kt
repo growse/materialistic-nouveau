@@ -95,7 +95,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
             LocalBroadcastManager.getInstance(this@BaseListActivity)
                 .sendBroadcast(
                     Intent(WebFragment.ACTION_FULLSCREEN)
-                        .putExtra(WebFragment.EXTRA_FULLSCREEN, false)
+                        .putExtra(WebFragment.EXTRA_FULLSCREEN, false),
                 )
           } else {
             isEnabled = false
@@ -216,7 +216,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
               override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                 Preferences.setReleaseNotesSeen(this@BaseListActivity)
               }
-            }
+            },
         )
         .show()
   }
@@ -237,7 +237,7 @@ abstract class BaseListActivity : DrawerActivity(), MultiPaneListener {
       val searchView =
           actionViewResolver.getActionView(menu.findItem(R.id.menu_search)) as SearchView
       searchView.setSearchableInfo(
-          searchManager.getSearchableInfo(ComponentName(this, SearchActivity::class.java))
+          searchManager.getSearchableInfo(ComponentName(this, SearchActivity::class.java)),
       )
       searchView.isIconified = true
       searchView.setQuery("", false)

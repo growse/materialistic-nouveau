@@ -103,7 +103,7 @@ internal class NetworkModule {
                 TrafficStats.setThreadStatsTag(1)
                 return socket
               }
-            }
+            },
         )
         .cache(Cache(context.applicationContext.cacheDir, CACHE_SIZE))
         .addNetworkInterceptor(CacheOverrideNetworkInterceptor())
@@ -123,7 +123,7 @@ internal class NetworkModule {
           CACHE_ENABLED_HOSTS.containsKey(request.url.host) && !AppUtils.hasConnection(context)
       return chain.proceed(
           if (forceCache) request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build()
-          else request
+          else request,
       )
     }
 
@@ -166,7 +166,7 @@ internal class NetworkModule {
     }
         .setLevel(
             if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-            else HttpLoggingInterceptor.Level.NONE
+            else HttpLoggingInterceptor.Level.NONE,
         )
 
     @Throws(IOException::class)

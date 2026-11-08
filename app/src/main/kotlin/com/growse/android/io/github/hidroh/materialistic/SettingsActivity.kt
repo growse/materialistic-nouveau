@@ -97,7 +97,7 @@ class SettingsActivity : DrawerActivity() {
       startActivity(
           Intent(this, PreferencesActivity::class.java)
               .putExtra(PreferencesActivity.EXTRA_TITLE, title)
-              .putExtra(PreferencesActivity.EXTRA_PREFERENCES, preferences)
+              .putExtra(PreferencesActivity.EXTRA_PREFERENCES, preferences),
       )
     }
   }

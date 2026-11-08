@@ -99,7 +99,7 @@ object Preferences {
         R.string.pref_search_sort,
         context.getString(
             if (byRecent) R.string.pref_search_sort_value_recent
-            else R.string.pref_search_sort_value_default
+            else R.string.pref_search_sort_value_default,
         ),
     )
   }

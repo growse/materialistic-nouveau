@@ -380,7 +380,7 @@ class HackerNewsItem(
           object : ClickableSpan() {
             override fun onClick(view: View) {
               view.context.startActivity(
-                  Intent(Intent.ACTION_VIEW).setData(AppUtils.createUserUri(by))
+                  Intent(Intent.ACTION_VIEW).setData(AppUtils.createUserUri(by)),
               )
             }
 

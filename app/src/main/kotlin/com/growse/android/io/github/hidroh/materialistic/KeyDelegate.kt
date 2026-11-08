@@ -291,7 +291,7 @@ class KeyDelegate {
 
     val currentPosition: Int
       get() = // TODO handle last page item
-      this.linearLayoutManager!!.findFirstVisibleItemPosition()
+          this.linearLayoutManager!!.findFirstVisibleItemPosition()
 
     fun scrollToPosition(position: Int): IntArray? {
       if (position >= 0 && position < recyclerView.adapter!!.itemCount) {

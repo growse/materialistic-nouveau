@@ -79,7 +79,7 @@ class StoryRecyclerViewAdapter(
           if (dy > 0) { // scrolling down
             markAsViewed(
                 (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition() -
-                    1
+                    1,
             )
           }
         }
@@ -340,7 +340,8 @@ class StoryRecyclerViewAdapter(
       )
     }
     holder.setChecked(
-        isSelected(story.id) || !TextUtils.isEmpty(username) && TextUtils.equals(username, story.by)
+        isSelected(story.id) ||
+            !TextUtils.isEmpty(username) && TextUtils.equals(username, story.by),
     )
     holder.setViewed(story.isViewed)
     if (story.localRevision < favoriteRevision) {
@@ -398,7 +399,7 @@ class StoryRecyclerViewAdapter(
               override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 return areItemsTheSame(oldItemPosition, newItemPosition)
               }
-            }
+            },
         )
         .dispatchUpdatesTo(
             object : ListUpdateCallback {
@@ -420,7 +421,7 @@ class StoryRecyclerViewAdapter(
               override fun onChanged(position: Int, count: Int, payload: Any?) {
                 // no-op
               }
-            }
+            },
         )
   }
 
@@ -471,14 +472,14 @@ class StoryRecyclerViewAdapter(
             context.startActivity(
                 Intent(context, ComposeActivity::class.java)
                     .putExtra(ComposeActivity.EXTRA_PARENT_ID, story.id)
-                    .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, story.displayedTitle)
+                    .putExtra(ComposeActivity.EXTRA_PARENT_TEXT, story.displayedTitle),
             )
             return@setOnMenuItemClickListener true
           }
           if (item.itemId == R.id.menu_contextual_profile) {
             context.startActivity(
                 Intent(context, UserActivity::class.java)
-                    .putExtra(UserActivity.EXTRA_USERNAME, story.by)
+                    .putExtra(UserActivity.EXTRA_USERNAME, story.by),
             )
             return@setOnMenuItemClickListener true
           }

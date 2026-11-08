@@ -253,7 +253,7 @@ constructor(
                         Intent(context, FavoriteActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-                    )
+                    ),
                 )
                 .build(),
         )
@@ -284,7 +284,7 @@ constructor(
                       0,
                       uri.toSendIntentChooser(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-                  )
+                  ),
               )
               .build(),
       )
@@ -335,7 +335,7 @@ constructor(
       get() =
           Favorite(
               getString(
-                  getColumnIndexOrThrow(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_ITEM_ID)
+                  getColumnIndexOrThrow(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_ITEM_ID),
               ),
               getString(getColumnIndexOrThrow(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_URL)),
               getString(getColumnIndex(MaterialisticDatabase.FavoriteEntry.COLUMN_NAME_TITLE)),
@@ -383,7 +383,7 @@ private fun NotificationCompat.Builder.setChannel(
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
     (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
         .createNotificationChannel(
-            NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_LOW)
+            NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_LOW),
         )
     this.setChannelId(channelId)
   }

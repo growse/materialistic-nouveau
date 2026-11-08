@@ -151,7 +151,7 @@ constructor(
           override fun onTouch(view: View?, motionEvent: MotionEvent): Boolean {
             return detectorCompat.onTouchEvent(motionEvent)
           }
-        }
+        },
     )
   }
 
@@ -185,7 +185,7 @@ constructor(
             }
             return true
           }
-        }
+        },
     )
   }
 
