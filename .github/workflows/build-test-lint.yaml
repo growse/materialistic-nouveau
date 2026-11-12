@@ -88,8 +88,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Gradle Managed Devices defined in app/build.gradle.kts.
-        device: [atdApi33, aospApi23]
+        # Gradle Managed Devices defined in app/build.gradle.kts. aospApi23 is
+        # left out: its emulator doesn't boot reliably on a fresh runner, and
+        # GMD times out generating the snapshot.
+        device: [atdApi33]
     steps:
       - name: "Checkout"
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
