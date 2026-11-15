@@ -211,7 +211,8 @@ class ListFragment : BaseListFragment() {
         return@observe
       }
       itemLists.first?.let { onItemsLoaded(it) }
-      itemLists.second?.let { onItemsLoaded(it) }
+      // a null current list means the fetch failed, which onItemsLoaded reports
+      onItemsLoaded(itemLists.second)
     }
   }
 
