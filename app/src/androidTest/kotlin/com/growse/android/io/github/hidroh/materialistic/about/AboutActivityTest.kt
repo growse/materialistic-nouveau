@@ -3,12 +3,16 @@ package com.growse.android.io.github.hidroh.materialistic.about
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.growse.android.io.github.hidroh.materialistic.screens.AboutScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class AboutActivityTest : TestCase() {
+  @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
 
-  @get:Rule val activityRule = ActivityScenarioRule(AboutActivity::class.java)
+  @get:Rule(order = 1) val activityRule = ActivityScenarioRule(AboutActivity::class.java)
 
   @Test
   fun toolbarIsDisplayed() = run {

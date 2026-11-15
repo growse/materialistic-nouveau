@@ -18,7 +18,7 @@ package com.growse.android.io.github.hidroh.materialistic.widget
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import com.growse.android.io.github.hidroh.materialistic.Application
+import com.growse.android.io.github.hidroh.materialistic.BaseApplication
 
 class TextView
 @JvmOverloads
@@ -29,7 +29,7 @@ constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
   init {
     if (!isInEditMode) {
-      typeface = Application.TYPE_FACE
+      typeface = BaseApplication.TYPE_FACE
     }
   }
 }

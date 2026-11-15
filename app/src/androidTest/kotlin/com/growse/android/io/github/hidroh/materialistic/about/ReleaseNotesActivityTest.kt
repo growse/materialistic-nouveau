@@ -6,13 +6,17 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.growse.android.io.github.hidroh.materialistic.screens.ReleaseNotesScreen
 import com.growse.android.io.github.hidroh.materialistic.settings.Preferences
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class ReleaseNotesActivityTest : TestCase() {
+  @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
 
-  @get:Rule val activityRule = ActivityScenarioRule(ReleaseNotesActivity::class.java)
+  @get:Rule(order = 1) val activityRule = ActivityScenarioRule(ReleaseNotesActivity::class.java)
 
   @Test
   fun webViewIsDisplayed() = run {

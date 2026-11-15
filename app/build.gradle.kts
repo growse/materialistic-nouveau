@@ -32,7 +32,7 @@ android {
     // Keep these as literals: F-Droid's update checker regex-parses them from this file.
     versionCode = 4010
     versionName = "v4.0.10"
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner = "com.growse.android.io.github.hidroh.materialistic.HiltTestRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
     buildConfigField("String", "MERCURY_TOKEN", "\"\"")
@@ -149,6 +149,10 @@ dependencies {
   testImplementation(libs.rxjava)
 
   androidTestImplementation(libs.kaspresso)
+  androidTestImplementation(libs.hilt.android.testing)
+  kspAndroidTest(libs.hilt.android.compiler)
+  androidTestImplementation(libs.okhttp.mockwebserver)
+  androidTestImplementation(libs.okhttp.tls)
   androidTestImplementation(libs.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.androidx.test.ext.junit)

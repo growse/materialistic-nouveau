@@ -21,7 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.growse.android.io.github.hidroh.materialistic.Application
+import com.growse.android.io.github.hidroh.materialistic.BaseApplication
 import com.growse.android.io.github.hidroh.materialistic.R
 import com.growse.android.io.github.hidroh.materialistic.ui.FontCache
 
@@ -42,7 +42,7 @@ constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int = 0) :
 
   override fun persistString(value: String?): Boolean {
     if (key == context.getString(R.string.pref_font)) {
-      Application.TYPE_FACE = FontCache.get(context, value)
+      BaseApplication.TYPE_FACE = FontCache.get(context, value)
     }
     return super.persistString(value)
   }

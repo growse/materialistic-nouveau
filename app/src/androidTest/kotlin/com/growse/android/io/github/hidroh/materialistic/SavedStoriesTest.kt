@@ -10,11 +10,17 @@ import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatab
 import com.growse.android.io.github.hidroh.materialistic.screens.ItemScreen
 import com.growse.android.io.github.hidroh.materialistic.screens.SavedStoriesScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class SavedStoriesTest : TestCase() {
+  @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
+
   private val context = ApplicationProvider.getApplicationContext<Context>()
 
   @Before

@@ -7,16 +7,22 @@ import androidx.test.core.app.ActivityScenario
 import com.growse.android.io.github.hidroh.materialistic.screens.PreferencesScreen
 import com.growse.android.io.github.hidroh.materialistic.settings.PreferencesActivity
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 /**
  * Covers the settings that use [androidx.preference.DropDownPreference], using the comment "Thread"
  * display setting as the example.
  */
+@HiltAndroidTest
 class DropDownPreferenceTest : TestCase() {
+  @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
+
   private val context
     get() = device.targetContext
 

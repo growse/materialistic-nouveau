@@ -4,12 +4,16 @@ import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.growse.android.io.github.hidroh.materialistic.screens.FeedbackScreen
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class FeedbackActivityTest : TestCase() {
+  @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
 
-  @get:Rule val activityRule = ActivityScenarioRule(FeedbackActivity::class.java)
+  @get:Rule(order = 1) val activityRule = ActivityScenarioRule(FeedbackActivity::class.java)
 
   @Test
   fun formFieldsAreDisplayedAndEmpty() = run {
