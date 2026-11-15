@@ -15,6 +15,7 @@
  */
 package com.growse.android.io.github.hidroh.materialistic.data
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -216,6 +217,9 @@ internal constructor(
    *   out of it - that would refresh the row's timestamp without refreshing its content, and
    *   [.CACHE_TTL_MILLIS] would never elapse.
    */
+  // syncArticle() branches on the current looper at runtime, so its UI-thread path never runs
+  // alongside the worker-thread cache write here.
+  @SuppressLint("ThreadConstraint")
   fun sync(item: HackerNewsItem, store: Boolean) {
     if (store) {
       mLocalCache.putCachedItem(toCachedItem(item))
