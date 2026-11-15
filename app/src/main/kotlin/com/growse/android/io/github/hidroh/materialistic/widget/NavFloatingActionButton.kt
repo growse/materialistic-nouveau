@@ -251,6 +251,16 @@ constructor(
       return metrics
     }
 
+  /**
+   * Saved positions are keyed by the host activity's class name as it was when every activity lived
+   * in the root package, so moving an activity to another package doesn't reset them.
+   */
+  private val hostKey: String
+    get() =
+        context.javaClass.let {
+          if (it.name.startsWith("$APP_PACKAGE.")) "$APP_PACKAGE.${it.simpleName}" else it.name
+        }
+
   private val preferences: SharedPreferences?
     get() {
       if (mPreferences == null) {
@@ -260,7 +270,7 @@ constructor(
             String.format(
                 Locale.US,
                 PREFERENCES_FAB_X,
-                context.javaClass.name,
+                hostKey,
                 metrics.widthPixels,
                 metrics.heightPixels,
             )
@@ -268,7 +278,7 @@ constructor(
             String.format(
                 Locale.US,
                 PREFERENCES_FAB_Y,
-                context.javaClass.name,
+                hostKey,
                 metrics.widthPixels,
                 metrics.heightPixels,
             )
@@ -277,6 +287,7 @@ constructor(
     }
 
   companion object {
+    private const val APP_PACKAGE = "com.growse.android.io.github.hidroh.materialistic"
     private const val PREFERENCES_FAB = "_fab"
     private const val PREFERENCES_FAB_X = "%1\$s_%2\$d_%3\$d_x"
     private const val PREFERENCES_FAB_Y = "%1\$s_%2\$d_%3\$d_y"
