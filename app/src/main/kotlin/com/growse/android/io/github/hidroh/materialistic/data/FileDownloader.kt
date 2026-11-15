@@ -3,7 +3,6 @@ package com.growse.android.io.github.hidroh.materialistic.data
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import androidx.annotation.WorkerThread
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.IOException
@@ -27,7 +26,8 @@ constructor(
       context.cacheDir.path // don't need to keep a reference to context after this
   val mMainHandler: Handler = Handler(Looper.getMainLooper())
 
-  @WorkerThread
+  // Called from the UI thread: the download itself is enqueued, and callbacks are posted back
+  // to the main looper.
   fun downloadFile(url: String, mimeType: String, callback: FileDownloaderCallback) {
     val outputFile = File(mCacheDir, File(url).name)
     if (outputFile.exists()) {
