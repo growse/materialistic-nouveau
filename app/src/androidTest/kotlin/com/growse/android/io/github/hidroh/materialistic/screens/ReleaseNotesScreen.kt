@@ -1,7 +1,7 @@
 package com.growse.android.io.github.hidroh.materialistic.screens
 
 import com.growse.android.io.github.hidroh.materialistic.R
-import com.growse.android.io.github.hidroh.materialistic.ReleaseNotesActivity
+import com.growse.android.io.github.hidroh.materialistic.about.ReleaseNotesActivity
 import com.kaspersky.kaspresso.screens.KScreen
 import io.github.kakaocup.kakao.common.views.KView
 import io.github.kakaocup.kakao.text.KButton

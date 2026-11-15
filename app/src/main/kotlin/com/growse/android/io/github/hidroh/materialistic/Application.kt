@@ -28,16 +28,16 @@ import android.os.StrictMode.VmPolicy
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
-import com.growse.android.io.github.hidroh.materialistic.AdBlocker.init
-import com.growse.android.io.github.hidroh.materialistic.FontCache.get
-import com.growse.android.io.github.hidroh.materialistic.Preferences.Theme.getAutoDayNightMode
-import com.growse.android.io.github.hidroh.materialistic.Preferences.Theme.getTypeface
-import com.growse.android.io.github.hidroh.materialistic.Preferences.getUsername
-import com.growse.android.io.github.hidroh.materialistic.Preferences.isSortByRecent
-import com.growse.android.io.github.hidroh.materialistic.Preferences.migrate
-import com.growse.android.io.github.hidroh.materialistic.Preferences.setUsername
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaClient
 import com.growse.android.io.github.hidroh.materialistic.data.SyncScheduler
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.Theme.getAutoDayNightMode
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.Theme.getTypeface
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.getUsername
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.isSortByRecent
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.migrate
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.setUsername
+import com.growse.android.io.github.hidroh.materialistic.ui.FontCache.get
+import com.growse.android.io.github.hidroh.materialistic.web.AdBlocker.init
 import dagger.hilt.android.HiltAndroidApp
 import rx.schedulers.Schedulers
 

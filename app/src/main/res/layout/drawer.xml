@@ -24,7 +24,7 @@
     android:animateLayoutChanges="true"
     android:clickable="true"
     android:focusable="true"
-    tools:context="com.growse.android.io.github.hidroh.materialistic.DrawerActivity"
+    tools:context="com.growse.android.io.github.hidroh.materialistic.ui.DrawerActivity"
 >
 
     <FrameLayout

@@ -70,6 +70,6 @@
         </html>
         ]]>
     </string>
-    <string name="fab_scrolling_view_behavior" translatable="false">com.growse.android.io.github.hidroh.materialistic.FabAwareScrollBehavior</string>
+    <string name="fab_scrolling_view_behavior" translatable="false">com.growse.android.io.github.hidroh.materialistic.ui.FabAwareScrollBehavior</string>
 
 </resources>

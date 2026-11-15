@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.growse.android.io.github.hidroh.materialistic.R
-import com.growse.android.io.github.hidroh.materialistic.ThemedActivity
+import com.growse.android.io.github.hidroh.materialistic.ui.ThemedActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

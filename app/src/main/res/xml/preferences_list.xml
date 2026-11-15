@@ -48,7 +48,7 @@
         android:summary="@string/pref_highlight_updated_summary"
         android:defaultValue="true" />
 
-    <com.growse.android.io.github.hidroh.materialistic.preference.PreferenceHelp
+    <com.growse.android.io.github.hidroh.materialistic.settings.PreferenceHelp
         android:key="@string/pref_highlight_updated_help"
         android:title="@string/whats_this"
         app:dialogTitle="@string/pref_highlight_updated_title"

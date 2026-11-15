@@ -1,7 +1,7 @@
 package com.growse.android.io.github.hidroh.materialistic.data
 
 import com.google.gson.Gson
-import com.growse.android.io.github.hidroh.materialistic.Navigable
+import com.growse.android.io.github.hidroh.materialistic.ui.Navigable
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe

@@ -20,8 +20,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import com.growse.android.io.github.hidroh.materialistic.BuildConfig
-import com.growse.android.io.github.hidroh.materialistic.Preferences
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences
 import java.io.IOException
 import java.net.HttpURLConnection.HTTP_MOVED_TEMP
 import java.net.HttpURLConnection.HTTP_OK

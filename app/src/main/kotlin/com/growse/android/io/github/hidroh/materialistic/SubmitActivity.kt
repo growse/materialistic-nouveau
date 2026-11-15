@@ -34,6 +34,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.growse.android.io.github.hidroh.materialistic.accounts.UserServices
+import com.growse.android.io.github.hidroh.materialistic.ui.AlertDialogBuilder
+import com.growse.android.io.github.hidroh.materialistic.ui.ThemedActivity
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import java.net.MalformedURLException

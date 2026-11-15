@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ActivityScenario
 import com.growse.android.io.github.hidroh.materialistic.screens.PreferencesScreen
+import com.growse.android.io.github.hidroh.materialistic.settings.PreferencesActivity
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.After
 import org.junit.Assert.assertEquals

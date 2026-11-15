@@ -22,8 +22,8 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextUtils
 import androidx.core.net.toUri
-import com.growse.android.io.github.hidroh.materialistic.AppUtils.getAbbreviatedTimeSpan
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils.getAbbreviatedTimeSpan
 
 /** Represents a favorite item */
 class Favorite : WebItem {

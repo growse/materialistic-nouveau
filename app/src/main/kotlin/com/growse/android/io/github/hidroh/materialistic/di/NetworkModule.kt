@@ -18,12 +18,12 @@ package com.growse.android.io.github.hidroh.materialistic.di
 import android.content.Context
 import android.net.TrafficStats
 import android.util.Log
-import com.growse.android.io.github.hidroh.materialistic.AppUtils
 import com.growse.android.io.github.hidroh.materialistic.BuildConfig
 import com.growse.android.io.github.hidroh.materialistic.data.AlgoliaClient
 import com.growse.android.io.github.hidroh.materialistic.data.HackerNewsClient
 import com.growse.android.io.github.hidroh.materialistic.data.ReadabilityClient
 import com.growse.android.io.github.hidroh.materialistic.data.RestServiceFactory
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

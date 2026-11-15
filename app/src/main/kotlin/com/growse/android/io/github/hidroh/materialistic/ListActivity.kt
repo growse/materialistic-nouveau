@@ -16,6 +16,7 @@
 package com.growse.android.io.github.hidroh.materialistic
 
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager
+import com.growse.android.io.github.hidroh.materialistic.stories.BaseStoriesActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -26,6 +26,8 @@ import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager.Co
 import com.growse.android.io.github.hidroh.materialistic.data.FavoriteManager.Companion.isRemoved
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager
 import com.growse.android.io.github.hidroh.materialistic.data.MaterialisticDatabase
+import com.growse.android.io.github.hidroh.materialistic.favorites.FavouriteFragment
+import com.growse.android.io.github.hidroh.materialistic.stories.BaseListActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

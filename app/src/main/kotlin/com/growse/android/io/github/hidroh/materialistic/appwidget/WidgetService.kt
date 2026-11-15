@@ -25,12 +25,12 @@ import android.text.style.ForegroundColorSpan
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.content.ContextCompat
-import com.growse.android.io.github.hidroh.materialistic.AppUtils
-import com.growse.android.io.github.hidroh.materialistic.AppUtils.createItemUri
 import com.growse.android.io.github.hidroh.materialistic.R
 import com.growse.android.io.github.hidroh.materialistic.data.Item
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManager
 import com.growse.android.io.github.hidroh.materialistic.data.ItemManagerQualifiers
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils.createItemUri
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
