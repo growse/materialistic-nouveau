@@ -32,11 +32,11 @@ import android.widget.RemoteViews
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.edit
-import com.growse.android.io.github.hidroh.materialistic.BestActivity
 import com.growse.android.io.github.hidroh.materialistic.ListActivity
 import com.growse.android.io.github.hidroh.materialistic.NewActivity
 import com.growse.android.io.github.hidroh.materialistic.R
-import com.growse.android.io.github.hidroh.materialistic.SearchActivity
+import com.growse.android.io.github.hidroh.materialistic.search.SearchActivity
+import com.growse.android.io.github.hidroh.materialistic.stories.BestActivity
 import java.util.Locale
 
 internal class WidgetHelper(private val mContext: Context) {

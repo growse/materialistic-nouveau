@@ -1,7 +1,7 @@
 package com.growse.android.io.github.hidroh.materialistic.screens
 
-import com.growse.android.io.github.hidroh.materialistic.FeedbackActivity
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.about.FeedbackActivity
 import com.kaspersky.kaspresso.screens.KScreen
 import io.github.kakaocup.kakao.edit.KEditText
 import io.github.kakaocup.kakao.text.KButton

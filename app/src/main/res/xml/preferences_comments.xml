@@ -68,7 +68,7 @@
         android:summary="@string/pref_navigation_title"
         style="@style/Preference.Category.Hint">
 
-        <com.growse.android.io.github.hidroh.materialistic.preference.PreferenceHelp
+        <com.growse.android.io.github.hidroh.materialistic.settings.PreferenceHelp
             android:key="@string/pref_navigation_help"
             android:title="@string/whats_this"
             app:dialogTitle="@string/pref_navigation_title"

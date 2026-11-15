@@ -32,11 +32,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GestureDetectorCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.growse.android.io.github.hidroh.materialistic.AppUtils.openPlayStore
-import com.growse.android.io.github.hidroh.materialistic.Navigable
-import com.growse.android.io.github.hidroh.materialistic.Preferences
-import com.growse.android.io.github.hidroh.materialistic.Preferences.navigationVibrationEnabled
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.navigationVibrationEnabled
+import com.growse.android.io.github.hidroh.materialistic.ui.Navigable
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils.openPlayStore
 import java.util.Locale
 import kotlin.math.abs
 

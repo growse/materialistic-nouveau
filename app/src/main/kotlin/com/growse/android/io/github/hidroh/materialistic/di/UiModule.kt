@@ -17,11 +17,11 @@ package com.growse.android.io.github.hidroh.materialistic.di
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.growse.android.io.github.hidroh.materialistic.ActionViewResolver
-import com.growse.android.io.github.hidroh.materialistic.AlertDialogBuilder
-import com.growse.android.io.github.hidroh.materialistic.CustomTabsDelegate
-import com.growse.android.io.github.hidroh.materialistic.KeyDelegate
-import com.growse.android.io.github.hidroh.materialistic.ResourcesProvider
+import com.growse.android.io.github.hidroh.materialistic.ui.ActionViewResolver
+import com.growse.android.io.github.hidroh.materialistic.ui.AlertDialogBuilder
+import com.growse.android.io.github.hidroh.materialistic.ui.CustomTabsDelegate
+import com.growse.android.io.github.hidroh.materialistic.ui.KeyDelegate
+import com.growse.android.io.github.hidroh.materialistic.ui.ResourcesProvider
 import com.growse.android.io.github.hidroh.materialistic.widget.PopupMenu
 import dagger.Module
 import dagger.Provides

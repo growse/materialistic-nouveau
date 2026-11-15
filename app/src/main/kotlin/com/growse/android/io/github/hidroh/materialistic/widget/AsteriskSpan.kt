@@ -21,8 +21,8 @@ import android.graphics.Paint
 import android.graphics.Paint.FontMetricsInt
 import android.text.style.ReplacementSpan
 import androidx.core.content.ContextCompat
-import com.growse.android.io.github.hidroh.materialistic.AppUtils.getThemedResId
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils.getThemedResId
 
 class AsteriskSpan(context: Context) : ReplacementSpan() {
   private val mBackgroundColor: Int

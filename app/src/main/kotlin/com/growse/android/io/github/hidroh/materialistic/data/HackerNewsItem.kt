@@ -34,9 +34,9 @@ import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.google.gson.annotations.SerializedName
-import com.growse.android.io.github.hidroh.materialistic.AppUtils
-import com.growse.android.io.github.hidroh.materialistic.Navigable
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.ui.Navigable
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils
 
 /**
  * An item from the Hacker News API.

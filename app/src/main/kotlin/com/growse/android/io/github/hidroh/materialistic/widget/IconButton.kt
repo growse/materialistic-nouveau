@@ -22,8 +22,8 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import com.growse.android.io.github.hidroh.materialistic.AppUtils.getThemedResId
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils.getThemedResId
 
 class IconButton
 @JvmOverloads

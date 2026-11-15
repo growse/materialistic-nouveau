@@ -22,7 +22,7 @@
     android:layout_height="wrap_content"
     style="@style/AppCardView">
 
-    <com.growse.android.io.github.hidroh.materialistic.widget.StoryView
+    <com.growse.android.io.github.hidroh.materialistic.stories.StoryView
         android:id="@id/story_view"
         app:local="true"
         android:layout_width="match_parent"

@@ -31,6 +31,10 @@
 
     <uses-sdk tools:overrideLibrary="androidx.browser" />
 
+    <!-- Don't rename or move components whose class name is stored outside the app: the launcher
+         activity, shortcut targets (res/xml/shortcuts.xml), deep-link and share targets, the app
+         widget, the account authenticator and JobScheduler services. Doing so breaks pinned
+         shortcuts, placed widgets, "always open with" choices and pending jobs on upgrade. -->
     <application
         android:name=".Application"
         android:supportsRtl="false"
@@ -114,27 +118,27 @@
             android:label="@string/title_activity_new" >
         </activity>
         <activity
-            android:name=".ShowActivity"
+            android:name=".stories.ShowActivity"
             android:label="@string/title_activity_show" >
         </activity>
         <activity
-            android:name=".AskActivity"
+            android:name=".stories.AskActivity"
             android:label="@string/title_activity_ask" >
         </activity>
         <activity
-            android:name=".JobsActivity"
+            android:name=".stories.JobsActivity"
             android:label="@string/title_activity_jobs" >
         </activity>
         <activity
-            android:name=".BestActivity"
+            android:name=".stories.BestActivity"
             android:label="@string/title_activity_best" >
         </activity>
         <activity
-            android:name=".PopularActivity"
+            android:name=".stories.PopularActivity"
             android:label="@string/title_activity_popular" >
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name=".search.SearchActivity"
             android:label="@string/title_activity_search"
             android:exported="true">
             <meta-data android:name="android.app.searchable"
@@ -144,11 +148,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".about.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".settings.SettingsActivity"
             android:label="@string/action_settings"
             android:permission="android.permission.WRITE_SECURE_SETTINGS"
             android:exported="true">
@@ -158,22 +162,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PreferencesActivity"
+            android:name=".settings.PreferencesActivity"
             android:label="@string/action_settings" >
         </activity>
         <activity
-            android:name=".OfflineWebActivity" />
+            android:name=".web.OfflineWebActivity" />
         <activity
-            android:name=".ReleaseNotesActivity"
+            android:name=".about.ReleaseNotesActivity"
             android:label="@string/title_activity_release"
             android:theme="@style/AppAlertDialog" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".accounts.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppAlertDialog">
         </activity>
         <activity
-            android:name=".FeedbackActivity"
+            android:name=".about.FeedbackActivity"
             android:theme="@style/AppAlertDialog">
         </activity>
         <activity
@@ -187,7 +191,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ComposeActivity"
+            android:name=".item.ComposeActivity"
             android:label="@string/title_activity_compose" >
         </activity>
         <activity
@@ -230,7 +234,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ThreadPreviewActivity"
+            android:name=".item.ThreadPreviewActivity"
             android:label="@string/title_activity_thread_preview"
             android:theme="@style/AppAlertDialog">
         </activity>
@@ -268,7 +272,7 @@
             android:exported="false" />
         <provider
             android:authorities="com.growse.android.io.github.hidroh.materialistic.recentprovider"
-            android:name=".data.SearchRecentSuggestionsProvider"
+            android:name=".search.SearchRecentSuggestionsProvider"
             android:exported="false" />
         <provider
             android:authorities="com.growse.android.io.github.hidroh.materialistic.fileprovider"

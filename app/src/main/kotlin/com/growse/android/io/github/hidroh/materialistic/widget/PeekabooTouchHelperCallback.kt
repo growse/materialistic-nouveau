@@ -23,8 +23,8 @@ import android.graphics.Typeface
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.growse.android.io.github.hidroh.materialistic.AppUtils.getThemedResId
 import com.growse.android.io.github.hidroh.materialistic.R
+import com.growse.android.io.github.hidroh.materialistic.util.AppUtils.getThemedResId
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.min

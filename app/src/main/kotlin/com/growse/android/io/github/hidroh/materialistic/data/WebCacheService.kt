@@ -19,10 +19,10 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.webkit.WebView
-import com.growse.android.io.github.hidroh.materialistic.Preferences.adBlockEnabled
-import com.growse.android.io.github.hidroh.materialistic.widget.AdBlockWebViewClient
-import com.growse.android.io.github.hidroh.materialistic.widget.CacheableWebView
-import com.growse.android.io.github.hidroh.materialistic.widget.CacheableWebView.ArchiveClient
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences.adBlockEnabled
+import com.growse.android.io.github.hidroh.materialistic.web.AdBlockWebViewClient
+import com.growse.android.io.github.hidroh.materialistic.web.CacheableWebView
+import com.growse.android.io.github.hidroh.materialistic.web.CacheableWebView.ArchiveClient
 
 class WebCacheService : Service() {
   override fun onBind(intent: Intent?): IBinder? {

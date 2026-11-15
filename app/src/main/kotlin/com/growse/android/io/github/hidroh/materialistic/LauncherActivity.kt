@@ -18,6 +18,12 @@ package com.growse.android.io.github.hidroh.materialistic
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.growse.android.io.github.hidroh.materialistic.settings.Preferences
+import com.growse.android.io.github.hidroh.materialistic.stories.AskActivity
+import com.growse.android.io.github.hidroh.materialistic.stories.BestActivity
+import com.growse.android.io.github.hidroh.materialistic.stories.JobsActivity
+import com.growse.android.io.github.hidroh.materialistic.stories.PopularActivity
+import com.growse.android.io.github.hidroh.materialistic.stories.ShowActivity
 
 class LauncherActivity : Activity() {
   override fun onCreate(savedInstanceState: Bundle?) {

@@ -21,7 +21,6 @@ import android.accounts.NetworkErrorException
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.growse.android.io.github.hidroh.materialistic.LoginActivity
 
 class AccountAuthenticator(private val mContext: Context?) : EmptyAccountAuthenticator(mContext) {
   @Throws(NetworkErrorException::class)

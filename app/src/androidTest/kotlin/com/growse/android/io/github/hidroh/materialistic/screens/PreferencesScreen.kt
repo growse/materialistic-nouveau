@@ -1,6 +1,6 @@
 package com.growse.android.io.github.hidroh.materialistic.screens
 
-import com.growse.android.io.github.hidroh.materialistic.PreferencesActivity
+import com.growse.android.io.github.hidroh.materialistic.settings.PreferencesActivity
 import com.kaspersky.kaspresso.screens.KScreen
 import io.github.kakaocup.kakao.text.KTextView
 

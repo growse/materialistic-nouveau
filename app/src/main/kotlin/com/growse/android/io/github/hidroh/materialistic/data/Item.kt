@@ -100,7 +100,7 @@ interface Item : WebItem {
 
   /**
    * ID of the neighbouring item in the given
-   * [com.growse.android.io.github.hidroh.materialistic.Navigable] direction, or 0.
+   * [com.growse.android.io.github.hidroh.materialistic.ui.Navigable] direction, or 0.
    */
   fun getNeighbour(direction: Int): Long
 
