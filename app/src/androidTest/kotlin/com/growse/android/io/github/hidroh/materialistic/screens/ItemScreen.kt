@@ -23,6 +23,11 @@ object ItemScreen : KScreen<ItemScreen>() {
     isDescendantOfA { withId(R.id.header_card_view) }
   }
 
+  val voteButton = KView {
+    withId(R.id.vote_button)
+    isDescendantOfA { withId(R.id.header_card_view) }
+  }
+
   /** Comments are the first tab; stories open on the article tab by default. */
   val tabs = KTabLayout { withId(R.id.tab_layout) }
 

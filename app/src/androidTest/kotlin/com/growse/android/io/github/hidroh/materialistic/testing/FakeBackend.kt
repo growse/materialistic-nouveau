@@ -2,6 +2,7 @@ package com.growse.android.io.github.hidroh.materialistic.testing
 
 import android.util.Log
 import java.net.InetAddress
+import java.net.URLDecoder
 import java.util.Collections
 import java.util.concurrent.ConcurrentHashMap
 import mockwebserver3.Dispatcher
@@ -9,6 +10,7 @@ import mockwebserver3.MockResponse
 import mockwebserver3.MockWebServer
 import mockwebserver3.RecordedRequest
 import okhttp3.Call
+import okhttp3.Headers.Companion.toHeaders
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
@@ -36,6 +38,7 @@ object FakeBackend {
 
   private val routes = ConcurrentHashMap<String, (HttpUrl) -> MockResponse>()
   private val recorded = Collections.synchronizedList(mutableListOf<HttpUrl>())
+  private val posted = Collections.synchronizedList(mutableListOf<Post>())
   private val unmatched = Collections.synchronizedList(mutableListOf<String>())
 
   private val server: MockWebServer by lazy {
@@ -52,6 +55,9 @@ object FakeBackend {
               val key = request.url.encodedPath.removePrefix("/")
               val original = originalUrl(request.url)
               recorded += original
+              if (request.method == "POST") {
+                posted += Post(original, parseForm(request.body?.utf8().orEmpty()))
+              }
               return routes[key]?.invoke(original)
                   ?: MockResponse(code = 404).also {
                     Log.w(TAG, "No response registered for $key")
@@ -92,13 +98,27 @@ object FakeBackend {
   val requests: List<HttpUrl>
     get() = synchronized(recorded) { recorded.toList() }
 
+  /** A form the app POSTed, by the URL it was sent to. */
+  data class Post(val url: HttpUrl, val form: Map<String, String>)
+
+  /** Every form POSTed so far, in order. */
+  val posts: List<Post>
+    get() = synchronized(posted) { posted.toList() }
+
+  /** The forms POSTed to [path] on any host. */
+  fun postsTo(path: String) = posts.filter { it.url.encodedPath == path }
+
   /** Paths (host first) that were requested without a registered response. */
   val unmatchedRequests: List<String>
     get() = synchronized(unmatched) { unmatched.toList() }
 
-  /** Serves [body] with [code] for requests to [url], ignoring its query string. */
-  fun respond(url: String, body: String = "", code: Int = 200) =
-      handle(url) { MockResponse(code = code, body = body) }
+  /** Serves [body] with [code] and [headers] for requests to [url], ignoring its query string. */
+  fun respond(
+      url: String,
+      body: String = "",
+      code: Int = 200,
+      headers: Map<String, String> = emptyMap(),
+  ) = handle(url) { MockResponse(code = code, headers = headers.toHeaders(), body = body) }
 
   /**
    * Answers requests to [url] with [handler], which gets the URL the app asked for, query string
@@ -113,8 +133,18 @@ object FakeBackend {
   fun reset() {
     routes.clear()
     recorded.clear()
+    posted.clear()
     unmatched.clear()
   }
+
+  private fun parseForm(body: String): Map<String, String> =
+      body
+          .split('&')
+          .filter { it.isNotEmpty() }
+          .associate {
+            val (name, value) = (it.split('=', limit = 2) + "").take(2)
+            URLDecoder.decode(name, "UTF-8") to URLDecoder.decode(value, "UTF-8")
+          }
 
   /**
    * Undoes [client]'s rewrite: `/host/path?query` on the fake back to `https://host/path?query`.

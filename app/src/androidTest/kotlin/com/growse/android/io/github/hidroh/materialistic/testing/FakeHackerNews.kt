@@ -32,7 +32,10 @@ object FakeHackerNews {
   /** Makes the top stories list fail with [code]. */
   fun topStoriesFail(code: Int = 500) = feedFails(Feed.Top, code)
 
-  /** A text story, so opening it never needs a WebView to load an external article. */
+  /**
+   * A story. With no [url] it's a text story, so opening it never needs a WebView to load an
+   * external article.
+   */
   fun story(
       id: Long,
       title: String,
@@ -40,6 +43,7 @@ object FakeHackerNews {
       by: String = "author",
       score: Int = 1,
       text: String? = null,
+      url: String? = null,
   ) =
       item(
           JSONObject()
@@ -51,7 +55,10 @@ object FakeHackerNews {
               .put("time", postedAt)
               .put("descendants", kids.size)
               .put("kids", JSONArray(kids))
-              .apply { if (text != null) put("text", text) },
+              .apply {
+                if (text != null) put("text", text)
+                if (url != null) put("url", url)
+              },
       )
 
   /** A comment; [dead] ones are those flagged and hidden from logged-out readers on HN. */
