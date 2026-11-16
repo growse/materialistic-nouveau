@@ -258,7 +258,11 @@ abstract class ItemRecyclerViewAdapter<VH : ItemRecyclerViewAdapter.ItemViewHold
           .inflate(R.menu.menu_contextual_comment)
           .setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-              R.id.menu_contextual_vote -> userServices.voteUp(context, item.id, VoteCallback(this))
+              R.id.menu_contextual_vote ->
+                  // false means there's no signed-in account to vote with
+                  if (!userServices.voteUp(context, item.id, VoteCallback(this))) {
+                    alertDialogBuilder?.let { AppUtils.showLogin(context, it) }
+                  }
               R.id.menu_contextual_comment ->
                   context.startActivity(
                       Intent(context, ComposeActivity::class.java)

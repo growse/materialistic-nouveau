@@ -343,7 +343,12 @@ class ItemActivity : ThemedActivity(), ItemFragment.ItemChangedListener {
     bindFavorite()
     sessionManager.view(story.id)
     voteButton.isVisible = true
-    voteButton.setOnClickListener { userServices.voteUp(this, story.id, VoteCallback(this)) }
+    voteButton.setOnClickListener {
+      // false means there's no signed-in account to vote with
+      if (!userServices.voteUp(this, story.id, VoteCallback(this))) {
+        AppUtils.showLogin(this, alertDialogBuilder)
+      }
+    }
     bindTitle(story)
     findViewById<TextView>(R.id.posted).apply {
       text = story.getDisplayedTime(this@ItemActivity)

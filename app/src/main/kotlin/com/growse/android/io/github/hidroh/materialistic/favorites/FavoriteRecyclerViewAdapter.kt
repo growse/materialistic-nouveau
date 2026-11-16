@@ -302,7 +302,10 @@ class FavoriteRecyclerViewAdapter(
   }
 
   private fun vote(item: Favorite) {
-    mUserServices.voteUp(context, item.id, VoteCallback(this))
+    // false means there's no signed-in account to vote with
+    if (!mUserServices.voteUp(context, item.id, VoteCallback(this))) {
+      showLogin(context, mAlertDialogBuilder)
+    }
   }
 
   fun onVoted(successful: Boolean?) {
