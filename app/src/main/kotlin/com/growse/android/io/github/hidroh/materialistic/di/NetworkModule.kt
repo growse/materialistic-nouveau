@@ -32,6 +32,7 @@ import dagger.hilt.components.SingletonComponent
 import java.io.IOException
 import java.net.InetAddress
 import java.net.Socket
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import javax.net.SocketFactory
 import okhttp3.Cache
@@ -128,12 +129,19 @@ internal class NetworkModule {
     }
 
     companion object {
+      /**
+       * Hosts whose responses are cached regardless of what their servers say, mapped to the
+       * Cache-Control value to give them. A bare directive, as it replaces the header's value:
+       * [RestServiceFactory]'s constants include the header name, for Retrofit's `@Headers`.
+       */
       val CACHE_ENABLED_HOSTS: MutableMap<String?, String?> = HashMap()
 
       init {
-        CACHE_ENABLED_HOSTS[HackerNewsClient.HOST] = RestServiceFactory.CACHE_CONTROL_MAX_AGE_30M
-        CACHE_ENABLED_HOSTS[AlgoliaClient.HOST] = RestServiceFactory.CACHE_CONTROL_MAX_AGE_30M
-        CACHE_ENABLED_HOSTS[ReadabilityClient.HOST] = RestServiceFactory.CACHE_CONTROL_MAX_AGE_24H
+        val maxAge30m = CacheControl.Builder().maxAge(30, TimeUnit.MINUTES).build().toString()
+        val maxAge24h = CacheControl.Builder().maxAge(24, TimeUnit.HOURS).build().toString()
+        CACHE_ENABLED_HOSTS[HackerNewsClient.HOST] = maxAge30m
+        CACHE_ENABLED_HOSTS[AlgoliaClient.HOST] = maxAge30m
+        CACHE_ENABLED_HOSTS[ReadabilityClient.HOST] = maxAge24h
       }
     }
   }
