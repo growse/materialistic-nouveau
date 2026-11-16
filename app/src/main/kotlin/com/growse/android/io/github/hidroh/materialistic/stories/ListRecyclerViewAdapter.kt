@@ -102,10 +102,10 @@ abstract class ListRecyclerViewAdapter<VH : ListRecyclerViewAdapter.ItemViewHold
     holder.bind(
         item,
         mHotThreshold,
-        mCardViewEnabled,
-        isSelected(item.id),
-        { handleItemClick(item, holder) },
-        { openItem(item) },
+        selected = isSelected(item.id),
+        cardViewEnabled = mCardViewEnabled,
+        itemClickListener = { handleItemClick(item, holder) },
+        commentClickListener = { openItem(item) },
     )
     bindItem(holder, position)
   }
