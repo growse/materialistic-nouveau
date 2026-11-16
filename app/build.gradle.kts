@@ -73,6 +73,9 @@ android {
   }
 
   testOptions {
+    // Turns off window, transition and animator animations on test devices, so a tap can't land
+    // on a view that's still moving into place and be lost.
+    animationsDisabled = true
     unitTests {
       isReturnDefaultValues = true
       all { it.useJUnitPlatform() } // Kotest runs on the JUnit 5 platform.
