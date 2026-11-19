@@ -92,6 +92,15 @@ android {
           systemImageSource = "aosp-atd"
           require64Bit = true
         }
+        // Android 15 is where targeting SDK 35+ forces edge-to-edge, so this is the
+        // device that shows whether every screen keeps clear of the system bars. A
+        // stock image, as ATD images drop SystemUI and with it the status bar.
+        create("aospApi35") {
+          device = "Pixel 6"
+          sdkVersion = 35
+          systemImageSource = "aosp"
+          require64Bit = true
+        }
         // Guards minSdk. No ATD image exists this far back, so this is a stock
         // AOSP image and is correspondingly slower to boot.
         create("aospApi23") {

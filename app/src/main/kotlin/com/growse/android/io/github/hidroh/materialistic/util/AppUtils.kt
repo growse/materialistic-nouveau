@@ -37,11 +37,13 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
+import android.view.ViewGroup
 import android.view.Window
 import android.webkit.WebSettings
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.annotation.StyleRes
 import androidx.browser.customtabs.CustomTabsIntent
@@ -53,6 +55,8 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.insets.ColorProtection
+import androidx.core.view.insets.ProtectionLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.growse.android.io.github.hidroh.materialistic.BuildConfig
@@ -441,6 +445,28 @@ object AppUtils {
       windowInsets
     }
     ViewCompat.requestApplyInsets(toolbar)
+  }
+
+  /**
+   * Paints a solid [color] bar behind the status bar, over the activity's content. Drawing
+   * edge-to-edge, as Android 15+ requires, leaves the status bar transparent, so without it a
+   * scrolling toolbar's icons and the content beneath slide up behind the clock and status icons.
+   * Wraps the content in a [ProtectionLayout], which sizes the bar to the status bar's inset, so
+   * scrolling content passes under the bar rather than showing through it.
+   */
+  @JvmStatic
+  fun applyStatusBarProtection(activity: Activity, @ColorInt color: Int) {
+    val content = activity.findViewById<ViewGroup>(android.R.id.content)
+    val root = content.getChildAt(0) ?: return
+    content.removeView(root)
+    content.addView(
+        ProtectionLayout(activity, listOf(ColorProtection(WindowInsetsCompat.Side.TOP, color)))
+            .apply { addView(root) },
+        ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT,
+        ),
+    )
   }
 
   @JvmStatic

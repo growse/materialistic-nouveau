@@ -17,6 +17,7 @@ package com.growse.android.io.github.hidroh.materialistic.ui
 
 import android.app.ActivityManager.TaskDescription
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import androidx.activity.OnBackPressedCallback
@@ -66,6 +67,16 @@ abstract class ThemedActivity : AppCompatActivity() {
 
   override fun onPostCreate(savedInstanceState: Bundle?) {
     super.onPostCreate(savedInstanceState)
+    // Android 15+ draws edge-to-edge and ignores the window's status bar color, leaving the bar
+    // transparent; paint it in the theme's color, as earlier versions do themselves. After
+    // onCreate,
+    // so the content it wraps has been set.
+    if (!isDialogTheme && Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+      AppUtils.applyStatusBarProtection(
+          this,
+          ContextCompat.getColor(this, AppUtils.getThemedResId(this, R.attr.colorPrimaryDark)),
+      )
+    }
     themeObservable.subscribe(
         this,
         { key, _ -> onThemeChanged(key) },

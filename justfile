@@ -65,7 +65,7 @@ unit-test:
 unit-test-coverage:
     {{gradlec}} app:createDebugUnitTestCoverageReport
 
-# Kaspresso tests on gradle-managed devices, no attached device needed: allDevices (ATD API 33 + minSdk API 23), atdApi33 or aospApi23
+# Kaspresso tests on gradle-managed devices, no attached device needed: allDevices (ATD API 33, minSdk API 23 and edge-to-edge API 35), atdApi33, aospApi23 or aospApi35
 [group('test')]
 espresso device='allDevices':
     {{gradlec}} app:{{device}}DebugAndroidTest

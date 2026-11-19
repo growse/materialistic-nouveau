@@ -3,6 +3,7 @@ package com.growse.android.io.github.hidroh.materialistic.screens
 import android.view.View
 import androidx.test.espresso.ViewAssertion
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.growse.android.io.github.hidroh.materialistic.ItemActivity
 import com.growse.android.io.github.hidroh.materialistic.R
 import com.growse.android.io.github.hidroh.materialistic.testing.waitUntilSettled
@@ -38,6 +39,13 @@ object ItemScreen : KScreen<ItemScreen>() {
    * swallows taps while it's still settling, so tapping a comment straight away can be lost.
    */
   fun showComments() {
+    // the tabs only exist once the story has loaded, and selecting one before then crashes
+    tabs.assert {
+      ViewAssertion { view, noViewFound ->
+        if (noViewFound != null) throw noViewFound
+        if ((view as TabLayout).tabCount == 0) throw AssertionFailedError("No tabs yet")
+      }
+    }
     tabs.selectTab(0)
     pager.assert {
       ViewAssertion { view, noViewFound ->
