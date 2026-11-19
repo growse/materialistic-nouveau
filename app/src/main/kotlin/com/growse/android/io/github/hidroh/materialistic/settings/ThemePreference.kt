@@ -128,6 +128,7 @@ class ThemePreference(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
   companion object {
     private const val LIGHT = "light"
     const val SYSTEM: String = "system"
+    private const val CLASSIC = "classic"
     private const val DARK = "dark"
     private const val BLACK = "black"
     private const val SEPIA = "sepia"
@@ -139,6 +140,7 @@ class ThemePreference(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
 
     init {
       BUTTONS[R.id.theme_light] = LIGHT
+      BUTTONS[R.id.theme_classic] = CLASSIC
       BUTTONS[R.id.theme_system] = SYSTEM
       BUTTONS[R.id.theme_dark] = DARK
       BUTTONS[R.id.theme_black] = BLACK
@@ -148,6 +150,7 @@ class ThemePreference(context: Context, attrs: AttributeSet?, defStyleAttr: Int)
       BUTTONS[R.id.theme_solarized_dark] = SOLARIZED_DARK
 
       VALUES[LIGHT] = DayNightSpec(R.string.theme_light)
+      VALUES[CLASSIC] = DayNightSpec(R.string.theme_classic, R.style.Classic)
       VALUES[SYSTEM] = DayNightSpec(R.string.theme_system, R.style.System)
       VALUES[DARK] = DarkSpec(R.string.theme_dark)
       VALUES[BLACK] = DarkSpec(R.string.theme_black, R.style.Black)

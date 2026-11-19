@@ -50,6 +50,12 @@
     <color name="lightGreen700">#689F38</color>
     <color name="yellow700">#FBC02D</color>
     <color name="orange500">#FF9800</color>
+
+    <!-- the original Materialistic orange, for the Classic theme -->
+    <color name="classicOrange50">#FFF3E0</color>
+    <color name="classicOrange100">#FFE0B2</color>
+    <color name="classicOrange300">#FFB74D</color>
+    <color name="classicOrange400">#FFA726</color>
     <color name="brown500">#795548</color>
     <color name="blueGrey500">#607D8B</color>
 

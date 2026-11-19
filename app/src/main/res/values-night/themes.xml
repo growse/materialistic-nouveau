@@ -37,6 +37,9 @@
     <style name="AppTheme.Translucent" parent="AppTheme.Dark.Translucent">
     </style>
 
+    <!-- At night Classic is the plain dark theme, as Light is: nothing to override. -->
+    <style name="Classic" />
+
     <style name="Sepia">
         <item name="android:textColorPrimary">@color/orange100</item>
         <item name="android:textColorSecondary">@color/orange50</item>

@@ -164,6 +164,15 @@
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog.System</item>
     </style>
 
+    <!-- The original Materialistic orange. Follows day/night like Light: dark at night. -->
+    <style name="Classic">
+        <item name="colorPrimary">@color/classicOrange300</item>
+        <item name="colorPrimaryDark">@color/classicOrange400</item>
+        <item name="colorCardHighlight">@color/classicOrange100</item>
+        <item name="alertDialogTheme">@style/AppAlertDialog.Classic</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog.Classic</item>
+    </style>
+
     <style name="Sepia">
         <item name="colorPrimary">@color/orange300</item>
         <item name="colorPrimaryDark">@color/orange400</item>
@@ -247,6 +256,11 @@
         <item name="colorCardHighlight">@color/orange100</item>
     </style>
 
+    <style name="AppAlertDialog.Classic">
+        <item name="colorPrimary">@color/classicOrange400</item>
+        <item name="colorCardHighlight">@color/classicOrange100</item>
+    </style>
+
     <style name="AppAlertDialog.Sepia">
         <item name="colorPrimary">@color/orange300</item>
         <item name="android:textColorPrimary">@color/brown800</item>
@@ -300,6 +314,10 @@
         <item name="android:textColorPrimary">@color/blackT87</item>
         <item name="android:textColorSecondary">@color/blackT50</item>
         <item name="android:colorBackground">@color/grey100</item>
+    </style>
+
+    <style name="AppBottomSheetDialog.Classic">
+        <item name="colorPrimary">@color/classicOrange300</item>
     </style>
 
     <style name="AppBottomSheetDialog.Sepia">
