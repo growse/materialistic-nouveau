@@ -41,8 +41,8 @@
     <style name="Classic" />
 
     <style name="Sepia">
-        <item name="android:textColorPrimary">@color/orange100</item>
-        <item name="android:textColorSecondary">@color/orange50</item>
+        <item name="android:textColorPrimary">@color/purple100</item>
+        <item name="android:textColorSecondary">@color/purple50</item>
         <item name="alertDialogTheme">@style/AppAlertDialog.Dark.Sepia</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog.Dark.Sepia</item>
     </style>
@@ -58,13 +58,13 @@
     </style>
 
     <style name="AppAlertDialog.Dark.Sepia">
-        <item name="android:textColorPrimary">@color/orange100</item>
-        <item name="android:textColorSecondary">@color/orange50</item>
+        <item name="android:textColorPrimary">@color/purple100</item>
+        <item name="android:textColorSecondary">@color/purple50</item>
     </style>
 
     <style name="AppBottomSheetDialog.Dark.Sepia">
-        <item name="android:textColorPrimary">@color/orange100</item>
-        <item name="android:textColorSecondary">@color/orange50</item>
+        <item name="android:textColorPrimary">@color/purple100</item>
+        <item name="android:textColorSecondary">@color/purple50</item>
     </style>
 
     <style name="AppAlertDialog.Dark.Green">

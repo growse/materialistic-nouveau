@@ -38,7 +38,7 @@ class ThemeTest : TestCase() {
   @Test
   fun lightIsTheDefaultPurple() = run {
     step("Open the story list without choosing a theme") { openStories() }
-    step("Verify the toolbar is the default purple") { assertToolbarColor(R.color.orange300) }
+    step("Verify the toolbar is the default purple") { assertToolbarColor(R.color.purple300) }
   }
 
   @Test
@@ -55,9 +55,7 @@ class ThemeTest : TestCase() {
       PreferencesScreen { row(context.getString(R.string.theme_classic)).isVisible() }
     }
     step("Open the story list") { openStories() }
-    step("Verify the toolbar is the classic orange") {
-      assertToolbarColor(R.color.classicOrange300)
-    }
+    step("Verify the toolbar is the classic orange") { assertToolbarColor(R.color.orange300) }
   }
 
   private fun openStories() {
