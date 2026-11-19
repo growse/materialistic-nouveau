@@ -30,8 +30,8 @@ android {
     minSdk = 23
     targetSdk = 37
     // Keep these as literals: F-Droid's update checker regex-parses them from this file.
-    versionCode = 4010
-    versionName = "v4.0.10"
+    versionCode = 4011
+    versionName = "v4.0.11"
     testInstrumentationRunner = "com.growse.android.io.github.hidroh.materialistic.HiltTestRunner"
     buildConfigField("int", "LATEST_RELEASE", "77")
     buildConfigField("String", "GITHUB_TOKEN", "\"\"")
