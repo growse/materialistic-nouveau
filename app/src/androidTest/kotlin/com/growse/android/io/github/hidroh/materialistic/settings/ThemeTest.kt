@@ -43,19 +43,30 @@ class ThemeTest : TestCase() {
 
   @Test
   fun choosingClassicBringsBackTheOriginalOrange() = run {
-    step("Choose the Classic theme in the display settings") {
+    chooseTheme(R.id.theme_classic, R.string.theme_classic)
+    step("Open the story list") { openStories() }
+    step("Verify the toolbar is the classic orange") { assertToolbarColor(R.color.orange300) }
+  }
+
+  @Test
+  fun sepiaIsOrange() = run {
+    chooseTheme(R.id.theme_sepia, R.string.theme_sepia)
+    step("Open the story list") { openStories() }
+    step("Verify the toolbar is orange") { assertToolbarColor(R.color.orange300) }
+  }
+
+  private fun TestContext<Unit>.chooseTheme(swatch: Int, name: Int) {
+    step("Choose the ${context.getString(name)} theme in the display settings") {
       scenarios.launch<PreferencesActivity>(
           Intent(context, PreferencesActivity::class.java)
               .putExtra(PreferencesActivity.EXTRA_TITLE, R.string.display)
               .putExtra(PreferencesActivity.EXTRA_PREFERENCES, R.xml.preferences_display),
       )
-      KView { withId(R.id.theme_classic) }.click()
+      KView { withId(swatch) }.click()
     }
     step("Verify it's the selected theme") {
-      PreferencesScreen { row(context.getString(R.string.theme_classic)).isVisible() }
+      PreferencesScreen { row(context.getString(name)).isVisible() }
     }
-    step("Open the story list") { openStories() }
-    step("Verify the toolbar is the classic orange") { assertToolbarColor(R.color.orange300) }
   }
 
   private fun openStories() {
