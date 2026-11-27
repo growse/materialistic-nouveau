@@ -26,12 +26,14 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.text.TextUtils
 import android.text.format.DateUtils
 import android.widget.RemoteViews
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.core.content.edit
+import com.growse.android.io.github.hidroh.materialistic.ItemActivity
 import com.growse.android.io.github.hidroh.materialistic.ListActivity
 import com.growse.android.io.github.hidroh.materialistic.NewActivity
 import com.growse.android.io.github.hidroh.materialistic.R
@@ -156,12 +158,18 @@ internal class WidgetHelper(private val mContext: Context) {
     remoteViews.setEmptyView(android.R.id.list, R.id.empty)
     remoteViews.setPendingIntentTemplate(
         android.R.id.list,
-        PendingIntent.getActivity(
-            mContext,
-            0,
-            Intent(Intent.ACTION_VIEW),
-            PendingIntent.FLAG_IMMUTABLE,
-        ),
+        createItemPendingIntentTemplate(appWidgetId),
+    )
+  }
+
+  private fun createItemPendingIntentTemplate(appWidgetId: Int): PendingIntent? {
+    // Template PendingIntents must be mutable so RemoteViews fill-in intents can attach the item
+    // URI, and explicit so Android 14+ permits FLAG_MUTABLE.
+    return PendingIntent.getActivity(
+        mContext,
+        appWidgetId,
+        createItemTemplateIntent(mContext),
+        itemTemplateFlags(),
     )
   }
 
@@ -257,5 +265,15 @@ internal class WidgetHelper(private val mContext: Context) {
     fun getConfigName(appWidgetId: Int): String {
       return String.format(Locale.US, SP_NAME, appWidgetId)
     }
+
+    internal fun createItemTemplateIntent(context: Context): Intent =
+        Intent(context, ItemActivity::class.java).apply { action = Intent.ACTION_VIEW }
+
+    internal fun itemTemplateFlags(sdkInt: Int = Build.VERSION.SDK_INT): Int =
+        if (sdkInt >= Build.VERSION_CODES.S) {
+          PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        } else {
+          PendingIntent.FLAG_UPDATE_CURRENT
+        }
   }
 }
